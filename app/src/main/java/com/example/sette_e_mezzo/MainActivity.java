@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Deck deck = Deck.getIstance();
-        //Card card = deck.pull();
 
         Button btnMenu = findViewById(R.id.btnNextCard);
         ImageView imageView = findViewById(R.id.imageView);
@@ -25,6 +24,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Card card = deck.pull();
                 imageView.setImageResource(card.getIdImage());
+            }
+        });
+
+        Button btnGame = findViewById(R.id.btnGame);
+        btnGame.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent game2Players = new Intent(MainActivity.this, Game2PlayersActivity.class);
+                startActivity(game2Players);
             }
         });
 

@@ -14,13 +14,11 @@ public class Card{
         extracted = false;
         this.id=id;
         this.idImage=idImage;
-        //image.setImageResource(idImage);
     }
 
     // GETTER
     public double getValue(){return value;}
     public boolean isExtracted(){return extracted;}
-    //spublic ImageView getImageView(){return image;}
     public int getIdImage(){return idImage;}
 
     // SETTER
