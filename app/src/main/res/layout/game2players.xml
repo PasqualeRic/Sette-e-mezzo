@@ -3,63 +3,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/tappetino"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/tappettino" />
+    android:layout_height="match_parent"
+    android:background="@drawable/tappettino"
+    android:backgroundTintMode="src_in">
 
     <View
         android:id="@+id/divider"
         android:layout_width="409dp"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toBottomOf="@+id/tappetino"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/myReycler"
-        android:layout_width="493dp"
-        android:layout_height="210dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tappetino"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider"
-        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/btnCarta"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="49dp"
-        android:text="carta"
+        android:layout_marginStart="48dp"
+        android:text="Carta"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.22"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myReycler"
-        app:layout_constraintVertical_bias="0.058" />
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.854" />
 
     <Button
         android:id="@+id/btnStai"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="49dp"
-        android:text="stai"
+        android:layout_marginEnd="40dp"
+        android:text="Stai"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.594"
-        app:layout_constraintStart_toEndOf="@+id/btnCarta"
-        app:layout_constraintTop_toBottomOf="@+id/myReycler"
-        app:layout_constraintVertical_bias="0.078" />
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.854" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="366dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/myRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="230dp"
+        android:background="@drawable/tappettino"
+        android:backgroundTintMode="src_in"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
+        app:layout_constraintVertical_bias="0.007" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
