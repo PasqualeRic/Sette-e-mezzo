@@ -14,6 +14,7 @@ public class Card{
         extracted = false;
         this.id=id;
         this.idImage=idImage;
+        this.value=value;
     }
 
     // GETTER

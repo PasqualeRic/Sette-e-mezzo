@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,6 +21,7 @@ public class Game2PlayersActivity extends AppCompatActivity {
     Button btnCarta;
     Button btnStai;
     ArrayList<Card> listOfCards;
+    TextView tvMyScore;
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -31,6 +34,8 @@ public class Game2PlayersActivity extends AppCompatActivity {
 
         btnCarta = findViewById(R.id.btnCarta);
         btnStai = findViewById(R.id.btnStai);
+        tvMyScore = findViewById(R.id.tvMyScore);
+        tvMyScore.setText("0");
 
         recyclerView = findViewById(R.id.myRecyclerView);
 
@@ -43,9 +48,16 @@ public class Game2PlayersActivity extends AppCompatActivity {
         recyclerView.setAdapter(cardAdapter);
 
         btnCarta.setOnClickListener(v -> {
-            listOfCards.add(Deck.getIstance().pull());
+
+            Card card = Deck.getIstance().pull();
+            double score = Double.parseDouble(tvMyScore.getText().toString());
+            score+=card.getValue();
+            tvMyScore.setText(String.valueOf(score));
+            listOfCards.add(card);
             cardAdapter.notifyItemInserted(listOfCards.size()-1);
         });
+
+       btnCarta.callOnClick();
 
     }
 }
