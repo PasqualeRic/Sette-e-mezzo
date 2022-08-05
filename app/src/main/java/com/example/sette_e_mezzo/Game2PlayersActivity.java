@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class Game2PlayersActivity extends AppCompatActivity {
 
     Button btnRiGioca;
+    TextView tvResult;
 
     // PLAYER
     Button btnCarta;
@@ -32,6 +33,7 @@ public class Game2PlayersActivity extends AppCompatActivity {
     TextView tvScoreDealer;
     RecyclerView dealerReyclerView;
     CardAdapter cardAdapterDealer;
+    ArrayList<Card> dealerCards;
 
 
     @Override
@@ -49,7 +51,7 @@ public class Game2PlayersActivity extends AppCompatActivity {
         myRecyclerView = findViewById(R.id.myRecyclerView);
         layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false);
         myRecyclerView.setLayoutManager(layoutManager);
-        myCards = new ArrayList<Card>();
+        myCards = new ArrayList<>();
         myCardAdapter = new CardAdapter(myCards);
         myRecyclerView.setAdapter(myCardAdapter);
 
@@ -60,9 +62,15 @@ public class Game2PlayersActivity extends AppCompatActivity {
         tvScoreDealer = findViewById(R.id.tvDealerScore);
 
         dealerReyclerView = findViewById(R.id.recyclerViewDealer);
+        LinearLayoutManager lmDealer = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false);
+        dealerReyclerView.setLayoutManager(lmDealer);
 
+        dealerCards = new ArrayList<>();
+        cardAdapterDealer = new CardAdapter(dealerCards);
+        dealerReyclerView.setAdapter(cardAdapterDealer);
 
         btnRiGioca = findViewById(R.id.btnRestore);
+        tvResult = findViewById(R.id.tvResult);
 
         btnCarta.setOnClickListener(v -> {
 
@@ -73,11 +81,13 @@ public class Game2PlayersActivity extends AppCompatActivity {
             if(score>=7.5){
                 btnCarta.setVisibility(v.INVISIBLE);
                 btnStai.setVisibility(v.INVISIBLE);
-                btnRiGioca.setVisibility(v.VISIBLE);
 
                 if(score>7.5) {
-                    Log.d("SCORE",tvMyScore.getText().toString());
-                    tvMyScore.setText(tvMyScore.getText().toString() + " hai perso");
+                    tvResult.setText("HAI PERSO");
+                    btnRiGioca.setVisibility(v.VISIBLE);
+                }else {
+                    tvScoreDealer.setText("0");
+                    dealerTurn();
                 }
             }
             myCards.add(card);
@@ -85,10 +95,10 @@ public class Game2PlayersActivity extends AppCompatActivity {
         });
 
         btnStai.setOnClickListener(v -> {
-            btnCarta.setVisibility(v.INVISIBLE);
-            btnStai.setVisibility(v.INVISIBLE);
-            btnCartaDealer.setVisibility(v.VISIBLE);
-            btnStaiDealer.setVisibility(v.VISIBLE);
+            btnCarta.setVisibility(View.INVISIBLE);
+            btnStai.setVisibility(View.INVISIBLE);
+            tvScoreDealer.setText("0");
+            dealerTurn();
         });
 
         btnRiGioca.setOnClickListener(v->{
@@ -99,11 +109,54 @@ public class Game2PlayersActivity extends AppCompatActivity {
             btnCarta.setVisibility(v.VISIBLE);
             btnStai.setVisibility(v.VISIBLE);
             btnRiGioca.setVisibility(v.INVISIBLE);
+            tvResult.setText("");
+            tvScoreDealer.setText("");
+            cardAdapterDealer.clear();
+            cardAdapterDealer.notifyDataSetChanged();
+            btnCartaDealer.setVisibility(v.INVISIBLE);
+            btnStaiDealer.setVisibility(v.INVISIBLE);
+            btnCarta.callOnClick();
         });
 
+        btnCartaDealer.setOnClickListener(v -> {
+            Card card = Deck.getIstance().pull();
+            double score = Double.parseDouble(tvScoreDealer.getText().toString());
+            score+=card.getValue();
+            tvScoreDealer.setText(String.valueOf(score));
+            if(score>=7.5){
+                btnCartaDealer.setVisibility(v.INVISIBLE);
+                btnStaiDealer.setVisibility(v.INVISIBLE);
+                btnRiGioca.setVisibility(v.VISIBLE);
 
+                if(score>7.5) {
+                    tvResult.setText("HAI VINTO");
+                }else{
+                    tvResult.setText("HAI PERSO");
+                }
+            }
+            dealerCards.add(card);
+            cardAdapterDealer.notifyItemInserted(dealerCards.size()-1);
+        });
 
-       btnCarta.callOnClick();
+        btnStaiDealer.setOnClickListener(v -> {
+            if(Double.parseDouble(tvMyScore.getText().toString())>Double.parseDouble(tvScoreDealer.getText().toString())){
+                tvResult.setText("HAI VINTO");
+            }else{
+                tvResult.setText("HAI PERSO");
+            }
+            btnRiGioca.setVisibility(v.VISIBLE);
+            btnCartaDealer.setVisibility(v.INVISIBLE);
+            btnStaiDealer.setVisibility(v.INVISIBLE);
+        });
 
+        btnCarta.callOnClick();
+
+    }
+
+    private void dealerTurn(){
+        btnCarta.setVisibility(View.INVISIBLE);
+        btnStai.setVisibility(View.INVISIBLE);
+        btnCartaDealer.setVisibility(View.VISIBLE);
+        btnStaiDealer.setVisibility(View.VISIBLE);
     }
 }
