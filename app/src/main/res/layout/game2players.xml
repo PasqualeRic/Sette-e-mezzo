@@ -67,17 +67,18 @@
 
     <TextView
         android:id="@+id/tvMyScore"
-        android:layout_width="83dp"
-        android:layout_height="67dp"
+        android:layout_width="134dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="32dp"
         app:layout_constraintBottom_toTopOf="@+id/myRecyclerView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.079"
+        app:layout_constraintEnd_toStartOf="@+id/btnRestore"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline2"
-        app:layout_constraintVertical_bias="0.558" />
+        app:layout_constraintVertical_bias="0.44" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerViewDealer"
         android:layout_width="0dp"
         android:layout_height="100dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
@@ -96,7 +97,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.877"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewDealer"
         app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btnRestore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="14dp"
+        android:text="rigioca"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/myRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.905"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <Button
+        android:id="@+id/btnCartaDealer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Carta"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="49dp"
+        tools:layout_editor_absoluteY="21dp" />
+
+    <Button
+        android:id="@+id/btnStaiDealer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="stai"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="261dp"
+        tools:layout_editor_absoluteY="21dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

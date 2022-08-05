@@ -50,5 +50,7 @@ public class CardAdapter  extends RecyclerView.Adapter<CardAdapter.CardViewHolde
         return dataset.size();
     }
 
+    public void clear(){ dataset.clear(); }
+
 }
 
