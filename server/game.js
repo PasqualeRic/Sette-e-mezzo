@@ -7,7 +7,6 @@ class Game {
     numberOfPlayers;
     players;
     admin;
-    currentQuestion;
     constructor(admin,name = '', status = 'waiting', players = [], numberOfPlayers = 0) {
         this.admin = admin;
         this.id = uuid();

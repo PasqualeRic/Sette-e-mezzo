@@ -19,6 +19,7 @@ const ioGames = (socket) => {
     }
     const joinGame = async (data, callback) =>  {
         console.log('joinGame')
+        console.log(data)
         try {
             if (!data.id)
                 throw new Error()
@@ -35,9 +36,26 @@ const ioGames = (socket) => {
             callback(new Error())
         }
     }
+    const confGame = async (data,callback) => {
+        console.log('conf game')
+        console.log(data);
+        const game = GamesArray.find(el => el.id == data.id);
+        GamesArray.forEach(element => {
+            // controllo se esiste già una partita con questo nome
+            if(element.name == data.name)
+            {
+                throw new Error()
+            }
+        });
+        game.name = data.name
+        game.status = 'joinable'
+        game.numberOfPlayers = data.numberOfPlayers
+        console.log(game)
+        
+    }
     
 
-
+    socket.on('confGame',confGame);
     socket.on('createGame',createGame);
     socket.on('joinGame',joinGame);
 }

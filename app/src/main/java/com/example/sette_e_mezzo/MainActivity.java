@@ -9,11 +9,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
-
+    SocketClass socket = new SocketClass();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        socket.connection();
 
         Deck deck = Deck.getIstance();
 
