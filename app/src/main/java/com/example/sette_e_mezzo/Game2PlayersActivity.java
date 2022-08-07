@@ -56,7 +56,7 @@ public class Game2PlayersActivity extends AppCompatActivity {
         myRecyclerView.setAdapter(myCardAdapter);
 
         // DEALER
-       /* btnCartaDealer = findViewById(R.id.btnCartaDealer);
+        btnCartaDealer = findViewById(R.id.btnCartaDealer);
         btnStaiDealer = findViewById(R.id.btnStaiDealer);
 
         tvScoreDealer = findViewById(R.id.tvDealerScore);

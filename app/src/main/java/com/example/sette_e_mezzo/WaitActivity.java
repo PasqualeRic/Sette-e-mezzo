@@ -38,7 +38,7 @@ public class WaitActivity extends AppCompatActivity {
 
                     }
                 });*/
-                Intent i = new Intent(WaitActivity.this, WaitRoomClient.class);
+                Intent i = new Intent(WaitActivity.this, Game2PlayersActivity.class);
                 startActivity(i);
             });
 
