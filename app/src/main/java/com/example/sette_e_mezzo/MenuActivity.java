@@ -32,6 +32,8 @@ public class MenuActivity extends AppCompatActivity {
         btnPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent player = new Intent(MenuActivity.this, PlayerActivity.class);
+                startActivity(player);
             }
         });
 

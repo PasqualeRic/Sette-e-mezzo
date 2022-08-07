@@ -22,6 +22,10 @@ public class SocketClass {
         socket.disconnect();
     }
     public Socket getSocket() {
+        if(socket == null)
+        {
+            connection();
+        }
         return socket;
     }
 }

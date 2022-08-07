@@ -2,10 +2,12 @@ package com.example.sette_e_mezzo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +17,8 @@ import io.socket.client.Ack;
 public class SetGameActivity extends AppCompatActivity {
     SocketClass socket = new SocketClass();
     Button btnPlay;
+    EditText name, nPlayers;
+
     public String id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +29,12 @@ public class SetGameActivity extends AppCompatActivity {
         {
             socket.getSocket().emit("createGame", null, args -> {
                 this.id = (String) args[0];
-                Log.wtf("pr", "pr"+id);
             });
         }
+
+        name = findViewById(R.id.gameName);
+        nPlayers = findViewById(R.id.nPlayers);
+
         btnPlay = findViewById(R.id.button);
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,18 +42,20 @@ public class SetGameActivity extends AppCompatActivity {
                 JSONObject item = new JSONObject();
                 try {
                     item.put("id", id);
-                    item.put("name", "prova");
-                    item.put("numberOfPlayers", 4);
+                    item.put("name", name.getText().toString());
+                    item.put("numberOfPlayers",nPlayers.getText().toString() );
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if (socket.getSocket().connected())
+                if (socket.getSocket().connected()) {
                     socket.getSocket().emit("confGame", item, (Ack) args -> {
                         JSONObject response = (JSONObject) args[0];
-                        Log.wtf("pr", "pr"+response);
                     });
+                }
+                Intent wait = new Intent(SetGameActivity.this,WaitActivity.class);
+                startActivity(wait);
 
-                    }
+            }
         });
 
     }

@@ -21,16 +21,22 @@ const ioGames = (socket) => {
         console.log('joinGame')
         console.log(data)
         try {
-            if (!data.id)
-                throw new Error()
-            console.log(data)
-            socket.join(data.id)
-            const game = GamesArray.find(el => el.id == data.id);
-            game.players.push({id: socket.id, name: data.name,});
-            socket.to(game.id).emit("joined", data.name)
-            console.log(socket.id+' joined in '+game.id)
-            console.log(game.players)
-            callback(data.name)
+            console.log(GamesArray);
+            GamesArray.forEach(element =>{
+                if(element.numberOfPlayers == data.numberOfPlayers){
+                    const game = GamesArray.find(el => el.id == element.id);
+                    game.players.push({id: socket.id, name: data.name});
+                    console.log(game)
+                    socket.to(game.id).emit("invioPlayer",data.name)
+                    console.log(socket.id+' joined in '+game.id)
+                    console.log(game.players.length)
+                    if(game.players.length == game.numberOfPlayers-1){
+                        game.status = "close"
+                        socket.to(game.id).emit("start")
+                    }
+                }
+            })
+           
         } catch (err) {
             console.log(err)
             callback(new Error())
@@ -51,6 +57,7 @@ const ioGames = (socket) => {
         game.status = 'joinable'
         game.numberOfPlayers = data.numberOfPlayers
         console.log(game)
+        socket.join(game)
         
     }
     
