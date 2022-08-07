@@ -32,12 +32,7 @@ public class WaitActivity extends AppCompatActivity {
 
             });
             socket.getSocket().on("start", args ->{
-               /* runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
 
-                    }
-                });*/
                 Intent i = new Intent(WaitActivity.this, Game2PlayersActivity.class);
                 startActivity(i);
             });
