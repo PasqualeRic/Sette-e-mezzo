@@ -9,11 +9,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
-
+    SocketClass socket = new SocketClass();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        socket.connection();
 
         Deck deck = Deck.getIstance();
 
@@ -31,8 +33,10 @@ public class MainActivity extends AppCompatActivity {
         btnGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent game2Players = new Intent(MainActivity.this, Game2PlayersActivity.class);
-                startActivity(game2Players);
+                //Intent game2Players = new Intent(MainActivity.this, Game2PlayersActivity.class);
+                //startActivity(game2Players);
+                Intent menu = new Intent(MainActivity.this, MenuActivity.class);
+                startActivity(menu);
             }
         });
 
