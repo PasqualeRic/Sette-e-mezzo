@@ -95,7 +95,7 @@
         android:layout_marginTop="48dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.877"
+        app:layout_constraintHorizontal_bias="0.874"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewDealer"
         app:layout_constraintVertical_bias="0.0" />
@@ -145,7 +145,7 @@
 
     <TextView
         android:id="@+id/tvResult"
-        android:layout_width="162dp"
+        android:layout_width="0dp"
         android:layout_height="39dp"
         android:fontFamily="sans-serif-black"
         android:textAlignment="center"

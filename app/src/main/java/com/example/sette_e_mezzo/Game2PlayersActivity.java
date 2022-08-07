@@ -149,7 +149,7 @@ public class Game2PlayersActivity extends AppCompatActivity {
             btnStaiDealer.setVisibility(v.INVISIBLE);
         });
 
-        btnCarta.callOnClick();
+        //btnCarta.callOnClick();
 
     }
 
