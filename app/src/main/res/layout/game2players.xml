@@ -118,18 +118,44 @@
         android:id="@+id/btnCartaDealer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="21dp"
         android:text="Carta"
         android:visibility="invisible"
-        tools:layout_editor_absoluteX="49dp"
-        tools:layout_editor_absoluteY="21dp" />
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewDealer"
+        app:layout_constraintEnd_toStartOf="@+id/btnStaiDealer"
+        app:layout_constraintHorizontal_bias="0.184"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnStaiDealer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
         android:text="stai"
         android:visibility="invisible"
-        tools:layout_editor_absoluteX="261dp"
-        tools:layout_editor_absoluteY="21dp" />
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewDealer"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.801"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.484" />
+
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="162dp"
+        android:layout_height="39dp"
+        android:fontFamily="sans-serif-black"
+        android:textAlignment="center"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewDealer"
+        app:layout_constraintVertical_bias="0.919" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
