@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +18,8 @@ import io.socket.client.Ack;
 public class PlayerActivity extends AppCompatActivity {
     SocketClass socket = new SocketClass();
     Button btnJoin;
-    EditText n,player;
+    EditText player;
+    Spinner n;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,8 @@ public class PlayerActivity extends AppCompatActivity {
             public void onClick(View view) {
                 JSONObject item = new JSONObject();
                 try {
-                    item.put("numberOfPlayers", n.getText().toString());
+                    item.put("id", socket.getSocket().id());
+                    item.put("numberOfPlayers", n.getSelectedItem().toString());
                     item.put("name", player.getText().toString());
                     socket.getSocket().emit("joinGame",item, (Ack) args ->{
 
