@@ -38,10 +38,8 @@ const ioGames = (socket) => {
                                 }
                     }
                     else {
-                            if(element.players.id == data.id){
-                                throw new Error()
-                            }
-                            else{
+                        console.log(element.players.find(e => e.id == data.id))
+                            if(!element.players.find(e => e.id == data.id) && element.status == "joinable"){
                                 element.players.push({id: socket.id, name: data.name});
                                 console.log(element)
                                 socket.to(element.id).emit("invioPlayer",data.name)
@@ -52,7 +50,8 @@ const ioGames = (socket) => {
                                     element.status = "close"
                                     socket.to(element.id).emit("start", element.numberOfPlayers)
                                 }
-                       }
+                            }
+
                     }
                 }
             })

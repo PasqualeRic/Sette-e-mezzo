@@ -40,25 +40,13 @@ public class WaitActivity extends AppCompatActivity {
 
             });
 
-            start = findViewById(R.id.btnStart);
-            start.setVisibility(View.INVISIBLE);
-
-            socket.getSocket().on("start", args ->{
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        text2.setVisibility(View.INVISIBLE);
-                        spinner.setVisibility(View.GONE);
-                        start.setVisibility(View.VISIBLE);
-                        start.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Intent i = new Intent(WaitActivity.this, Game2PlayersActivity.class);
-                                startActivity(i);
-                            }
-                        });
-                    }
-                });
-            });
+        start = findViewById(R.id.btnStart);
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(WaitActivity.this, Game2PlayersActivity.class);
+                startActivity(i);
+            }
+        });
     }
 }
