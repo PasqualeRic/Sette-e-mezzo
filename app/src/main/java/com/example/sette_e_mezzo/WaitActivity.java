@@ -43,13 +43,13 @@ public class WaitActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         text1.setText(name);
-                        text4.setText(number);
+                        text4.setText("/"+number);
                         text3.setText("Puoi startare la partita!");
                         n.setText(conta.toString());
                         Log.wtf("n", "number"+number);
                         Log.wtf("n", "conta"+conta);
 
-                       if(conta.toString().equals("/"+number))
+                       if(conta.toString().equals(number))
                         {
                             spinner.setVisibility(View.GONE);
                         }
