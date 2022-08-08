@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +18,8 @@ import io.socket.client.Ack;
 public class SetGameActivity extends AppCompatActivity {
     SocketClass socket = new SocketClass();
     Button btnPlay;
-    EditText name, nPlayers;
+    EditText name;
+    Spinner nPlayers;
 
     public String id;
     @Override
@@ -43,7 +45,7 @@ public class SetGameActivity extends AppCompatActivity {
                 try {
                     item.put("id", id);
                     item.put("name", name.getText().toString());
-                    item.put("numberOfPlayers",nPlayers.getText().toString() );
+                    item.put("numberOfPlayers",nPlayers.getSelectedItem().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

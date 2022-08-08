@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -12,6 +14,8 @@ import org.json.JSONObject;
 
 public class WaitActivity extends AppCompatActivity {
     SocketClass socket = new SocketClass();
+    private ProgressBar spinner;
+
     String name;
     TextView text;
     @Override
@@ -19,8 +23,9 @@ public class WaitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wait);
         text = findViewById(R.id.setname);
-
-            socket.getSocket().on("invioPlayer", args -> {
+        spinner = (ProgressBar)findViewById(R.id.progressBar1);
+        spinner.setVisibility(View.VISIBLE);
+        socket.getSocket().on("invioPlayer", args -> {
                // Log.wtf("p","p"+args[0]);
                 name = args[0].toString();
                 runOnUiThread(new Runnable() {
