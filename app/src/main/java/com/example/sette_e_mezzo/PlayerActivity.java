@@ -37,6 +37,7 @@ public class PlayerActivity extends AppCompatActivity {
             public void onClick(View view) {
                 JSONObject item = new JSONObject();
                 try {
+                    item.put("id", socket.getSocket().id());
                     item.put("numberOfPlayers", n.getSelectedItem().toString());
                     item.put("name", player.getText().toString());
                     socket.getSocket().emit("joinGame",item, (Ack) args ->{
