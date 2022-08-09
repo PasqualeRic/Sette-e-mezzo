@@ -72,8 +72,8 @@ const ioGames = (socket) => {
         }
     }
 
-    const sendBroadcast = async (data,callback) => {
-        console.log("sendBroadcast")
+    const sendFirstCard = async (data,callback) => {
+        console.log("sendFirstCard")
         console.log(data)
         try{
             var flag = false;
@@ -81,13 +81,12 @@ const ioGames = (socket) => {
             
             var timer = setInterval(function(){
                 if(flag){
-                    socket.broadcast.emit("reciveCard",data)
+                    socket.to(data.idClient).emit("reciveYourFirstCard",data)
                     clearInterval(timer);
                 }else{
                     flag=true;
                 }
-
-            },400);
+            },200);
         }catch(err)
         {
             callback(err)
@@ -118,6 +117,6 @@ const ioGames = (socket) => {
     socket.on('createGame',createGame);
     socket.on('joinGame',joinGame);
     socket.on('startGame',startGame);
-    socket.on('sendBroadcast',sendBroadcast);
+    socket.on('sendFirstCard',sendFirstCard);
 }
 module.exports = ioGames

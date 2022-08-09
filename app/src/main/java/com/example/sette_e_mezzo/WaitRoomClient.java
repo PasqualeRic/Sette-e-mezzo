@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 
+import org.json.JSONObject;
+
 import io.socket.client.Ack;
 
 public class WaitRoomClient extends AppCompatActivity {
@@ -23,7 +25,7 @@ public class WaitRoomClient extends AppCompatActivity {
 
 
         socket.getSocket().on("partita", args -> {
-            Intent i = new Intent(WaitRoomClient.this, Game2PlayersActivity.class);
+            Intent i = new Intent(WaitRoomClient.this, G2PClientActivity.class);
             startActivity(i);
         });
 

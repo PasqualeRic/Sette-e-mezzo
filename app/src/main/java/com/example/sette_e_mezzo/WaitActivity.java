@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -61,34 +62,32 @@ public class WaitActivity extends AppCompatActivity {
 
         socket.getSocket().on("invioPlayer", args -> {
 
-                idClients.add(args[2].toString());
-                conta = conta + 1;
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+            idClients.add(args[2].toString());
+            conta = conta + 1;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
 
-                        usernameClients.add(args[0].toString());
-                        clientAdapter.notifyItemInserted(usernameClients.size()-1);
-                        tvNumPlayers.setText(""+conta);
-                        if(nPlayers==usernameClients.size()+1){
-                            tvRoomFull.setVisibility(View.VISIBLE);
-                            pbWaitClient.setVisibility(View.INVISIBLE);
-                            tvWaitPlayers.setVisibility(View.INVISIBLE);
-                        }
-
+                    usernameClients.add(args[0].toString());
+                    clientAdapter.notifyItemInserted(usernameClients.size()-1);
+                    tvNumPlayers.setText(""+conta);
+                    if(nPlayers==usernameClients.size()+1){
+                        tvRoomFull.setVisibility(View.VISIBLE);
+                        pbWaitClient.setVisibility(View.INVISIBLE);
+                        tvWaitPlayers.setVisibility(View.INVISIBLE);
                     }
-                });
 
+                }
             });
+
+        });
 
         start = findViewById(R.id.btnStart);
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                socket.getSocket().emit("startGame",(Ack) args -> {
-
-                });
+                socket.getSocket().emit("startGame",(Ack) args -> {});
 
                 for(int i=0;i<idClients.size();i++){
                     Card card = Deck.getIstance().pull();
@@ -99,8 +98,8 @@ public class WaitActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-                    socket.getSocket().emit("sendBroadcast",json,(Ack) args -> {});
+                    Log.d("debug",json.toString());
+                    socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
                 }
 
 
@@ -127,8 +126,11 @@ public class WaitActivity extends AppCompatActivity {
                 socket.getSocket().emit("sendAll", idPlayer, card ,(Ack) args
                 */
 
-                Intent i = new Intent(WaitActivity.this, Game2PlayersActivity.class);
+
+
+                Intent i = new Intent(WaitActivity.this, G2PClientActivity.class);
                 startActivity(i);
+
             }
         });
     }

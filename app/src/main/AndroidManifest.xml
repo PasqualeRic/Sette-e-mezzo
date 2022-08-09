@@ -7,12 +7,15 @@
 
     <application
         android:allowBackup="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".G2PClientActivity"
+            android:exported="false" />
         <activity
             android:name=".WaitRoomClient"
             android:exported="false" />
@@ -27,9 +30,6 @@
             android:exported="false" />
         <activity
             android:name=".MenuActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Game2PlayersActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

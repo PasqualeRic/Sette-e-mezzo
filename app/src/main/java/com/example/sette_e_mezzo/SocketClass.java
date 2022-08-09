@@ -28,5 +28,6 @@ public class SocketClass {
         }
         return socket;
     }
+    public String getId(){ return socket.id();}
 }
 
