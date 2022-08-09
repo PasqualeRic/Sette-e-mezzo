@@ -55,6 +55,8 @@ public class SetGameActivity extends AppCompatActivity {
                     });
                 }
                 Intent wait = new Intent(SetGameActivity.this,WaitActivity.class);
+                Log.d("paraemtri",nPlayers.getSelectedItem().toString());
+                wait.putExtra("N_PLAYERS", nPlayers.getSelectedItem().toString());
                 startActivity(wait);
 
             }

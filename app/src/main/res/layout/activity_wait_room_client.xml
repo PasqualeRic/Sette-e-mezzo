@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".WaitRoomClient">
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvWaitPlayers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20dp"

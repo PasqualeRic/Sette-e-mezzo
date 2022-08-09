@@ -8,7 +8,7 @@
     tools:context=".WaitActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvWaitPlayers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="in attesa di giocatori..."
@@ -16,19 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37" />
-
-    <TextView
-        android:id="@+id/numberPlayers"
-        android:layout_width="38dp"
-        android:layout_height="19dp"
-        android:text="  "
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.839"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37" />
+        app:layout_constraintVertical_bias="0.126" />
 
     <TextView
         android:id="@+id/set"
@@ -37,31 +25,35 @@
         android:text="  "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.796"
+        app:layout_constraintHorizontal_bias="0.815"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.37" />
+        app:layout_constraintVertical_bias="0.126" />
+
+    <TextView
+        android:id="@+id/numberPlayers"
+        android:layout_width="38dp"
+        android:layout_height="19dp"
+        android:text="  "
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.857"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.126" />
 
     <ProgressBar
-        android:id="@+id/progressBar1"
+        android:id="@+id/pbWaitClient"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/setname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.106" />
+        app:layout_constraintVertical_bias="0.23" />
 
     <Button
         android:id="@+id/btnStart"
@@ -71,8 +63,32 @@
         android:text="Start game"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.522"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.69" />
+        app:layout_constraintVertical_bias="0.781" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvClients"
+        android:layout_width="0dp"
+        android:layout_height="145dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pbWaitClient"
+        app:layout_constraintVertical_bias="0.412" />
+
+    <TextView
+        android:id="@+id/tvRoomFull"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Room Full"
+        android:textAlignment="center"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/btnStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rvClients" />
 </androidx.constraintlayout.widget.ConstraintLayout>

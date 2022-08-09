@@ -22,8 +22,6 @@ public class MainActivity extends AppCompatActivity {
         btnGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent game2Players = new Intent(MainActivity.this, Game2PlayersActivity.class);
-                //startActivity(game2Players);
                 Intent menu = new Intent(MainActivity.this, MenuActivity.class);
                 startActivity(menu);
             }
