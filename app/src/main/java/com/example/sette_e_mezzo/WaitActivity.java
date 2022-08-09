@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -21,11 +20,9 @@ import io.socket.client.Ack;
 
 public class WaitActivity extends AppCompatActivity {
     SocketClass socket = new SocketClass();
-    private ProgressBar spinner;
     int nPlayers;
 
-    String name, number;
-    TextView text1, text2, n, text3, text4, tvRoomFull,tvWaitPlayers;
+    TextView tvNumPlayers, tvMaxPlayer, tvRoomFull,tvWaitPlayers;
     ProgressBar pbWaitClient;
     RecyclerView rvClientes;
     RecyclerView.LayoutManager layoutManager;
@@ -33,11 +30,13 @@ public class WaitActivity extends AppCompatActivity {
     ArrayList<String> usernameClients;
     ArrayList<String> idClients;
     Button start;
-    Integer conta = 1;
+    Integer conta;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wait);
+
 
         tvWaitPlayers = findViewById(R.id.tvWaitPlayers);
         pbWaitClient = findViewById(R.id.pbWaitClient);
@@ -52,17 +51,16 @@ public class WaitActivity extends AppCompatActivity {
 
         tvRoomFull = findViewById(R.id.tvRoomFull);
 
-        n = findViewById(R.id.set);
-        text2 = findViewById(R.id.tvWaitPlayers);
-        text4 = findViewById(R.id.numberPlayers);
-        spinner = (ProgressBar)findViewById(R.id.pbWaitClient);
-        spinner.setVisibility(View.VISIBLE);
+        tvNumPlayers = findViewById(R.id.tvNumPlayers);
+        tvMaxPlayer = findViewById(R.id.tvMaxPlayer);
 
         idClients = new ArrayList<>();
+        conta =1;
+        tvNumPlayers.setText(""+conta);
+        tvMaxPlayer.setText("/"+nPlayers);
+
         socket.getSocket().on("invioPlayer", args -> {
-               // Log.wtf("p","p"+args[0]);
-                name = args[0].toString();
-                number = args[1].toString();
+
                 idClients.add(args[2].toString());
                 conta = conta + 1;
                 runOnUiThread(new Runnable() {
@@ -71,19 +69,12 @@ public class WaitActivity extends AppCompatActivity {
 
                         usernameClients.add(args[0].toString());
                         clientAdapter.notifyItemInserted(usernameClients.size()-1);
-
+                        tvNumPlayers.setText(""+conta);
                         if(nPlayers==usernameClients.size()+1){
                             tvRoomFull.setVisibility(View.VISIBLE);
                             pbWaitClient.setVisibility(View.INVISIBLE);
                             tvWaitPlayers.setVisibility(View.INVISIBLE);
                         }
-
-                        /*text1.setText(name);
-                        text4.setText("/"+number);
-                        n.setText(conta.toString());
-                        Log.wtf("n", "number"+number);
-                        Log.wtf("n", "conta"+conta);*/
-
 
                     }
                 });

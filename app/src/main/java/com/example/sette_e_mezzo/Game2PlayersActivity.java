@@ -157,32 +157,18 @@ public class Game2PlayersActivity extends AppCompatActivity {
             btnStaiDealer.setVisibility(v.INVISIBLE);
         });
 
-        //btnCarta.callOnClick();
-
-        Thread thread = new Thread();
 
         socket.getSocket().on("reciveCard", args -> {
-            Log.d("reciveCard-Game","----");
 
-            JSONObject json = new JSONObject();
-
-            double value=0;
-            int idImage=0;
             try {
-                json = new JSONObject(args[0].toString());
+                JSONObject json = new JSONObject(args[0].toString());
                 idClient = json.getString("idClient");
                 idCard = json.getJSONObject("card").getString("id");
-                value = json.getJSONObject("card").getDouble("value");
-                idImage = json.getJSONObject("card").getInt("idImage");
             }catch(Exception e){}
-            Log.d("reciveCard-Game",json.toString());
 
             runOnUiThread(new Runnable() {
                @Override
                public void run() {
-                   Log.d("addCard",idCard);
-                   Card card = Deck.getIstance().getCardById(idCard);
-                   Log.d("addCard",card.getId());
                    myCards.add(Deck.getIstance().getCardById(idCard));
                    myCardAdapter.notifyItemInserted(myCards.size()-1);
                }
