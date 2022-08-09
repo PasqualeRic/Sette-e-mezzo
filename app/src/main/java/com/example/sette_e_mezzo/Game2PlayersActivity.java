@@ -5,15 +5,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
+import io.socket.client.Ack;
 
 
 public class Game2PlayersActivity extends AppCompatActivity {
+    SocketClass socket = new SocketClass();
 
     Button btnRiGioca;
     TextView tvResult;
@@ -99,7 +105,23 @@ public class Game2PlayersActivity extends AppCompatActivity {
             btnCarta.setVisibility(View.INVISIBLE);
             btnStai.setVisibility(View.INVISIBLE);
             tvScoreDealer.setText("0");
-            dealerTurn();
+            JSONObject item = new JSONObject();
+            try {
+                item.put("id",socket.getSocket().id());
+                item.put("point", tvMyScore.getText());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            socket.getSocket().emit("midGame",item,(Ack) args ->{
+            });
+            socket.getSocket().on("turno", args ->{
+                Log.wtf("p", "p"+args);
+            });
+            socket.getSocket().emit("prova", true, (Ack) args ->{
+
+            });
+
+            //dealerTurn();
         });
 
         btnRiGioca.setOnClickListener(v->{

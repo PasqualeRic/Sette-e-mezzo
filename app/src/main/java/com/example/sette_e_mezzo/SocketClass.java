@@ -9,6 +9,7 @@ import io.socket.client.Socket;
 
 public class SocketClass {
     private static Socket socket = null;
+    private String id_partita = null;
     public void connection(){
         try {
             socket = IO.socket("http://10.0.2.2:3000");
@@ -28,5 +29,12 @@ public class SocketClass {
         }
         return socket;
     }
+    public void setIdPartita (String id){
+        id_partita = id;
+    }
+    public String getId_partita(){
+        return id_partita;
+    }
+
 }
 
