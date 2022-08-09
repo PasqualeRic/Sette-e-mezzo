@@ -103,15 +103,14 @@ public class WaitActivity extends AppCompatActivity {
                     Card card = Deck.getIstance().pull();
                     JSONObject json = new JSONObject();
                     try {
-                        json.put("id",idClients.get(i));
-                        json.put("card",card);
+                        json.put("idClient",idClients.get(i));
+                        json.put("card",card.toJSON());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                     socket.getSocket().emit("sendBroadcast",json,(Ack) args -> {});
                 }
-
 
 
                 /*
@@ -135,10 +134,7 @@ public class WaitActivity extends AppCompatActivity {
 
                 }
                 socket.getSocket().emit("sendAll", idPlayer, card ,(Ack) args
-
-
-
-                * */
+                */
 
                 Intent i = new Intent(WaitActivity.this, Game2PlayersActivity.class);
                 startActivity(i);

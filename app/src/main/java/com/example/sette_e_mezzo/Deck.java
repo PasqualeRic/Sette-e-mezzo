@@ -83,5 +83,15 @@ public class Deck extends ArrayList<Card> {
         updateDeck();
     }
 
+    public Card getCardById(String id){
+        for(int i=0;i<istance.size();i++){
+            Card card = istance.get(i);
+            if(card.getId().equals(id))
+                return card;
+        }
+        Log.d("addCard","null");
+        return null;
+    }
+
 
 }
