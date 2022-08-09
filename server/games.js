@@ -28,7 +28,7 @@ const ioGames = (socket) => {
                     {
                         element.players.push({id: socket.id, name: data.name});
                         console.log(element)
-                        socket.to(element.id).emit("invioPlayer",data.name, data.numberOfPlayers)
+                        socket.to(element.id).emit("invioPlayer",data.name, data.numberOfPlayers,data.id)
                         console.log(socket.id+' joined in '+element.id)
                         console.log(element.players[0].id)
                         //console.log(data.id)
@@ -42,7 +42,7 @@ const ioGames = (socket) => {
                         if(!element.players.find(e => e.id == data.id) && element.status == "joinable"){
                             element.players.push({id: socket.id, name: data.name});
                             console.log(element)
-                            socket.to(element.id).emit("invioPlayer",data.name, data.numberOfPlayers)
+                            socket.to(element.id).emit("invioPlayer",data.name, data.numberOfPlayers,data.id)
                             console.log(socket.id+' joined in '+element.id)
                             console.log(element.players[0].id)
                             //console.log(data.id)
@@ -66,6 +66,28 @@ const ioGames = (socket) => {
         console.log("sei in partita")
         try{
             socket.broadcast.emit("partita")
+        }catch(err)
+        {
+            callback(err)
+        }
+    }
+
+    const sendBroadcast = async (data,callback) => {
+        console.log("sendBroadcast")
+        console.log(data)
+        try{
+            var flag = false;
+            counter=0;
+            
+            var timer = setInterval(function(){
+                if(flag){
+                    socket.broadcast.emit("reciveCard",data)
+                    clearInterval(timer);
+                }else{
+                    flag=true;
+                }
+
+            },1000);
         }catch(err)
         {
             callback(err)
@@ -96,5 +118,6 @@ const ioGames = (socket) => {
     socket.on('createGame',createGame);
     socket.on('joinGame',joinGame);
     socket.on('startGame',startGame);
+    socket.on('sendBroadcast',sendBroadcast);
 }
 module.exports = ioGames

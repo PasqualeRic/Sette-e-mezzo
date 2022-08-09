@@ -20,9 +20,12 @@ public class WaitRoomClient extends AppCompatActivity {
         setContentView(R.layout.activity_wait_room_client);
         spinner = (ProgressBar)findViewById(R.id.progressBar2);
         spinner.setVisibility(View.VISIBLE);
+
+
         socket.getSocket().on("partita", args -> {
             Intent i = new Intent(WaitRoomClient.this, Game2PlayersActivity.class);
             startActivity(i);
         });
+
     }
 }

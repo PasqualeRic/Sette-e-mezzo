@@ -24,4 +24,6 @@ public class Card{
 
     // SETTER
     public void setExtracted(){ extracted=true;}
+
+    //public String toString(){ return "id: "+id+", valore: "+value; }
 }

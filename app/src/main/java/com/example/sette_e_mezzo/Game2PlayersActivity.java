@@ -4,7 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -15,6 +18,7 @@ import java.util.ArrayList;
 
 public class Game2PlayersActivity extends AppCompatActivity {
 
+    SocketClass socket = new SocketClass();
     Button btnRiGioca;
     TextView tvResult;
 
@@ -151,6 +155,13 @@ public class Game2PlayersActivity extends AppCompatActivity {
         });
 
         btnCarta.callOnClick();
+
+        Thread thread = new Thread();
+
+        socket.getSocket().on("reciveCard", args -> {
+           // Log.d("receiveCard",args[0].toString());
+            Log.d("reciveCard-Game",args.toString());
+        });
 
     }
 

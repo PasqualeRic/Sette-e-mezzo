@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import io.socket.client.Ack;
@@ -28,6 +31,7 @@ public class WaitActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     ClientAdapter clientAdapter;
     ArrayList<String> usernameClients;
+    ArrayList<String> idClients;
     Button start;
     Integer conta = 1;
     @Override
@@ -53,10 +57,13 @@ public class WaitActivity extends AppCompatActivity {
         text4 = findViewById(R.id.numberPlayers);
         spinner = (ProgressBar)findViewById(R.id.pbWaitClient);
         spinner.setVisibility(View.VISIBLE);
+
+        idClients = new ArrayList<>();
         socket.getSocket().on("invioPlayer", args -> {
                // Log.wtf("p","p"+args[0]);
                 name = args[0].toString();
                 number = args[1].toString();
+                idClients.add(args[2].toString());
                 conta = conta + 1;
                 runOnUiThread(new Runnable() {
                     @Override
@@ -87,9 +94,52 @@ public class WaitActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 socket.getSocket().emit("startGame",(Ack) args -> {
 
                 });
+
+                for(int i=0;i<idClients.size();i++){
+                    Card card = Deck.getIstance().pull();
+                    JSONObject json = new JSONObject();
+                    try {
+                        json.put("id",idClients.get(i));
+                        json.put("card",card);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    socket.getSocket().emit("sendBroadcast",json,(Ack) args -> {});
+                }
+
+
+
+                /*
+                //Settaggio partita
+                for(i<nPlayers){
+                    socket.getSocket().emit("sendTo", idPlayer, card ,(Ack) args
+                }
+
+                // iterazione - da fare altrove
+
+                socket.getSocket().emit("isYourTurn", idPlayer, card ,(Ack) args
+                socket.getSocket().on("mossa", response ,(Ack) args
+                if(mossa==carta){
+                    socket.getSocket().emit("sendTo", idPlayer, card ,(Ack) args
+                    socket.getSocket().emit("sendAll", idPlayer, card ,(Ack) args
+                    if(punteggio>=7.5){
+                        socket.getSocket().emit("isYourTurn", nextIdPlayer, card ,(Ack) args
+                    }
+                }else{   //mossa==stai
+                    socket.getSocket().emit("isYourTurn", nextIdPlayer, card ,(Ack) args
+
+                }
+                socket.getSocket().emit("sendAll", idPlayer, card ,(Ack) args
+
+
+
+                * */
+
                 Intent i = new Intent(WaitActivity.this, Game2PlayersActivity.class);
                 startActivity(i);
             }
