@@ -19,25 +19,25 @@
         app:layout_constraintVertical_bias="0.126" />
 
     <TextView
-        android:id="@+id/set"
-        android:layout_width="38dp"
+        android:id="@+id/tvNumPlayers"
+        android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:text="  "
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.815"
+        app:layout_constraintEnd_toStartOf="@+id/tvMaxPlayer"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.126" />
 
     <TextView
-        android:id="@+id/numberPlayers"
-        android:layout_width="38dp"
+        android:id="@+id/tvMaxPlayer"
+        android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:text="  "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.857"
+        app:layout_constraintHorizontal_bias="0.903"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.126" />
