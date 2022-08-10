@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sette_e_Mezzo</string>
+    <string name="game">Play</string>
+    <string name="start">Start</string>
+    <string name="startgame">Start game</string>
+    <string name="join">Join</string>
+    <string name="dealer">Dealer</string>
+    <string name="player">Player</string>
+    <string name="card">Card</string>
+    <string name="stay">Stay</string>
+</resources>
