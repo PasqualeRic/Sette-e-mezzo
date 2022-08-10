@@ -26,6 +26,7 @@ public class WaitRoomClient extends AppCompatActivity {
 
         socket.getSocket().on("partita", args -> {
             Intent i = new Intent(WaitRoomClient.this, G2PClientActivity.class);
+            i.putExtra("idServer",args[0].toString());
             startActivity(i);
         });
 

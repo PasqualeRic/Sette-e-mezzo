@@ -87,7 +87,7 @@ public class WaitActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                socket.getSocket().emit("startGame",(Ack) args -> {});
+                socket.getSocket().emit("startGame",socket.getId(), (Ack) args -> {});
 
                 for(int i=0;i<idClients.size();i++){
                     Card card = Deck.getIstance().pull();
@@ -98,7 +98,7 @@ public class WaitActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Log.d("debug",json.toString());
+                    //Log.d("debug",json.toString());
                     socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
                 }
 
@@ -127,8 +127,8 @@ public class WaitActivity extends AppCompatActivity {
                 */
 
 
-
-                Intent i = new Intent(WaitActivity.this, G2PClientActivity.class);
+                Intent i = new Intent(WaitActivity.this, G2PServerActivity.class);
+                i.putExtra("idClients",idClients.toArray());
                 startActivity(i);
 
             }

@@ -34,7 +34,6 @@ public class Card{
             json.put("id", id);
             json.put("value", value);
             json.put("idImage", idImage);
-            json.put("extracted", extracted);
         }catch(Exception e){}
 
         return json;

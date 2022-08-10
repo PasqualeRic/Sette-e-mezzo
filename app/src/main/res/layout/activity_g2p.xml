@@ -11,6 +11,7 @@
         android:id="@+id/rvMyCards"
         android:layout_width="0dp"
         android:layout_height="100dp"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -30,7 +31,7 @@
         app:layout_constraintVertical_bias="0.39" />
 
     <ImageView
-        android:id="@+id/ivFirstCardDealer"
+        android:id="@+id/ivFirstCardOtherPlayer"
         android:layout_width="90sp"
         android:layout_height="155sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
@@ -39,7 +40,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.298"
-        app:srcCompat="@drawable/Dorso" />
+        app:srcCompat="@drawable/backcard" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -81,11 +82,11 @@
         app:layout_constraintGuide_percent="0.8" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvCardsDealer"
+        android:id="@+id/rvCardsOtherPlayer"
         android:layout_width="0dp"
         android:layout_height="100dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
-        app:layout_constraintEnd_toStartOf="@+id/ivFirstCardDealer"
+        app:layout_constraintEnd_toStartOf="@+id/ivFirstCardOtherPlayer"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -96,6 +97,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rvMyCards"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.866"
@@ -107,28 +110,28 @@
         android:id="@+id/tvResult"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="106dp"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textSize="24sp"
+        android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvCardsDealer"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/rvCardsOtherPlayer"
+        app:layout_constraintVertical_bias="0.737" />
 
     <TextView
-        android:id="@+id/tvScoreDealer"
+        android:id="@+id/tvScoreOtherPlayer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="33dp"
-        android:layout_marginBottom="54dp"
+        android:layout_marginBottom="21dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tvResult"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.073"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvCardsDealer"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/rvCardsOtherPlayer" />
 </androidx.constraintlayout.widget.ConstraintLayout>

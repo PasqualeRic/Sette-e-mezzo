@@ -64,8 +64,9 @@ const ioGames = (socket) => {
 
     const startGame = async (data,callback) => {
         console.log("sei in partita")
+        console.log("id server: "+data);
         try{
-            socket.broadcast.emit("partita")
+            socket.broadcast.emit("partita",data)
         }catch(err)
         {
             callback(err)
@@ -111,6 +112,24 @@ const ioGames = (socket) => {
         socket.join(game)
         
     }
+
+    const giveMeCard = async (data,callback) => {
+        console.log("giveMeCard");
+        console.log(data);
+        socket.to(data.idServer).emit("requestCard",data.idClient)
+    }   
+
+    const sendStai = async (data,callback) => {
+        console.log("sendStai");
+        console.log(data);
+        socket.to(data.idServer).emit("clientTerminate",data.idClient)
+    }  
+
+    const sendCard = async (data,callback) => {
+        console.log("sendCard");
+        console.log(data);
+        socket.broadcast.emit("reciveCard",data)
+    }  
     
 
     socket.on('confGame',confGame);
@@ -118,5 +137,8 @@ const ioGames = (socket) => {
     socket.on('joinGame',joinGame);
     socket.on('startGame',startGame);
     socket.on('sendFirstCard',sendFirstCard);
+    socket.on('giveMeCard',giveMeCard);
+    socket.on('sendStai',sendStai);
+    socket.on('sendCard',sendCard);
 }
 module.exports = ioGames
