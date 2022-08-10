@@ -4,30 +4,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@drawable/verde"
-    android:layout_height="match_parent"
-    tools:context=".MenuActivity">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnDealer"
-        android:layout_width="142dp"
-        android:layout_height="57dp"
-        android:backgroundTint="@color/green"
-        android:text="@string/dealer"
+    <TextView
+        android:id="@+id/tvWaitPlayers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="in attesa che il server inizi la partita"
+        android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.265" />
+        app:layout_constraintVertical_bias="0.335" />
 
-    <Button
-        android:id="@+id/btnPlayer"
-        android:layout_width="152dp"
-        android:layout_height="57dp"
-        android:backgroundTint="@color/green"
-        android:text="@string/player"
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="327dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
