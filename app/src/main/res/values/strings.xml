@@ -10,6 +10,8 @@
     <string name="player">Giocatore</string>
     <string name="card">Carta</string>
     <string name="stay">Stai</string>
+    <string name="win">HAI VINTO</string>
+    <string name="lose">HAI PERSO</string>
     //-------
 
     <string-array name="players">

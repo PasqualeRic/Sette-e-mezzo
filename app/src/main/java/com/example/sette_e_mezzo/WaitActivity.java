@@ -133,5 +133,10 @@ public class WaitActivity extends AppCompatActivity {
 
             }
         });
+
+        /*socket.getSocket().on("clientTerminate",args -> {
+            Log.d("G2P","activity sbagliata");
+
+        });*/
     }
 }

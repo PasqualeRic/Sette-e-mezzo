@@ -119,10 +119,10 @@ const ioGames = (socket) => {
         socket.to(data.idServer).emit("requestCard",data.idClient)
     }   
 
-    const sendStai = async (data,callback) => {
-        console.log("sendStai");
+    const terminateTurn = async (data,callback) => {
+        console.log("terminateTurn");
         console.log(data);
-        socket.to(data.idServer).emit("clientTerminate",data.idClient)
+        socket.to(data.idServer).emit("clientTerminate",data)
     }  
 
     const sendCard = async (data,callback) => {
@@ -131,6 +131,11 @@ const ioGames = (socket) => {
         socket.broadcast.emit("reciveCard",data)
     }  
     
+    const closeRound = async (data,callback) => {
+        console.log("closeRound");
+        console.log(data);
+        socket.broadcast.emit("closeRound",data);
+    }
 
     socket.on('confGame',confGame);
     socket.on('createGame',createGame);
@@ -138,7 +143,8 @@ const ioGames = (socket) => {
     socket.on('startGame',startGame);
     socket.on('sendFirstCard',sendFirstCard);
     socket.on('giveMeCard',giveMeCard);
-    socket.on('sendStai',sendStai);
+    socket.on('terminateTurn',terminateTurn);
     socket.on('sendCard',sendCard);
+    socket.on('closeRound',closeRound);
 }
 module.exports = ioGames

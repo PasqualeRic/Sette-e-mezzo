@@ -9,4 +9,6 @@
     <string name="player">Player</string>
     <string name="card">Card</string>
     <string name="stay">Stay</string>
+    <string name="win">YOU WIN</string>
+    <string name="lose">YOU LOSE</string>
 </resources>
