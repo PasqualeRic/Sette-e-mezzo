@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recP2"
+        android:id="@+id/rvCardsPlayer3"
         android:layout_width="89dp"
         android:layout_height="213dp"
         android:background="@drawable/tappettino"
@@ -27,7 +27,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <ImageView
-        android:id="@+id/cardP2"
+        android:id="@+id/ivFCPlayer3"
         android:layout_width="77dp"
         android:layout_height="76dp"
         android:rotation="270"
@@ -40,12 +40,12 @@
         app:srcCompat="@drawable/b1" />
 
     <TextView
-        android:id="@+id/tvP2"
+        android:id="@+id/tvScoreP3"
         android:layout_width="64dp"
         android:layout_height="54dp"
         android:layout_marginStart="208dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/recP2"
+        app:layout_constraintEnd_toStartOf="@+id/rvCardsPlayer3"
         app:layout_constraintHorizontal_bias="0.952"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -99,7 +99,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recP4"
+        android:id="@+id/rvCardsPlayer2"
         android:layout_width="57dp"
         android:layout_height="197dp"
         android:background="@drawable/tappettino"
@@ -119,7 +119,7 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <ImageView
-        android:id="@+id/cardP4"
+        android:id="@+id/ivFCPlayer2"
         android:layout_width="77dp"
         android:layout_height="76dp"
         android:rotation="90"
@@ -132,19 +132,19 @@
         app:srcCompat="@drawable/b1" />
 
     <TextView
-        android:id="@+id/tvP4"
+        android:id="@+id/tvScoreP2"
         android:layout_width="64dp"
         android:layout_height="54dp"
         android:layout_marginEnd="248dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"
-        app:layout_constraintStart_toEndOf="@+id/recP4"
+        app:layout_constraintStart_toEndOf="@+id/rvCardsPlayer2"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.369" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recP1"
+        android:id="@+id/rvMyPlayer4"
         android:layout_width="272dp"
         android:layout_height="82dp"
         android:background="@drawable/tappettino"
@@ -165,12 +165,12 @@
     </androidx.recyclerview.widget.RecyclerView>
 
     <ImageView
-        android:id="@+id/cardP1"
+        android:id="@+id/ivMyFC"
         android:layout_width="61dp"
         android:layout_height="73dp"
         android:layout_marginStart="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/recP1"
+        app:layout_constraintEnd_toStartOf="@+id/rvMyPlayer4"
         app:layout_constraintHorizontal_bias="0.914"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -178,7 +178,7 @@
         app:srcCompat="@drawable/b1" />
 
     <Button
-        android:id="@+id/carta1"
+        android:id="@+id/btnCarta4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/card"
@@ -186,10 +186,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.385"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recP1" />
+        app:layout_constraintTop_toBottomOf="@+id/rvMyPlayer4" />
 
     <Button
-        android:id="@+id/btnStai3"
+        android:id="@+id/btnStai4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/stay"
@@ -197,13 +197,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.678"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recP1" />
+        app:layout_constraintTop_toBottomOf="@+id/rvMyPlayer4" />
 
     <TextView
-        android:id="@+id/tvP1"
+        android:id="@+id/tvScoreMyPlayer4"
         android:layout_width="64dp"
         android:layout_height="54dp"
-        app:layout_constraintBottom_toTopOf="@+id/recP1"
+        app:layout_constraintBottom_toTopOf="@+id/rvMyPlayer4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.328"
         app:layout_constraintStart_toStartOf="parent"

@@ -8,7 +8,7 @@
     tools:context=".Game3PlayersActivity">
 
     <TextView
-        android:id="@+id/tvP2"
+        android:id="@+id/tvScoreP3"
         android:layout_width="64dp"
         android:layout_height="54dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -46,7 +46,7 @@
         app:layout_constraintVertical_bias="0.976" />
 
     <Button
-        android:id="@+id/btnStai3"
+        android:id="@+id/btnStai4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/stay"
