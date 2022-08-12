@@ -5,21 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/tappettino"
-    tools:context=".Game3PlayersActivity">
+    tools:context=".G3PClientActivity">
 
     <TextView
         android:id="@+id/tvP2"
         android:layout_width="64dp"
         android:layout_height="54dp"
+        android:layout_marginBottom="512dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.769"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.734"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMyPlayer"
-        android:layout_width="283dp"
-        android:layout_height="81dp"
+        android:layout_width="226dp"
+        android:layout_height="77dp"
         android:background="@drawable/tappettino"
         android:backgroundTintMode="src_in"
         android:orientation="horizontal"
@@ -63,15 +65,15 @@
         android:layout_height="60dp"
         app:layout_constraintBottom_toTopOf="@+id/rvMyPlayer"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.346"
+        app:layout_constraintHorizontal_bias="0.436"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.98" />
+        app:layout_constraintVertical_bias="0.937" />
 
     <ImageView
         android:id="@+id/ivFirstCardMyPlayer"
-        android:layout_width="69dp"
-        android:layout_height="91dp"
+        android:layout_width="67dp"
+        android:layout_height="112dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rvMyPlayer"
         app:layout_constraintHorizontal_bias="0.695"
@@ -101,8 +103,8 @@
 
     <ImageView
         android:id="@+id/ivFirstCardPlayer2"
-        android:layout_width="82dp"
-        android:layout_height="79dp"
+        android:layout_width="130dp"
+        android:layout_height="77dp"
         android:rotation="90"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -121,7 +123,7 @@
         app:layout_constraintHorizontal_bias="0.058"
         app:layout_constraintStart_toEndOf="@+id/rvPlayer2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348" />
+        app:layout_constraintVertical_bias="0.37" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -136,8 +138,9 @@
         app:srcCompat="@drawable/b1" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="238dp"
-        android:layout_height="101dp"
+        android:id="@+id/recyclerView"
+        android:layout_width="226dp"
+        android:layout_height="77dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintHorizontal_bias="0.911"

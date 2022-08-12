@@ -64,6 +64,7 @@ const ioGames = (socket) => {
 
     const startGame = async (data,callback) => {
         console.log("sei in partita")
+        console.log(data)
         console.log("id server: "+data);
         try{
             socket.broadcast.emit("partita",data)

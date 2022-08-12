@@ -86,8 +86,14 @@ public class WaitActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                socket.getSocket().emit("startGame",socket.getId(), (Ack) args -> {});
+                JSONObject j = new JSONObject();
+                try {
+                    j.put("idserver", socket.getId());
+                    j.put("nplayers", idClients.size()+1);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                socket.getSocket().emit("startGame",j, (Ack) args -> {});
 
                 for(int i=0;i<idClients.size();i++){
                     Card card = Deck.getIstance().pull();
@@ -126,10 +132,16 @@ public class WaitActivity extends AppCompatActivity {
                 socket.getSocket().emit("sendAll", idPlayer, card ,(Ack) args
                 */
 
-
-                Intent i = new Intent(WaitActivity.this, G2PServerActivity.class);
-                i.putExtra("idClients",idClients.toArray());
-                startActivity(i);
+                if(idClients.size()+1 == 2){
+                    Intent i = new Intent(WaitActivity.this, G2PServerActivity.class);
+                    i.putExtra("idClients",idClients.toArray());
+                    startActivity(i);
+                }
+                else if(idClients.size()+1 == 3){
+                    Intent i = new Intent(WaitActivity.this, G3PServerActivity.class);
+                    i.putExtra("idClients",idClients.toArray());
+                    startActivity(i);
+                }
 
             }
         });

@@ -25,9 +25,25 @@ public class WaitRoomClient extends AppCompatActivity {
 
 
         socket.getSocket().on("partita", args -> {
-            Intent i = new Intent(WaitRoomClient.this, G2PClientActivity.class);
-            i.putExtra("idServer",args[0].toString());
-            startActivity(i);
+            Log.wtf("k", "k"+args[0].toString());
+           /* runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.wtf("p","p"+args[0].toString());
+                    Log.wtf("p","p"+args[1].toString());
+                    if(args[1].toString().equals("2")) {
+                        Intent i = new Intent(WaitRoomClient.this, G2PClientActivity.class);
+                        i.putExtra("idServer", args[0].toString());
+                        startActivity(i);
+                    }
+                    else if(args[1].toString().equals("3")){
+                        Intent i = new Intent(WaitRoomClient.this, G3PClientActivity.class);
+                        i.putExtra("idServer", args[0].toString());
+                        startActivity(i);
+                    }
+
+                }
+            });*/
         });
 
     }
