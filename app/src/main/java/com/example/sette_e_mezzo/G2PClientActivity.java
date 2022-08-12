@@ -187,10 +187,12 @@ public class G2PClientActivity extends AppCompatActivity {
                         Double scoreDealer = json.getDouble("score");
                         ivFirstCardDealer.setImageResource(Deck.getIstance().getCardById(idFirstCardDealer).getIdImage());
                         tvScoreDealer.setText("" + scoreDealer);
-                        if (myScore > scoreDealer) {
-                            tvResult.setText(R.string.win);
-                        } else {
-                            tvResult.setText(R.string.lose);
+                        if(tvResult.getText().equals("")) {
+                            if (myScore > scoreDealer) {
+                                tvResult.setText(R.string.win);
+                            } else {
+                                tvResult.setText(R.string.lose);
+                            }
                         }
                     } catch (Exception e) {
                     }
