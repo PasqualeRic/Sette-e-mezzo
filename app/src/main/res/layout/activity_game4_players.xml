@@ -46,6 +46,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginBottom="36dp"
         android:text="@string/card"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.206"
@@ -59,6 +60,7 @@
         android:layout_marginTop="25dp"
         android:layout_marginBottom="36dp"
         android:text="@string/stay"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnCarta4"
@@ -92,26 +94,12 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.7017784" />
 
-    <ImageView
-        android:id="@+id/ivFCPlayer4"
-        android:layout_width="60dp"
-        android:layout_height="100dp"
-        android:src="@drawable/b1"
-        app:layout_constraintBottom_toTopOf="@+id/guideline6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.954"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/backcard" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCardsPlayer4"
         android:layout_width="0dp"
         android:layout_height="70dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline6"
         app:layout_constraintEnd_toStartOf="@+id/ivFCPlayer4"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
@@ -121,12 +109,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginEnd="285dp"
         android:layout_marginBottom="8dp"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rvCardsPlayer4"
-        app:layout_constraintEnd_toStartOf="@+id/ivFCPlayer4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.666" />
@@ -233,6 +219,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline8"
         app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/ivFCPlayer4"
+        android:layout_width="60dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/backcard" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

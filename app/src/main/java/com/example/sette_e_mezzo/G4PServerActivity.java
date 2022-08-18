@@ -24,6 +24,7 @@ public class G4PServerActivity extends AppCompatActivity {
     TextView tvResult;
     Button btnCarta, btnStai;
     ArrayList<String> idClients;
+    Integer indexClient;  //indice per tenere traccia del client di turno
 
     // MyPlayer
     ImageView ivMyFirstCard;
@@ -35,6 +36,7 @@ public class G4PServerActivity extends AppCompatActivity {
     Double myScore;
 
     // Player 2 - Sinistra
+    String idClient2;
     ImageView ivFCPlayer2;
     ArrayList<Card> cardsP2;
     TextView tvScoreP2;
@@ -44,6 +46,7 @@ public class G4PServerActivity extends AppCompatActivity {
     Double scoreP2;
 
     // Player 3 - Destra
+    String idClient3;
     ImageView ivFCPlayer3;
     ArrayList<Card> cardsP3;
     TextView tvScoreP3;
@@ -53,6 +56,7 @@ public class G4PServerActivity extends AppCompatActivity {
     Double scoreP3;
 
     // Player 4
+    String idClient4;
     ImageView ivFCPlayer4;
     ArrayList<Card> cardsP4;
     TextView tvScoreP4;
@@ -67,7 +71,6 @@ public class G4PServerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game4_players);
 
         idClients = getIntent().getStringArrayListExtra("idClients");
-
 
         tvResult = findViewById(R.id.tvResult4);
         btnCarta = findViewById(R.id.btnCarta4);
@@ -103,7 +106,7 @@ public class G4PServerActivity extends AppCompatActivity {
         adapterP3 = new CardAdapterSmall(cardsP3);
         rvPlayer3.setAdapter(adapterP3);
 
-        // Dealer
+        // Player 4
         ivFCPlayer4 = findViewById(R.id.ivFCPlayer4);
         tvScoreP4 = findViewById(R.id.tvScorePlayer4);
         lmPlayer4 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,true);
@@ -154,9 +157,55 @@ public class G4PServerActivity extends AppCompatActivity {
             });
         });
 
+        indexClient=0;
+        socket.getSocket().emit("isYourTurn",idClients.get(indexClient));
+        idClient2 = idClients.get(indexClient);
+        idClient3 = idClients.get(indexClient+1);
+        idClient4 = idClients.get(indexClient+2);
 
+        socket.getSocket().on("clientTerminate",args -> {
+            indexClient++;
+            if(indexClient<3){
+                socket.getSocket().emit("isYourTurn",idClients.get(indexClient));
+            }else{
+                //todo tocca al dealer
+            }
 
-        // TODO send isYourTurn
+        });
+
+        socket.getSocket().on("requestCard",args -> {
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String idClient = args[0].toString();
+                    Card card = Deck.getIstance().pull();
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        jsonObject.put("idClient",idClient);
+                        jsonObject.put("card",card.toJSON());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    socket.getSocket().emit("sendCard",jsonObject,(Ack) args1 -> {});
+
+                    if(idClient.equals(idClient2)){
+                        Log.d("ALFA","idClient2");
+                        cardsP2.add(Deck.getIstance().getCardById(card.getId()));
+                        adapterP2.notifyItemInserted(cardsP2.size() - 1);
+                    }else if(idClient.equals(idClient3)){
+                        Log.d("ALFA","idClient3");
+                        cardsP3.add(Deck.getIstance().getCardById(card.getId()));
+                        adapterP3.notifyItemInserted(cardsP3.size() - 1);
+                    }else{
+                        Log.d("ALFA","idClient4");
+                        cardsP4.add(Deck.getIstance().getCardById(card.getId()));
+                        adapterP4.notifyItemInserted(cardsP4.size() - 1);
+                    }
+                }
+            });
+        });
 
     }
 }

@@ -6,14 +6,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import io.socket.client.Ack;
 
 public class G4PClientActivity extends AppCompatActivity {
 
@@ -60,8 +64,6 @@ public class G4PClientActivity extends AppCompatActivity {
     ArrayList<Card> dealerCards;
     Double scoreDealer;
     String idServer;
-
-    Double scoreTmp;
 
 
     @Override
@@ -116,11 +118,32 @@ public class G4PClientActivity extends AppCompatActivity {
         dealerReyclerView.setAdapter(cardAdapterDealer);
 
         btnCarta.setOnClickListener(v -> {
+            JSONObject json = new JSONObject();
+            try {
+                json.put("idServer",idServer);
+                json.put("idClient",socket.getId());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
+            socket.getSocket().emit("giveMeCard", json ,(Ack) args -> {});
         });
 
         btnStai.setOnClickListener(v -> {
+            JSONObject json = new JSONObject();
+            try{
+                json.put("idServer",idServer);
+                json.put("idClient",socket.getId());
+                json.put("score",myScore);
+                json.put("idFirstCard",myIdFirstCard);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
 
+            btnCarta.setVisibility(View.INVISIBLE);
+            btnStai.setVisibility(View.INVISIBLE);
+
+            socket.getSocket().emit("terminateTurn",json,(Ack) args -> {});
         });
 
         socket.getSocket().on("reciveYourFirstCard",args -> {
@@ -138,7 +161,7 @@ public class G4PClientActivity extends AppCompatActivity {
                     if(idClient.equals(socket.getId())){
                         myId = idClient;
                         myIdFirstCard = idFirstCard;
-                        scoreTmp = value;
+                        myScore = value;
 
                     }else if(idClient2 == null)
                         idClient2 = idClient;
@@ -151,10 +174,85 @@ public class G4PClientActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    tvMyScore.setText(""+scoreTmp);
+                    tvMyScore.setText(""+myScore);
                     ivMyFirstCard.setImageResource(Deck.getIstance().getCardById(myIdFirstCard).getIdImage());
                 }
             });
         });
+
+        socket.getSocket().on("myTurn", args -> {
+            Log.d("ALFA","myTurn");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    btnCarta.setVisibility(View.VISIBLE);
+                    btnStai.setVisibility(View.VISIBLE);
+                }
+            });
+        });
+
+        socket.getSocket().on("reciveCard",args -> {
+            Log.d("ALFA","reciveCard");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    String idClient="", idCard="";
+                    Double score=0.0;
+
+                    try {
+                        JSONObject json = new JSONObject(args[0].toString());
+                        idClient = json.getString("idClient");
+                        idCard = json.getJSONObject("card").getString("id");
+                        score = json.getJSONObject("card").getDouble("value");
+
+                    }catch(Exception e){}
+
+                    if(socket.getId().equals(idClient)) {
+                        Log.d("ALFA","IO");
+                        myScore+=score;
+                        Log.d("ALFA","tvMyScore");
+                        tvMyScore.setText(""+myScore);
+                        Log.d("ALFA","myCards");
+                        myCards.add(Deck.getIstance().getCardById(idCard));
+                        Log.d("ALFA","myCardAdapter");
+                        myCardAdapter.notifyItemInserted(myCards.size() - 1);
+
+                        /*if(myScore>=7.5){
+                            btnCarta.setVisibility(View.INVISIBLE);
+                            btnStai.setVisibility(View.INVISIBLE);
+                            if(myScore>7.5){
+                                tvResult.setText(R.string.lose);
+                            }
+
+                            JSONObject json = new JSONObject();
+                            try{
+                                json.put("idServer",idServer);
+                                json.put("idClient",socket.getId());
+                                json.put("score",myScore);
+                                json.put("idFirstCard",myIdFirstCard);
+                            }catch(Exception e){
+                                e.printStackTrace();
+                            }
+
+                            socket.getSocket().emit("terminateTurn",json,(Ack) args -> {});
+                        }*/
+                    }else if(idClient.equals(idClient2)){
+                        Log.d("ALFA","idClient2");
+                        cardsP2.add(Deck.getIstance().getCardById(idCard));
+                        adapterP2.notifyItemInserted(cardsP2.size() - 1);
+                    }else if(idClient.equals(idClient3)){
+                        Log.d("ALFA","idClient3");
+                        cardsP3.add(Deck.getIstance().getCardById(idCard));
+                        adapterP3.notifyItemInserted(cardsP3.size() - 1);
+                    }else{
+                        Log.d("ALFA","dealer");
+                        dealerCards.add(Deck.getIstance().getCardById(idCard));
+                        cardAdapterDealer.notifyItemInserted(dealerCards.size() - 1);
+                    }
+                }
+            });
+        });
+
     }
 }

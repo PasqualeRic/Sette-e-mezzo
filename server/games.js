@@ -87,7 +87,7 @@ const ioGames = (socket) => {
                 }else{
                     flag=true;
                 }
-            },200);
+            },400);
         }catch(err)
         {
             callback(err)
@@ -137,6 +137,12 @@ const ioGames = (socket) => {
         socket.broadcast.emit("closeRound",data);
     }
 
+    const isYourTurn = async (data,callback) => {
+        console.log("isYourTurn");
+        console.log(data);
+        socket.to(data).emit("myTurn");
+    }
+
     socket.on('confGame',confGame);
     socket.on('createGame',createGame);
     socket.on('joinGame',joinGame);
@@ -146,5 +152,6 @@ const ioGames = (socket) => {
     socket.on('terminateTurn',terminateTurn);
     socket.on('sendCard',sendCard);
     socket.on('closeRound',closeRound);
+    socket.on('isYourTurn',isYourTurn);
 }
 module.exports = ioGames
