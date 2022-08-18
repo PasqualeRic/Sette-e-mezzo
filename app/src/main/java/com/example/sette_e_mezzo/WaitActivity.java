@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,6 +63,8 @@ public class WaitActivity extends AppCompatActivity {
 
         socket.getSocket().on("invioPlayer", args -> {
 
+            Log.d("ALFA-invioPlayer",args[2].toString());
+
             idClients.add(args[2].toString());
             conta = conta + 1;
             runOnUiThread(new Runnable() {
@@ -89,18 +92,21 @@ public class WaitActivity extends AppCompatActivity {
 
                 socket.getSocket().emit("startGame",socket.getId(), (Ack) args -> {});
 
+                Log.d("ALFA-","idClients.size(): "+idClients.size());
+                JSONArray json = new JSONArray();
                 for(int i=0;i<idClients.size();i++){
                     Card card = Deck.getIstance().pull();
-                    JSONObject json = new JSONObject();
+                    JSONObject client = new JSONObject();
                     try {
-                        json.put("idClient",idClients.get(i));
-                        json.put("card",card.toJSON());
+                        client.put("idClient",idClients.get(i));
+                        client.put("card",card.toJSON());
+                        json.put(client);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    //Log.d("debug",json.toString());
-                    socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
                 }
+                Log.d("ALFA",json.toString());
+                socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
 
 
                 /*
@@ -127,8 +133,8 @@ public class WaitActivity extends AppCompatActivity {
                 */
 
 
-                Intent i = new Intent(WaitActivity.this, G2PServerActivity.class);
-                i.putExtra("idClients",idClients.toArray());
+                Intent i = new Intent(WaitActivity.this, G4PServerActivity.class);
+                i.putExtra("idClients",idClients);
                 startActivity(i);
 
             }

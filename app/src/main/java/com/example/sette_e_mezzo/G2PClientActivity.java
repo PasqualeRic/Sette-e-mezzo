@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -114,7 +115,8 @@ public class G2PClientActivity extends AppCompatActivity {
 
         socket.getSocket().on("reciveYourFirstCard",args -> {
             try {
-                JSONObject json = new JSONObject(args[0].toString());
+                JSONArray array = new JSONArray(args[0].toString());
+                JSONObject json = new JSONObject(array.get(0).toString());
                 idClient = json.getString("idClient");
                 idFirstCard = json.getJSONObject("card").getString("id");
                 myScore = json.getJSONObject("card").getDouble("value");

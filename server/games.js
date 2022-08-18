@@ -82,7 +82,7 @@ const ioGames = (socket) => {
             
             var timer = setInterval(function(){
                 if(flag){
-                    socket.to(data.idClient).emit("reciveYourFirstCard",data)
+                    socket.broadcast.emit("reciveYourFirstCard",data)
                     clearInterval(timer);
                 }else{
                     flag=true;

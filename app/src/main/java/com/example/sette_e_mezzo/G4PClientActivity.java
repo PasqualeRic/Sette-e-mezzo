@@ -5,9 +5,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -25,6 +29,7 @@ public class G4PClientActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     CardAdapterSmall myCardAdapter;
     Double myScore;
+    String myId, myIdFirstCard;
 
     // Player 2 - Sinistra
     ImageView ivFCPlayer2;
@@ -34,6 +39,7 @@ public class G4PClientActivity extends AppCompatActivity {
     RecyclerView.LayoutManager lmPlayer2;
     CardAdapterSmall adapterP2;
     Double scoreP2;
+    String idClient2;
 
     // Player 3 - Destra
     ImageView ivFCPlayer3;
@@ -43,6 +49,7 @@ public class G4PClientActivity extends AppCompatActivity {
     RecyclerView.LayoutManager lmPlayer3;
     CardAdapterSmall adapterP3;
     Double scoreP3;
+    String idClient3;
 
     // Dealer
     ImageView ivFirstCardDealer;
@@ -52,12 +59,17 @@ public class G4PClientActivity extends AppCompatActivity {
     CardAdapterSmall cardAdapterDealer;
     ArrayList<Card> dealerCards;
     Double scoreDealer;
+    String idServer;
+
+    Double scoreTmp;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game4_players);
+
+        idServer = getIntent().getStringExtra("idServer");
 
         tvResult = findViewById(R.id.tvResult4);
         btnCarta = findViewById(R.id.btnCarta4);
@@ -73,21 +85,21 @@ public class G4PClientActivity extends AppCompatActivity {
         myCardAdapter = new CardAdapterSmall(myCards);
         myRecyclerView.setAdapter(myCardAdapter);
 
-        // Player 2 - Sinistra
+        // Player 2 - Destra
         ivFCPlayer2 = findViewById(R.id.ivFCPlayer2);
         cardsP2 = new ArrayList<>();
-        tvScoreP2 = findViewById(R.id.tvScoreP2);
-        lmPlayer2 = new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
+        tvScoreP2 = findViewById(R.id.tvScorePlayer2);
+        lmPlayer2 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,true);
         rvPlayer2 = findViewById(R.id.rvCardsPlayer2);
         rvPlayer2.setLayoutManager(lmPlayer2);
         adapterP2 = new CardAdapterSmall(cardsP2);
         rvPlayer2.setAdapter(adapterP2);
 
-        // Player 3 - Destra
+        // Player 3 - Sinistra
         ivFCPlayer3 = findViewById(R.id.ivFCPlayer3);
         cardsP3 = new ArrayList<>();
-        tvScoreP3 = findViewById(R.id.tvScoreP3);
-        lmPlayer3 = new LinearLayoutManager(this, RecyclerView.VERTICAL,true);
+        tvScoreP3 = findViewById(R.id.tvScorePlayer3);
+        lmPlayer3 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false);
         rvPlayer3 = findViewById(R.id.rvCardsPlayer3);
         rvPlayer3.setLayoutManager(lmPlayer3);
         adapterP3 = new CardAdapterSmall(cardsP3);
@@ -95,7 +107,7 @@ public class G4PClientActivity extends AppCompatActivity {
 
         // Dealer
         ivFirstCardDealer = findViewById(R.id.ivFCPlayer4);
-        tvScoreDealer = findViewById(R.id.tvScoreP4);
+        tvScoreDealer = findViewById(R.id.tvScorePlayer4);
         lmDealer = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,true);
         dealerReyclerView = findViewById(R.id.rvCardsPlayer4);
         dealerReyclerView.setLayoutManager(lmDealer);
@@ -104,25 +116,45 @@ public class G4PClientActivity extends AppCompatActivity {
         dealerReyclerView.setAdapter(cardAdapterDealer);
 
         btnCarta.setOnClickListener(v -> {
-            Card card = Deck.getIstance().pull();
-            myCards.add(card);
-            tvMyScore.setText(card.getValue()+"");
-            myCardAdapter.notifyItemInserted(myCards.size()-1);
 
-            card = Deck.getIstance().pull();
-            cardsP2.add(card);
-            tvScoreP2.setText(card.getValue()+"");
-            adapterP2.notifyItemInserted(cardsP2.size()-1);
+        });
 
-            card = Deck.getIstance().pull();
-            cardsP3.add(card);
-            tvScoreP3.setText(card.getValue()+"");
-            adapterP3.notifyItemInserted(cardsP3.size()-1);
+        btnStai.setOnClickListener(v -> {
 
-            card = Deck.getIstance().pull();
-            dealerCards.add(card);
-            tvScoreDealer.setText(card.getValue()+"");
-            cardAdapterDealer.notifyItemInserted(dealerCards.size()-1);
+        });
+
+        socket.getSocket().on("reciveYourFirstCard",args -> {
+            String idClient, idFirstCard;
+            Double value;
+            try {
+                JSONArray array = new JSONArray(args[0].toString());
+                for(int i=0;i< array.length();i++){
+                    Log.d("ALFA-reciveYourFirstCard",i+") -> "+array.get(i).toString());
+                    JSONObject json = new JSONObject(array.get(i).toString());
+                    idClient = json.getString("idClient");
+                    idFirstCard = json.getJSONObject("card").getString("id");
+                    value = json.getJSONObject("card").getDouble("value");
+
+                    if(idClient.equals(socket.getId())){
+                        myId = idClient;
+                        myIdFirstCard = idFirstCard;
+                        scoreTmp = value;
+
+                    }else if(idClient2 == null)
+                        idClient2 = idClient;
+                    else
+                        idClient3 = idClient;
+
+                }
+            }catch(Exception e){}
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tvMyScore.setText(""+scoreTmp);
+                    ivMyFirstCard.setImageResource(Deck.getIstance().getCardById(myIdFirstCard).getIdImage());
+                }
+            });
         });
     }
 }
