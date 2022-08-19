@@ -276,12 +276,82 @@ public class G4PClientActivity extends AppCompatActivity {
                                 tvScoreDealer.setText("" + scoreDealer);
                             }
                         }
+
+                        //se tvResult è vuota myScore è <=7.5
+                        if(tvResult.getText().equals("")){
+
+                            if((scoreDealer<=7.5 && myScore<=scoreDealer)){
+                                tvResult.setText(R.string.lose);
+                            }else if((scoreP2<=7.5 && myScore>=scoreP2) && (scoreP3<=7.5 && myScore>=scoreP3) && (scoreDealer<=7.5 && myScore>scoreDealer)){
+                                // il mio punteggio è il più alto e non ha sballato nessuno
+                                tvResult.setText(R.string.win);
+                            }else if(scoreP2>7.5 && (scoreP3<=7.5 && myScore>=scoreP3) && (scoreDealer<=7.5 && myScore>scoreDealer)){
+                                // il mio punteggio è il più alto e non ha sballato p2
+                                tvResult.setText(R.string.win);
+                            }else if((scoreP2<=7.5 && myScore>=scoreP2) && scoreP3>7.5 &&(scoreDealer<=7.5 && myScore>scoreDealer)){
+                                // il mio punteggio è il più alto e non ha sballato p3
+                                tvResult.setText(R.string.win);
+                            }else if((scoreP2<=7.5 && myScore>=scoreP2) && (scoreP3<=7.5 && myScore>=scoreP3) && scoreDealer>7.5){
+                                // il mio punteggio è il più alto e non ha sballato dealer
+                                tvResult.setText(R.string.win);
+                            }else if(scoreP2>7.5 && scoreP3>7.5  && (scoreDealer<=7.5 && myScore>scoreDealer)){
+                                // il mio punteggio è il più alto e non hanno sballato p2 e p3
+                                tvResult.setText(R.string.win);
+                            }else if(scoreP2>7.5 && (scoreP3<=7.5 && myScore>=scoreP3) && scoreDealer>7.5){
+                                // il mio punteggio è il più alto e non hanno sballato p2 e dealer
+                                tvResult.setText(R.string.win);
+                            }else if((scoreP2<=7.5 && myScore>=scoreP2) && scoreP3>7.5 && scoreDealer>7.5){
+                                // il mio punteggio è il più alto e non hanno sballato p3 e dealer
+                                tvResult.setText(R.string.win);
+                            }else if(scoreP2>7.5 && scoreP3>7.5 && scoreDealer>7.5){
+                                // il mio punteggio è il più alto e non hanno sballato p3 e dealer
+                                tvResult.setText(R.string.win);
+                            }else{
+                                tvResult.setText(R.string.lose);
+                            }
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             });
         });
+
+        socket.getSocket().on("overSize",args -> {
+            Log.d("BETA","overSize");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String idFirstCard, idClient;
+                        Double score;
+
+                        JSONObject json = new JSONObject(args[0].toString());
+                        idClient = json.getString("idClient");
+                        idFirstCard = json.getString("idFirstCard");
+                        score = json.getDouble("score");
+
+                        if (idClient.equals(idClient2)) {
+                            Log.d("BETA","client2");
+                            ivFCPlayer2.setImageResource(Deck.getIstance().getCardById(idFirstCard).getIdImage());
+                            scoreP2 = score;
+                            tvScoreP2.setText("" + scoreP2);
+                        } else if(idClient.equals(idClient3)){
+                            Log.d("BETA","client3");
+                            ivFCPlayer3.setImageResource(Deck.getIstance().getCardById(idFirstCard).getIdImage());
+                            scoreP3 = score;
+                            tvScoreP3.setText("" + scoreP3);
+                        }
+
+                    } catch (JSONException e) {
+                        Log.d("BETA","errore");
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+        });
+
 
     }
 }

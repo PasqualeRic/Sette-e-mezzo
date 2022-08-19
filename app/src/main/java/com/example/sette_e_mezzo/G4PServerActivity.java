@@ -237,7 +237,26 @@ public class G4PServerActivity extends AppCompatActivity {
                     }
 
                     if(score>7.5){
-                        //todo emit sballato
+                        //l'utente che ha terminato il suo turno ha superato 7.5
+
+                        if(idClient.equals(idClient2)) {
+                            ivFCPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
+                        }else if(idClient.equals(idClient3)) {
+                            ivFCPlayer3.setImageResource(Deck.getIstance().getCardById(idFCPlayer3).getIdImage());
+                        }else {
+                            ivFCPlayer4.setImageResource(Deck.getIstance().getCardById(idFCPlayer4).getIdImage());
+                        }
+
+                        JSONObject json = new JSONObject();
+                        try {
+                            json.put("idClient",idClient);
+                            json.put("idFirstCard",idFirstCard);
+                            json.put("score",score);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        socket.getSocket().emit("overSize",json,(Ack) args->{});
                     }
 
                     indexClient++;
@@ -300,6 +319,37 @@ public class G4PServerActivity extends AppCompatActivity {
             jsonException.printStackTrace();
         }
 
+        //se tvResult è vuota so che myScore è <7.5
+        if(tvResult.getText().equals("")){
+
+            if((scoreP2<=7.5 && myScore>=scoreP2) && (scoreP3<=7.5 && myScore>=scoreP3) && (scoreP4<=7.5 && myScore>=scoreP4)){
+                // il mio punteggio è il più alto e non ha sballato nessuno
+                tvResult.setText(R.string.win);
+
+            }else if(scoreP2>7.5 && (scoreP3<=7.5 && myScore>=scoreP3) && (scoreP4<=7.5 && myScore>=scoreP4)){
+                // il mio punteggio è il più alto e non ha sballato p2
+                tvResult.setText(R.string.win);
+            }else if((scoreP2<=7.5 && myScore>=scoreP2) && scoreP3>7.5 && (scoreP4<=7.5 && myScore>=scoreP4)){
+                // il mio punteggio è il più alto e non ha sballato p3
+                tvResult.setText(R.string.win);
+            }else if((scoreP2<=7.5 && myScore>=scoreP2) && (scoreP3<=7.5 && myScore>=scoreP3) && scoreP4>7.5){
+                // il mio punteggio è il più alto e non ha sballato p4
+                tvResult.setText(R.string.win);
+            }else if(scoreP2>7.5 && scoreP3>7.5  && (scoreP4<=7.5 && myScore>=scoreP4)){
+                // il mio punteggio è il più alto e non hanno sballato p2 e p3
+                tvResult.setText(R.string.win);
+            }else if(scoreP2>7.5 && (scoreP3<=7.5 && myScore>=scoreP3) && scoreP4>7.5){
+                // il mio punteggio è il più alto e non hanno sballato p2 e p4
+                tvResult.setText(R.string.win);
+            }else if((scoreP2<=7.5 && myScore>=scoreP2) && scoreP3>7.5 && scoreP4>7.5){
+                // il mio punteggio è il più alto e non hanno sballato p3 e p4
+                tvResult.setText(R.string.win);
+            }else{
+                tvResult.setText(R.string.lose);
+            }
+        }
+
         socket.getSocket().emit("closeRound",json,(Ack) args->{});
     }
+
 }
