@@ -209,16 +209,13 @@ public class G4PClientActivity extends AppCompatActivity {
                     }catch(Exception e){}
 
                     if(socket.getId().equals(idClient)) {
-                        Log.d("ALFA","IO");
+
                         myScore+=score;
-                        Log.d("ALFA","tvMyScore");
                         tvMyScore.setText(""+myScore);
-                        Log.d("ALFA","myCards");
                         myCards.add(Deck.getIstance().getCardById(idCard));
-                        Log.d("ALFA","myCardAdapter");
                         myCardAdapter.notifyItemInserted(myCards.size() - 1);
 
-                        /*if(myScore>=7.5){
+                        if(myScore>=7.5){
                             btnCarta.setVisibility(View.INVISIBLE);
                             btnStai.setVisibility(View.INVISIBLE);
                             if(myScore>7.5){
@@ -234,9 +231,8 @@ public class G4PClientActivity extends AppCompatActivity {
                             }catch(Exception e){
                                 e.printStackTrace();
                             }
-
                             socket.getSocket().emit("terminateTurn",json,(Ack) args -> {});
-                        }*/
+                        }
                     }else if(idClient.equals(idClient2)){
                         Log.d("ALFA","idClient2");
                         cardsP2.add(Deck.getIstance().getCardById(idCard));
@@ -249,6 +245,39 @@ public class G4PClientActivity extends AppCompatActivity {
                         Log.d("ALFA","dealer");
                         dealerCards.add(Deck.getIstance().getCardById(idCard));
                         cardAdapterDealer.notifyItemInserted(dealerCards.size() - 1);
+                    }
+                }
+            });
+        });
+
+        socket.getSocket().on("closeRound",args -> {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        JSONArray json = new JSONArray(args[0].toString());
+                        for (int i = 0; i < json.length(); i++) {
+                            Log.d("ALFA",i+")");
+                            JSONObject client = json.getJSONObject(i);
+                            if (client.getString("idClient").equals(idClient2)) {
+                                Log.d("ALFA","client2");
+                                ivFCPlayer2.setImageResource(Deck.getIstance().getCardById(client.getString("idFirstCard")).getIdImage());
+                                scoreP2 = client.getDouble("score");
+                                tvScoreP2.setText("" + scoreP2);
+                            } else if (client.getString("idClient").equals(idClient3)) {
+                                Log.d("ALFA","client2");
+                                ivFCPlayer3.setImageResource(Deck.getIstance().getCardById(client.getString("idFirstCard")).getIdImage());
+                                scoreP3 = client.getDouble("score");
+                                tvScoreP3.setText("" + scoreP3);
+                            } else if (client.getString("idClient").equals(idServer)) {
+                                Log.d("ALFA","client2");
+                                ivFirstCardDealer.setImageResource(Deck.getIstance().getCardById(client.getString("idFirstCard")).getIdImage());
+                                scoreDealer = client.getDouble("score");
+                                tvScoreDealer.setText("" + scoreDealer);
+                            }
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
             });
