@@ -87,7 +87,14 @@ public class WaitActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                socket.getSocket().emit("startGame",socket.getId(), (Ack) args -> {});
+                JSONObject obj = new JSONObject();
+                try{
+                    obj.put("nplayers",idClients.size()+1);
+                    obj.put("idserver",socket.getId());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                socket.getSocket().emit("startGame",obj, (Ack) args -> {});
 
                 JSONArray json = new JSONArray();
 
@@ -101,9 +108,8 @@ public class WaitActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    //Log.d("debug",json.toString());
-                    socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
                 }
+                socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
 
 
                 /*

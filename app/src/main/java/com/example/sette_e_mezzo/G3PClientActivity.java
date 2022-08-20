@@ -130,10 +130,12 @@ public class G3PClientActivity extends AppCompatActivity {
         Log.d("prima", "prima");
 
         socket.getSocket().on("reciveYourFirstCard",args -> {
-            Log.d("cazzo", "cdca");
+            Log.d("BETA", "reciveYourFirstCard - G3P");
+
             String idClient, idFirstCard;
-            Log.d("argsa", args[0].toString()+"");
             Double value;
+            Log.d("BETA", "args[0]:"+args[0].toString());
+
             try {
                 JSONArray array = new JSONArray(args[0].toString());
                 Log.d("array", array+"");
@@ -152,7 +154,7 @@ public class G3PClientActivity extends AppCompatActivity {
                         idClient2 = idClient;
                 }
 
-            }catch(Exception e){}
+            }catch(Exception e){ Log.d("BETA", "errore");}
 
             runOnUiThread(new Runnable() {
                 @Override

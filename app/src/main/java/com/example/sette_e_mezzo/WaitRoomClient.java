@@ -47,9 +47,8 @@ public class WaitRoomClient extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        socket.getSocket().on("reciveYourFirstCard",args -> {
-            Log.d("cazzoclient", "cdccavdjdkv adjda");
-
-        });
+        /*socket.getSocket().on("reciveYourFirstCard",args -> {
+            Log.d("BETA", "reciveYourFirstCard - WaitRoomClient");
+        });*/
     }
 }
