@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -86,21 +87,17 @@ public class WaitActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONObject j = new JSONObject();
-                try {
-                    j.put("idserver", socket.getId());
-                    j.put("nplayers", idClients.size()+1);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                socket.getSocket().emit("startGame",j, (Ack) args -> {});
+                socket.getSocket().emit("startGame",socket.getId(), (Ack) args -> {});
+
+                JSONArray json = new JSONArray();
 
                 for(int i=0;i<idClients.size();i++){
                     Card card = Deck.getIstance().pull();
-                    JSONObject json = new JSONObject();
+                    JSONObject client = new JSONObject();
                     try {
-                        json.put("idClient",idClients.get(i));
-                        json.put("card",card.toJSON());
+                        client.put("idClient",idClients.get(i));
+                        client.put("card",card.toJSON());
+                        json.put(client);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -134,12 +131,12 @@ public class WaitActivity extends AppCompatActivity {
 
                 if(idClients.size()+1 == 2){
                     Intent i = new Intent(WaitActivity.this, G2PServerActivity.class);
-                    i.putExtra("idClients",idClients.toArray());
+                    i.putExtra("idClients",idClients);
                     startActivity(i);
                 }
                 else if(idClients.size()+1 == 3){
                     Intent i = new Intent(WaitActivity.this, G3PServerActivity.class);
-                    i.putExtra("idClients",idClients.toArray());
+                    i.putExtra("idClients",idClients);
                     startActivity(i);
                 }
 

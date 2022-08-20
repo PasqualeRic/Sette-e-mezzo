@@ -64,7 +64,6 @@ const ioGames = (socket) => {
 
     const startGame = async (data,callback) => {
         console.log("sei in partita")
-        console.log(data)
         console.log("id server: "+data);
         try{
             socket.broadcast.emit("partita",data)
@@ -83,12 +82,12 @@ const ioGames = (socket) => {
             
             var timer = setInterval(function(){
                 if(flag){
-                    socket.to(data.idClient).emit("reciveYourFirstCard",data)
+                    socket.broadcast.emit("reciveYourFirstCard",data)
                     clearInterval(timer);
                 }else{
                     flag=true;
                 }
-            },200);
+            },6000);
         }catch(err)
         {
             callback(err)
@@ -138,6 +137,12 @@ const ioGames = (socket) => {
         socket.broadcast.emit("closeRound",data);
     }
 
+    const isYourTurn = async (data,callback) => {
+        console.log("isYourTurn");
+        console.log(data);
+        socket.to(data).emit("myTurn");
+    }
+
     socket.on('confGame',confGame);
     socket.on('createGame',createGame);
     socket.on('joinGame',joinGame);
@@ -147,5 +152,6 @@ const ioGames = (socket) => {
     socket.on('terminateTurn',terminateTurn);
     socket.on('sendCard',sendCard);
     socket.on('closeRound',closeRound);
+    socket.on('isYourTurn',isYourTurn);
 }
 module.exports = ioGames
