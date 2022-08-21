@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,9 +36,10 @@ public class G3PServerActivity extends AppCompatActivity {
     CardAdapterSmall myCardAdapterP1;
     Double scoreP1;
     Card firstCard;
+    String myIdFC;
 
     // PLAYER2 player left
-    String idClient2;
+    String idClient2, idFCPlayer2;
     ImageView imageViewPlayer2;
     TextView tvScorePlayer2;
     ArrayList<Card> myCardsPlayer2;
@@ -48,7 +50,7 @@ public class G3PServerActivity extends AppCompatActivity {
     Double scoreP2;
 
     //DELAER player top
-    String idClient3;
+    String idClient3, idFCPlayer3;
     ImageView imageViewDealer;
     TextView tvScoreDealer;
     RecyclerView dealerReyclerView;
@@ -57,11 +59,11 @@ public class G3PServerActivity extends AppCompatActivity {
     Double scoreDealer;
 
     Double myScore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game3_players);
-        Log.d("cristo server", "cazzo");
         idClients = getIntent().getStringArrayListExtra("idClients");
 
         tvResult = findViewById(R.id.tvResultG3);
@@ -80,12 +82,11 @@ public class G3PServerActivity extends AppCompatActivity {
         recyclerViewPlayer1.setAdapter(myCardAdapterP1);
 
 
-
         //DEALER
         imageViewDealer = findViewById(R.id.imageViewDealer);
         tvScoreDealer = findViewById(R.id.tvScoreDealer);
         dealerReyclerView = findViewById(R.id.recyclerViewDealer);
-        LinearLayoutManager layoutDealer = new LinearLayoutManager(this,RecyclerView.HORIZONTAL, false);
+        LinearLayoutManager layoutDealer = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         dealerReyclerView.setLayoutManager(layoutDealer);
 
         dealerCards = new ArrayList<>();
@@ -97,7 +98,7 @@ public class G3PServerActivity extends AppCompatActivity {
         imageViewPlayer2 = findViewById(R.id.imageViewPlayer2);
         tvScorePlayer2 = findViewById(R.id.tvScorePlayer2);
         recyclerViewPlayer2 = findViewById(R.id.recyclerViewPlayer2);
-        LinearLayoutManager layoutPlayer2 = new LinearLayoutManager(this,RecyclerView.HORIZONTAL, false);
+        LinearLayoutManager layoutPlayer2 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         recyclerViewPlayer2.setLayoutManager(layoutPlayer2);
         myCardsPlayer2 = new ArrayList<>();
         myCardAdapterP2 = new CardAdapterSmallO(myCardsPlayer2);
@@ -107,7 +108,8 @@ public class G3PServerActivity extends AppCompatActivity {
         firstCard = Deck.getIstance().pull();
         imageViewPlayer1.setImageResource(firstCard.getIdImage());
         scoreP1 = firstCard.getValue();
-        tvScorePlayer1.setText(""+scoreP1);
+        tvScorePlayer1.setText("" + scoreP1);
+        myIdFC = firstCard.getId();
         //----
 
         btnCarta.setOnClickListener(v -> {
@@ -117,8 +119,9 @@ public class G3PServerActivity extends AppCompatActivity {
                     Card card = Deck.getIstance().pull();
                     myCardsPlayer1.add(card);
                     myCardAdapterP1.notifyItemInserted(myCardsPlayer1.size()-1);
-                    myScore += card.getValue();
-                    tvScorePlayer1.setText(""+myScore);
+                    scoreP1 += card.getValue();
+                    Log.d("scoreP1", scoreP1+"");
+                    tvScorePlayer1.setText(""+scoreP1);
                     JSONObject jsonObject = new JSONObject();
                     try {
                         jsonObject.put("idClient",socket.getId());
@@ -130,39 +133,37 @@ public class G3PServerActivity extends AppCompatActivity {
 
                     // TODO condizioni di fine
 
+                    if(scoreP1>=7.5){
+
+                        if(scoreP1==7.5){
+                            tvResult.setText(R.string.win);
+                        }else{
+                            tvResult.setText(R.string.lose);
+                        }
+                        closeRound();
+                    }
                 }
             });
         });
+
 
         btnStai.setOnClickListener(v -> {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-
-                    btnCarta.setVisibility(View.INVISIBLE);
-                    btnStai.setVisibility(View.INVISIBLE);
-
-                    //....
+                    closeRound();
                 }
             });
         });
 
-       /* indexClient=0;
-        socket.getSocket().emit("isYourTurn",idClients.get(indexClient));
+        indexClient = 0;
+        socket.getSocket().emit("isYourTurn", idClients.get(indexClient));
         idClient2 = idClients.get(indexClient);
-        idClient3 = idClients.get(indexClient+1);
+        idClient3 = idClients.get(indexClient + 1);
+        Log.d("idclient2--", idClient2+"");
+        Log.d("idclient3", idClient3+"");
 
-        socket.getSocket().on("clientTerminate",args -> {
-            indexClient++;
-            if(indexClient<3){
-                socket.getSocket().emit("isYourTurn",idClients.get(indexClient));
-            }else{
-                //todo tocca al dealer
-            }
-
-        });*/
-
-        /*socket.getSocket().on("requestCard",args -> {
+        socket.getSocket().on("requestCard", args -> {
 
             runOnUiThread(new Runnable() {
                 @Override
@@ -171,27 +172,165 @@ public class G3PServerActivity extends AppCompatActivity {
                     Card card = Deck.getIstance().pull();
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("idClient",idClient);
-                        jsonObject.put("card",card.toJSON());
+                        jsonObject.put("idClient", idClient);
+                        jsonObject.put("card", card.toJSON());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    socket.getSocket().emit("sendCard",jsonObject,(Ack) args1 -> {});
-
-                    if(idClient.equals(idClient2)){
-                        Log.d("ALFA","idClient2");
+                    socket.getSocket().emit("sendCard", jsonObject, (Ack) args1 -> {
+                    });
+                        Log.d("IDCLIENT", idClient+"");
+                    if (idClient.equals(idClient2)) {
+                        Log.d("ALFA", "idClient2");
                         myCardsPlayer2.add(Deck.getIstance().getCardById(card.getId()));
                         myCardAdapterP2.notifyItemInserted(myCardsPlayer2.size() - 1);
-                    }else{
-                        Log.d("ALFA","idClient4");
+                    } else {
+                        Log.d("ALFA", "idClient3");
                         dealerCards.add(Deck.getIstance().getCardById(card.getId()));
                         cardAdapterDealer.notifyItemInserted(dealerCards.size() - 1);
                     }
                 }
             });
-        });*/
+        });
+
+        socket.getSocket().on("clientTerminate", args -> {
+            Log.d("ALFA", "clientTeminate");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                    String idClient = "", idFirstCard = "";
+                    Double score = 0.0;
+                    try {
+                        JSONObject json = new JSONObject(args[0].toString());
+                        score = json.getDouble("score");
+                        idClient = json.getString("idClient");
+                        idFirstCard = json.getString("idFirstCard");
+                        Log.d("cacio", score+"");
+                    } catch (Exception e) {
+                    }
+
+                    Log.d("ALFA", "idClient: " + idClient);
+                    if (idClient.equals(idClient2)) {
+                        idFCPlayer2 = idFirstCard;
+                        Log.d("ALFA", " - client2 idFirstCard: " + idFCPlayer2);
+                        scoreP2 = score;
+                    } else if (idClient.equals(idClient3)) {
+                        idFCPlayer3 = idFirstCard;
+                        Log.d("ALFA", " - client3 idFirstCard: " + idFCPlayer3);
+                        scoreDealer = score;
+                    }
+
+                    if (score > 7.5) {
+                        Log.d("sballato", "sballato");
+                        //l'utente che ha terminato il suo turno ha superato 7.5
+
+                        if (idClient.equals(idClient2)) {
+                            imageViewPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
+                        } else if (idClient.equals(idClient3)) {
+                            imageViewDealer.setImageResource(Deck.getIstance().getCardById(idFCPlayer3).getIdImage());
+                        }
+
+                        JSONObject json = new JSONObject();
+                        try {
+                            json.put("idClient", idClient);
+                            json.put("idFirstCard", idFirstCard);
+                            json.put("score", score);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        socket.getSocket().emit("overSize", json, (Ack) args -> {
+                        });
+                    }
+
+                    indexClient++;
+                    if (indexClient < 2) {
+                        socket.getSocket().emit("isYourTurn", idClients.get(indexClient));
+                    } else {
+                        btnCarta.setVisibility(View.VISIBLE);
+                        btnStai.setVisibility(View.VISIBLE);
+
+                        //hanno sballato tutti, vince il dealer
+                        if (scoreP1 > 7.5 && scoreP2 > 7.5 && scoreDealer > 7.5) {
+                            closeRound();
+                        }
+                    }
+                }
+            });
+
+        });
 
     }
 
+    private void closeRound() {
+
+        Log.d("ALFA", "closeRound");
+
+        btnCarta.setVisibility(View.INVISIBLE);
+        btnStai.setVisibility(View.INVISIBLE);
+
+        imageViewPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
+        imageViewDealer.setImageResource(Deck.getIstance().getCardById(idFCPlayer3).getIdImage());
+
+        JSONArray json = new JSONArray();
+        try {
+            JSONObject client;
+            for (int i = 0; i < idClients.size(); i++) {
+                client = new JSONObject();
+                if (i == 0) {
+                    client.put("idClient", idClient2);
+                    client.put("idFirstCard", idFCPlayer2);
+                    client.put("score", scoreP2);
+                } else if (i == 1) {
+                    client.put("idClient", idClient3);
+                    client.put("idFirstCard", idFCPlayer3);
+                    client.put("score", scoreDealer);
+                }
+                json.put(client);
+            }
+            client = new JSONObject();
+            client.put("idClient", socket.getId());
+            client.put("idFirstCard", myIdFC);
+            client.put("score", scoreP1);
+            json.put(client);
+
+        } catch (JSONException jsonException) {
+            jsonException.printStackTrace();
+        }
+
+        //se tvResult è vuota so che myScore è <7.5
+        if (tvResult.getText().equals("")) {
+
+            if ((scoreP2 <= 7.5 && scoreP1 >= scoreP2) && (scoreDealer <= 7.5 && scoreP1 >= scoreDealer)) {
+                // il mio punteggio è il più alto e non ha sballato nessuno
+                tvResult.setText(R.string.win);
+
+            } else if (scoreP2 > 7.5 && (scoreDealer <= 7.5 && scoreP1 >= scoreDealer)) {
+                // il mio punteggio è il più alto e non ha sballato p2
+                tvResult.setText(R.string.win);
+            } else if ((scoreP2 <= 7.5 && scoreP1 >= scoreP2) && scoreDealer > 7.5) {
+                // il mio punteggio è il più alto e non ha sballato p3
+                tvResult.setText(R.string.win);
+            } else if ((scoreP2 <= 7.5 && scoreP1 >= scoreP2) && (scoreDealer <= 7.5 && scoreP1 >= scoreDealer)) {
+                // il mio punteggio è il più alto e non ha sballato p4
+                tvResult.setText(R.string.win);
+            } else if (scoreP2 > 7.5 && scoreDealer > 7.5) {
+                // il mio punteggio è il più alto e non hanno sballato p2 e p3
+                tvResult.setText(R.string.win);
+            } else if (scoreP2 > 7.5 && (scoreDealer <= 7.5 && scoreP1 >= scoreDealer)) {
+                // il mio punteggio è il più alto e non hanno sballato p2 e p4
+                tvResult.setText(R.string.win);
+            } else if ((scoreP2 <= 7.5 && scoreP1 >= scoreP2) && scoreDealer > 7.5) {
+                // il mio punteggio è il più alto e non hanno sballato p3 e p4
+                tvResult.setText(R.string.win);
+            } else {
+                tvResult.setText(R.string.lose);
+            }
+        }
+
+        socket.getSocket().emit("closeRound", json, (Ack) args -> {});
+
+    }
 }

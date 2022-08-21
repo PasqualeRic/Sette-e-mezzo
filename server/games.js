@@ -142,6 +142,11 @@ const ioGames = (socket) => {
         console.log(data);
         socket.to(data).emit("myTurn");
     }
+    const overSize = async (data,callback) => {
+        console.log("overSize");
+        console.log(data);
+        socket.broadcast.emit("overSize",data);
+    }
 
     socket.on('confGame',confGame);
     socket.on('createGame',createGame);
@@ -153,5 +158,6 @@ const ioGames = (socket) => {
     socket.on('sendCard',sendCard);
     socket.on('closeRound',closeRound);
     socket.on('isYourTurn',isYourTurn);
+    socket.on('overSize',overSize);
 }
 module.exports = ioGames
