@@ -133,7 +133,7 @@ public class WaitActivity extends AppCompatActivity {
                 */
 
 
-                Intent i = new Intent(WaitActivity.this, G4PServerActivity.class);
+                Intent i = new Intent(WaitActivity.this, G2PServerActivity.class);
                 i.putExtra("idClients",idClients);
                 startActivity(i);
 

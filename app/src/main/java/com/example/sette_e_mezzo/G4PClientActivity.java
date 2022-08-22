@@ -1,5 +1,6 @@
 package com.example.sette_e_mezzo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import io.socket.client.Ack;
 
 public class G4PClientActivity extends AppCompatActivity {
+
+    public static String strIdClient = "idClient";
 
     SocketClass socket = new SocketClass();
     TextView tvResult;
@@ -121,7 +124,7 @@ public class G4PClientActivity extends AppCompatActivity {
             JSONObject json = new JSONObject();
             try {
                 json.put("idServer",idServer);
-                json.put("idClient",socket.getId());
+                json.put(strIdClient,socket.getId());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -133,7 +136,7 @@ public class G4PClientActivity extends AppCompatActivity {
             JSONObject json = new JSONObject();
             try{
                 json.put("idServer",idServer);
-                json.put("idClient",socket.getId());
+                json.put(strIdClient,socket.getId());
                 json.put("score",myScore);
                 json.put("idFirstCard",myIdFirstCard);
             }catch(Exception e){
@@ -154,7 +157,7 @@ public class G4PClientActivity extends AppCompatActivity {
                 for(int i=0;i< array.length();i++){
                     Log.d("ALFA-reciveYourFirstCard",i+") -> "+array.get(i).toString());
                     JSONObject json = new JSONObject(array.get(i).toString());
-                    idClient = json.getString("idClient");
+                    idClient = json.getString(strIdClient);
                     idFirstCard = json.getJSONObject("card").getString("id");
                     value = json.getJSONObject("card").getDouble("value");
 
@@ -202,7 +205,7 @@ public class G4PClientActivity extends AppCompatActivity {
 
                     try {
                         JSONObject json = new JSONObject(args[0].toString());
-                        idClient = json.getString("idClient");
+                        idClient = json.getString(strIdClient);
                         idCard = json.getJSONObject("card").getString("id");
                         score = json.getJSONObject("card").getDouble("value");
 
@@ -225,7 +228,7 @@ public class G4PClientActivity extends AppCompatActivity {
                             JSONObject json = new JSONObject();
                             try{
                                 json.put("idServer",idServer);
-                                json.put("idClient",socket.getId());
+                                json.put(strIdClient,socket.getId());
                                 json.put("score",myScore);
                                 json.put("idFirstCard",myIdFirstCard);
                             }catch(Exception e){
@@ -259,17 +262,17 @@ public class G4PClientActivity extends AppCompatActivity {
                         for (int i = 0; i < json.length(); i++) {
                             Log.d("ALFA",i+")");
                             JSONObject client = json.getJSONObject(i);
-                            if (client.getString("idClient").equals(idClient2)) {
+                            if (client.getString(strIdClient).equals(idClient2)) {
                                 Log.d("ALFA","client2");
                                 ivFCPlayer2.setImageResource(Deck.getIstance().getCardById(client.getString("idFirstCard")).getIdImage());
                                 scoreP2 = client.getDouble("score");
                                 tvScoreP2.setText("" + scoreP2);
-                            } else if (client.getString("idClient").equals(idClient3)) {
+                            } else if (client.getString(strIdClient).equals(idClient3)) {
                                 Log.d("ALFA","client2");
                                 ivFCPlayer3.setImageResource(Deck.getIstance().getCardById(client.getString("idFirstCard")).getIdImage());
                                 scoreP3 = client.getDouble("score");
                                 tvScoreP3.setText("" + scoreP3);
-                            } else if (client.getString("idClient").equals(idServer)) {
+                            } else if (client.getString(strIdClient).equals(idServer)) {
                                 Log.d("ALFA","client2");
                                 ivFirstCardDealer.setImageResource(Deck.getIstance().getCardById(client.getString("idFirstCard")).getIdImage());
                                 scoreDealer = client.getDouble("score");
@@ -327,7 +330,7 @@ public class G4PClientActivity extends AppCompatActivity {
                         Double score;
 
                         JSONObject json = new JSONObject(args[0].toString());
-                        idClient = json.getString("idClient");
+                        idClient = json.getString(strIdClient);
                         idFirstCard = json.getString("idFirstCard");
                         score = json.getDouble("score");
 
@@ -352,6 +355,16 @@ public class G4PClientActivity extends AppCompatActivity {
             });
         });
 
+    }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedIstanceState){
+        super.onRestoreInstanceState(savedIstanceState);
     }
 }

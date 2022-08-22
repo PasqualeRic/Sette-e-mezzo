@@ -27,14 +27,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btnG4P = findViewById(R.id.btnG4P);
-        btnG4P.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent menu = new Intent(MainActivity.this, G4PClientActivity.class);
-                startActivity(menu);
-            }
-        });
-
     }
 }

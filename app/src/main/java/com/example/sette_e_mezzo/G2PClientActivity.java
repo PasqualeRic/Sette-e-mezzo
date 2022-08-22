@@ -1,5 +1,6 @@
 package com.example.sette_e_mezzo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +35,7 @@ public class G2PClientActivity extends AppCompatActivity {
     RecyclerView myRecyclerView;
     RecyclerView.LayoutManager layoutManager;
     CardAdapter myCardAdapter;
+    Double myScore;
 
     //DELAER
     ImageView ivFirstCardDealer;
@@ -41,8 +43,10 @@ public class G2PClientActivity extends AppCompatActivity {
     RecyclerView dealerReyclerView;
     CardAdapter cardAdapterDealer;
     ArrayList<Card> dealerCards;
+    String idFirstCardDealer;
+    Double scoreDealer;
 
-    Double myScore;
+    //variabili di servizio
     String idClient, idFirstCard, idCard;
 
     @Override
@@ -117,7 +121,7 @@ public class G2PClientActivity extends AppCompatActivity {
             try {
                 JSONArray array = new JSONArray(args[0].toString());
                 JSONObject json = new JSONObject(array.get(0).toString());
-                idClient = json.getString("idClient");
+                //idClient = json.getString("idClient");
                 idFirstCard = json.getJSONObject("card").getString("id");
                 myScore = json.getJSONObject("card").getDouble("value");
 
@@ -185,8 +189,8 @@ public class G2PClientActivity extends AppCompatActivity {
                 public void run() {
                     try {
                         JSONObject json = new JSONObject(args[0].toString());
-                        String idFirstCardDealer = json.getString("idFirstCard");
-                        Double scoreDealer = json.getDouble("score");
+                        idFirstCardDealer = json.getString("idFirstCard");
+                        scoreDealer = json.getDouble("score");
                         ivFirstCardDealer.setImageResource(Deck.getIstance().getCardById(idFirstCardDealer).getIdImage());
                         tvScoreDealer.setText("" + scoreDealer);
                         if(tvResult.getText().equals("")) {
@@ -202,6 +206,41 @@ public class G2PClientActivity extends AppCompatActivity {
             });
         });
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Player
+        outState.putString("idFirstCard",idFirstCard);
+        outState.putStringArrayList("myCards",Utilis.getIdCards(myCards));
+        outState.putDouble("myScore",myScore);
+
+        //Dealer
+        outState.putStringArrayList("dealerCards",Utilis.getIdCards(dealerCards));
+
+        outState.putString("result",tvResult.getText().toString());
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedIstanceState){
+        super.onRestoreInstanceState(savedIstanceState);
+
+        // Player
+        idFirstCard = savedIstanceState.getString("idFirstCard");
+        myCards = Utilis.getCardsById(savedIstanceState.getStringArrayList("myCards"));
+        myScore = savedIstanceState.getDouble("myScore");
+
+        // Dealer
+        dealerCards = Utilis.getCardsById(savedIstanceState.getStringArrayList("dealerCards"));
+
+        tvResult.setText(savedIstanceState.getString("result"));
+
+        //myCardAdapter.notifyDataSetChanged();
+        //cardAdapterDealer.notifyDataSetChanged();
+        ivMyFirstCard.setImageResource(Deck.getIstance().getCardById(idFirstCard).getIdImage());
     }
 
 }
