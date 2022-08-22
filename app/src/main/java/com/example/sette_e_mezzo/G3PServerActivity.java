@@ -98,7 +98,7 @@ public class G3PServerActivity extends AppCompatActivity {
         imageViewPlayer2 = findViewById(R.id.imageViewPlayer2);
         tvScorePlayer2 = findViewById(R.id.tvScorePlayer2);
         recyclerViewPlayer2 = findViewById(R.id.recyclerViewPlayer2);
-        LinearLayoutManager layoutPlayer2 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        LinearLayoutManager layoutPlayer2 = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerViewPlayer2.setLayoutManager(layoutPlayer2);
         myCardsPlayer2 = new ArrayList<>();
         myCardAdapterP2 = new CardAdapterSmallO(myCardsPlayer2);
@@ -306,24 +306,14 @@ public class G3PServerActivity extends AppCompatActivity {
             if ((scoreP2 <= 7.5 && scoreP1 >= scoreP2) && (scoreDealer <= 7.5 && scoreP1 >= scoreDealer)) {
                 // il mio punteggio è il più alto e non ha sballato nessuno
                 tvResult.setText(R.string.win);
-
             } else if (scoreP2 > 7.5 && (scoreDealer <= 7.5 && scoreP1 >= scoreDealer)) {
-                // il mio punteggio è il più alto e non ha sballato p2
+                // il mio punteggio è il più alto e non ha sballato l'altro player
                 tvResult.setText(R.string.win);
             } else if ((scoreP2 <= 7.5 && scoreP1 >= scoreP2) && scoreDealer > 7.5) {
-                // il mio punteggio è il più alto e non ha sballato p3
-                tvResult.setText(R.string.win);
-            } else if ((scoreP2 <= 7.5 && scoreP1 >= scoreP2) && (scoreDealer <= 7.5 && scoreP1 >= scoreDealer)) {
-                // il mio punteggio è il più alto e non ha sballato p4
+                // il mio punteggio è il più alto e non ha sballato il dealer
                 tvResult.setText(R.string.win);
             } else if (scoreP2 > 7.5 && scoreDealer > 7.5) {
-                // il mio punteggio è il più alto e non hanno sballato p2 e p3
-                tvResult.setText(R.string.win);
-            } else if (scoreP2 > 7.5 && (scoreDealer <= 7.5 && scoreP1 >= scoreDealer)) {
-                // il mio punteggio è il più alto e non hanno sballato p2 e p4
-                tvResult.setText(R.string.win);
-            } else if ((scoreP2 <= 7.5 && scoreP1 >= scoreP2) && scoreDealer > 7.5) {
-                // il mio punteggio è il più alto e non hanno sballato p3 e p4
+                // hanno sballato sia l'altro player che il dealer
                 tvResult.setText(R.string.win);
             } else {
                 tvResult.setText(R.string.lose);

@@ -62,7 +62,6 @@ public class G3PClientActivity extends AppCompatActivity {
 
         idServer = getIntent().getStringExtra("idServer");
 
-
         tvResult = findViewById(R.id.tvResultG3);
         btnCarta = findViewById(R.id.btnCarta3);
         btnStai = findViewById(R.id.btnStai3);
@@ -80,14 +79,12 @@ public class G3PClientActivity extends AppCompatActivity {
         // Player 2 - Sinistra
         imageViewPlayer2 = findViewById(R.id.imageViewPlayer2);
         myCardsPlayer2 = new ArrayList<>();
-        tvScorePlayer2 = findViewById(R.id.tvScorePlayer1);
+        tvScorePlayer2 = findViewById(R.id.tvScorePlayer2);
         layoutManagerP2 = new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
         recyclerViewPlayer2 = findViewById(R.id.recyclerViewPlayer2);
         recyclerViewPlayer2.setLayoutManager(layoutManagerP2);
         myCardAdapterP2 = new CardAdapterSmallO(myCardsPlayer2);
         recyclerViewPlayer2.setAdapter(myCardAdapterP2);
-        Double sP2;
-
 
         // Dealer
         imageViewDealer = findViewById(R.id.imageViewDealer);
@@ -98,7 +95,7 @@ public class G3PClientActivity extends AppCompatActivity {
         dealerCards = new ArrayList<>();
         cardAdapterDealer = new CardAdapterSmall(dealerCards);
         dealerReyclerView.setAdapter(cardAdapterDealer);
-        Double SDealer;
+
 
        btnCarta.setOnClickListener(v -> {
            Log.d("givemecard", "givemecard");
@@ -129,7 +126,6 @@ public class G3PClientActivity extends AppCompatActivity {
 
             socket.getSocket().emit("terminateTurn",json,(Ack) args -> {});
         });
-        Log.d("prima", "prima");
 
         socket.getSocket().on("reciveYourFirstCard",args -> {
             Log.d("BETA", "reciveYourFirstCard - G3P");
@@ -264,20 +260,8 @@ public class G3PClientActivity extends AppCompatActivity {
                             }else if(scoreP2>7.5 && (scoreDealer<=7.5 && myScore>scoreDealer)){
                                 // il mio punteggio è il più alto e non ha sballato p2
                                 tvResult.setText(R.string.win);
-                            }else if((scoreP2<=7.5 && myScore>=scoreP2) &&(scoreDealer<=7.5 && myScore>scoreDealer)){
-                                // il mio punteggio è il più alto e non ha sballato p3
-                                tvResult.setText(R.string.win);
                             }else if((scoreP2<=7.5 && myScore>=scoreP2) && scoreDealer>7.5){
                                 // il mio punteggio è il più alto e non ha sballato dealer
-                                tvResult.setText(R.string.win);
-                            }else if(scoreP2>7.5 && (scoreDealer<=7.5 && myScore>scoreDealer)){
-                                // il mio punteggio è il più alto e non hanno sballato p2 e p3
-                                tvResult.setText(R.string.win);
-                            }else if(scoreP2>7.5 && scoreDealer>7.5){
-                                // il mio punteggio è il più alto e non hanno sballato p2 e dealer
-                                tvResult.setText(R.string.win);
-                            }else if((scoreP2<=7.5 && myScore>=scoreP2) && scoreDealer>7.5){
-                                // il mio punteggio è il più alto e non hanno sballato p3 e dealer
                                 tvResult.setText(R.string.win);
                             }else if(scoreP2>7.5 && scoreDealer>7.5){
                                 // il mio punteggio è il più alto e non hanno sballato p3 e dealer
@@ -307,16 +291,11 @@ public class G3PClientActivity extends AppCompatActivity {
                         idFirstCard = json.getString("idFirstCard");
                         score = json.getDouble("score");
 
-                        if (idClient.equals(idClient2)) {
+                        if (!idClient.equals(socket.getId())) {
                             Log.d("BETA","client2");
                             imageViewPlayer2.setImageResource(Deck.getIstance().getCardById(idFirstCard).getIdImage());
                             scoreP2 = score;
                             tvScorePlayer2.setText("" + scoreP2);
-                        } else if(idClient.equals(idClient2)){
-                            Log.d("BETA","client3");
-                            imageViewDealer.setImageResource(Deck.getIstance().getCardById(idFirstCard).getIdImage());
-                            scoreDealer = score;
-                            tvScoreDealer.setText("" + scoreDealer);
                         }
 
                     } catch (JSONException e) {
