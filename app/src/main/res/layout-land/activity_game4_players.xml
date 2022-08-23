@@ -37,11 +37,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.14"
-        app:srcCompat="@drawable/b1" />
+        app:srcCompat="@drawable/backcard" />
 
 
     <TextView
-        android:id="@+id/tvScoreP4"
+        android:id="@+id/tvScorePlayer4"
         android:layout_width="64dp"
         android:layout_height="54dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,7 +84,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.029"
-        app:srcCompat="@drawable/b1" />
+        app:srcCompat="@drawable/backcard" />
 
     <TextView
         android:id="@+id/tvScorePlayer3"
@@ -128,10 +128,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.167"
-        app:srcCompat="@drawable/b1" />
+        app:srcCompat="@drawable/backcard" />
 
     <TextView
-        android:id="@+id/tvScoreP2"
+        android:id="@+id/tvScorePlayer2"
         android:layout_width="64dp"
         android:layout_height="54dp"
         android:layout_marginEnd="248dp"
@@ -173,14 +173,14 @@
         app:layout_constraintHorizontal_bias="0.914"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.778"
-        app:srcCompat="@drawable/b1" />
+        app:layout_constraintVertical_bias="0.778" />
 
     <Button
         android:id="@+id/btnCarta4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/card"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.385"
@@ -192,6 +192,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/stay"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.678"

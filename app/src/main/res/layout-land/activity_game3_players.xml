@@ -150,7 +150,7 @@
         app:srcCompat="@drawable/b1" />
 
     <TextView
-        android:id="@+id/tvScoreP2"
+        android:id="@+id/tvScorePlayer2"
         android:layout_width="64dp"
         android:layout_height="54dp"
         app:layout_constraintBottom_toBottomOf="parent"

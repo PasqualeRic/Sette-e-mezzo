@@ -1,5 +1,6 @@
 package com.example.sette_e_mezzo;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +27,7 @@ public class G4PServerActivity extends AppCompatActivity {
     Button btnCarta, btnStai;
     ArrayList<String> idClients;
     Integer indexClient;  //indice per tenere traccia del client di turno
+    Boolean isMyTurn;
 
     // MyPlayer
     ImageView ivMyFirstCard;
@@ -72,6 +74,7 @@ public class G4PServerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game4_players);
 
+        isMyTurn=false;
         idClients = getIntent().getStringArrayListExtra("idClients");
 
         tvResult = findViewById(R.id.tvResult4);
@@ -142,8 +145,6 @@ public class G4PServerActivity extends AppCompatActivity {
                     }
                     socket.getSocket().emit("sendCard",jsonObject,(Ack) args1 -> {});
 
-                    // TODO condizioni di fine
-
                     if(myScore>=7.5){
 
                         if(myScore==7.5){
@@ -166,6 +167,7 @@ public class G4PServerActivity extends AppCompatActivity {
             });
         });
 
+        // todo: questo blocco va spostato in WaitActivity
         indexClient=0;
         socket.getSocket().emit("isYourTurn",idClients.get(indexClient));
         idClient2 = idClients.get(indexClient);
@@ -241,10 +243,13 @@ public class G4PServerActivity extends AppCompatActivity {
 
                         if(idClient.equals(idClient2)) {
                             ivFCPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
+                            tvScoreP2.setText(""+scoreP2);
                         }else if(idClient.equals(idClient3)) {
                             ivFCPlayer3.setImageResource(Deck.getIstance().getCardById(idFCPlayer3).getIdImage());
+                            tvScoreP3.setText(""+scoreP3);
                         }else {
                             ivFCPlayer4.setImageResource(Deck.getIstance().getCardById(idFCPlayer4).getIdImage());
+                            tvScoreP4.setText(""+scoreP4);
                         }
 
                         JSONObject json = new JSONObject();
@@ -263,6 +268,7 @@ public class G4PServerActivity extends AppCompatActivity {
                     if(indexClient<3){
                         socket.getSocket().emit("isYourTurn",idClients.get(indexClient));
                     }else{
+                        isMyTurn=true;
                         btnCarta.setVisibility(View.VISIBLE);
                         btnStai.setVisibility(View.VISIBLE);
 
@@ -352,4 +358,109 @@ public class G4PServerActivity extends AppCompatActivity {
         socket.getSocket().emit("closeRound",json,(Ack) args->{});
     }
 
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // MyPlayer
+        outState.putString("myIdFC",myIdFC);
+        outState.putStringArrayList("myCards",Utilis.getIdCards(myCards));
+        outState.putDouble("myScore",myScore);
+
+        // Player 2
+        outState.putString("idFCPlayer2",idFCPlayer2);
+        outState.putStringArrayList("cardsP2",Utilis.getIdCards(cardsP2));
+        outState.putString("tvScoreP2",tvScoreP2.getText().toString());
+        if(scoreP2!=null)
+            outState.putDouble("scoreP2",scoreP2);
+
+        // Player 3
+        outState.putString("idFCPlayer3",idFCPlayer3);
+        outState.putStringArrayList("cardsP3",Utilis.getIdCards(cardsP3));
+        outState.putString("tvScoreP3",tvScoreP3.getText().toString());
+        if(scoreP3!=null)
+            outState.putDouble("scoreP3",scoreP3);
+
+        // Player 4
+        outState.putString("idFCPlayer4",idFCPlayer4);
+        outState.putStringArrayList("cardsP4",Utilis.getIdCards(cardsP4));
+        outState.putString("tvScoreP4",tvScoreP4.getText().toString());
+        if(scoreP4!=null)
+            outState.putDouble("scoreP4",scoreP4);
+
+
+        outState.putStringArrayList("idClients",idClients);
+        outState.putInt("indexClient",indexClient);
+        outState.putString("result",tvResult.getText().toString());
+        outState.putBoolean("isMyTurn",isMyTurn);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedIstanceState){
+        super.onRestoreInstanceState(savedIstanceState);
+
+        // MyPlayer
+        myIdFC = savedIstanceState.getString("myIdFC");
+        myCards = Utilis.getCardsById(savedIstanceState.getStringArrayList("myCards"));
+        myScore = savedIstanceState.getDouble("myScore");
+
+        ivMyFirstCard.setImageResource(Deck.getIstance().getCardById(myIdFC).getIdImage());
+        tvMyScore.setText(""+myScore);
+
+        myCardAdapter = new CardAdapterSmall(myCards);
+        myRecyclerView.setAdapter(myCardAdapter);
+
+        // Player 2
+        idFCPlayer2 = savedIstanceState.getString("idFCPlayer2");
+        cardsP2 = Utilis.getCardsById(savedIstanceState.getStringArrayList("cardsP2"));
+        scoreP2 = savedIstanceState.getDouble("scoreP2");
+        tvScoreP2.setText(savedIstanceState.getString("tvScoreP2"));
+        if(!tvScoreP2.getText().toString().equals(""))
+            ivFCPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
+
+        adapterP2 = new CardAdapterSmall(cardsP2);
+        rvPlayer2.setAdapter(adapterP2);
+
+        // Player 3
+        idFCPlayer3 = savedIstanceState.getString("idFCPlayer3");
+        cardsP3 = Utilis.getCardsById(savedIstanceState.getStringArrayList("cardsP3"));
+        scoreP3 = savedIstanceState.getDouble("scoreP3");
+        tvScoreP3.setText(savedIstanceState.getString("tvScoreP3"));
+
+        if(!tvScoreP3.getText().toString().equals(""))
+            ivFCPlayer3.setImageResource(Deck.getIstance().getCardById(idFCPlayer3).getIdImage());
+
+        adapterP3 = new CardAdapterSmall(cardsP3);
+        rvPlayer3.setAdapter(adapterP3);
+
+        // Player 4
+        idFCPlayer4 = savedIstanceState.getString("idFCPlayer4");
+        cardsP4 = Utilis.getCardsById(savedIstanceState.getStringArrayList("cardsP4"));
+        scoreP4 = savedIstanceState.getDouble("scoreP4");
+        tvScoreP4.setText(savedIstanceState.getString("tvScoreP4"));
+
+        if(!tvScoreP4.getText().toString().equals(""))
+            ivFCPlayer4.setImageResource(Deck.getIstance().getCardById(idFCPlayer4).getIdImage());
+
+        adapterP4 = new CardAdapterSmall(cardsP4);
+        rvPlayer4.setAdapter(adapterP4);
+
+
+        idClients = savedIstanceState.getStringArrayList("idClients");
+        indexClient = savedIstanceState.getInt("indexClient");
+        tvResult.setText(savedIstanceState.getString("result"));
+
+        isMyTurn = savedIstanceState.getBoolean("isMyTurn");
+        if(isMyTurn){
+            btnCarta.setVisibility(View.VISIBLE);
+            btnStai.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        socket.getSocket().off("requestCard");
+        socket.getSocket().off("clientTerminate");
+    }
 }
