@@ -24,11 +24,12 @@ public class G3PServerActivity extends AppCompatActivity {
     TextView tvResult;
     Integer indexClient;  //indice per tenere traccia del client di turno
     ArrayList<String> idClients;
-
-
-    // PLAYER1 player bottom
     Button btnCarta, btnStai;
+
+    // PLAYER1 player top
+
     ImageView imageViewPlayer1;
+    String idClient1, idFCPlayer1;
     ArrayList<Card> myCardsPlayer1;
     TextView tvScorePlayer1;
     RecyclerView recyclerViewPlayer1;
@@ -36,8 +37,6 @@ public class G3PServerActivity extends AppCompatActivity {
     CardAdapterSmall myCardAdapterP1;
     Double scoreP1;
     Card firstCard;
-    String myIdFC;
-
     // PLAYER2 player left
     String idClient2, idFCPlayer2;
     ImageView imageViewPlayer2;
@@ -49,14 +48,14 @@ public class G3PServerActivity extends AppCompatActivity {
     CardAdapterSmallO myCardAdapterP2;
     Double scoreP2;
 
-    //DELAER player top
+    //PLAYER3 player bottom
     String idClient3, idFCPlayer3;
-    ImageView imageViewDealer;
-    TextView tvScoreDealer;
-    RecyclerView dealerReyclerView;
-    CardAdapterSmall cardAdapterDealer;
-    ArrayList<Card> dealerCards;
-    Double scoreDealer;
+    ImageView imageViewPlayer3;
+    TextView tvScorePlayer3;
+    RecyclerView recyclerViewPlayer3;
+    CardAdapterSmall myCardAdapterP3;
+    ArrayList<Card> myCardsPlayer3;
+    Double scoreP3;
 
     Double myScore;
 
@@ -71,10 +70,10 @@ public class G3PServerActivity extends AppCompatActivity {
         btnStai = findViewById(R.id.btnStai3);
 
 
-        //PLAYER1
-        imageViewPlayer1 = findViewById(R.id.imageViewPlayer1);
-        recyclerViewPlayer1 = findViewById(R.id.recyclerViewPlayer1);
-        tvScorePlayer1 = findViewById(R.id.tvScorePlayer1);
+        //top
+        imageViewPlayer1 = findViewById(R.id.imageViewDealer);
+        recyclerViewPlayer1 = findViewById(R.id.recyclerViewDealer);
+        tvScorePlayer1 = findViewById(R.id.tvScoreDealer);
         layoutManagerP1 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
         recyclerViewPlayer1.setLayoutManager(layoutManagerP1);
         myCardsPlayer1 = new ArrayList<>();
@@ -82,18 +81,18 @@ public class G3PServerActivity extends AppCompatActivity {
         recyclerViewPlayer1.setAdapter(myCardAdapterP1);
 
 
-        //DEALER
-        imageViewDealer = findViewById(R.id.imageViewDealer);
-        tvScoreDealer = findViewById(R.id.tvScoreDealer);
-        dealerReyclerView = findViewById(R.id.recyclerViewDealer);
+        //bottom
+        imageViewPlayer3 = findViewById(R.id.imageViewPlayer1);
+        tvScorePlayer3 = findViewById(R.id.tvScorePlayer1);
+        recyclerViewPlayer3 = findViewById(R.id.recyclerViewPlayer1);
         LinearLayoutManager layoutDealer = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
-        dealerReyclerView.setLayoutManager(layoutDealer);
+        recyclerViewPlayer3.setLayoutManager(layoutDealer);
 
-        dealerCards = new ArrayList<>();
-        cardAdapterDealer = new CardAdapterSmall(dealerCards);
-        dealerReyclerView.setAdapter(cardAdapterDealer);
+        myCardsPlayer3 = new ArrayList<>();
+        myCardAdapterP3 = new CardAdapterSmall(myCardsPlayer3);
+        recyclerViewPlayer3.setAdapter(myCardAdapterP3);
 
-        //PLAYER2
+        //left
 
         imageViewPlayer2 = findViewById(R.id.imageViewPlayer2);
         tvScorePlayer2 = findViewById(R.id.tvScorePlayer2);
@@ -106,10 +105,10 @@ public class G3PServerActivity extends AppCompatActivity {
 
         //----
         firstCard = Deck.getIstance().pull();
-        imageViewPlayer1.setImageResource(firstCard.getIdImage());
-        scoreP1 = firstCard.getValue();
-        tvScorePlayer1.setText("" + scoreP1);
-        myIdFC = firstCard.getId();
+        imageViewPlayer3.setImageResource(firstCard.getIdImage());
+        scoreP3 = firstCard.getValue();
+        tvScorePlayer3.setText("" + scoreP3);
+        idFCPlayer3 = firstCard.getId();
         //----
 
         btnCarta.setOnClickListener(v -> {
@@ -117,11 +116,11 @@ public class G3PServerActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     Card card = Deck.getIstance().pull();
-                    myCardsPlayer1.add(card);
-                    myCardAdapterP1.notifyItemInserted(myCardsPlayer1.size()-1);
-                    scoreP1 += card.getValue();
-                    Log.d("scoreP1", scoreP1+"");
-                    tvScorePlayer1.setText(""+scoreP1);
+                    myCardsPlayer3.add(card);
+                    myCardAdapterP3.notifyItemInserted(myCardsPlayer3.size()-1);
+                    scoreP3 += card.getValue();
+                    Log.d("scoreP1", scoreP3+"");
+                    tvScorePlayer3.setText(""+scoreP3);
                     JSONObject jsonObject = new JSONObject();
                     try {
                         jsonObject.put("idClient",socket.getId());
@@ -133,9 +132,9 @@ public class G3PServerActivity extends AppCompatActivity {
 
                     // TODO condizioni di fine
 
-                    if(scoreP1>=7.5){
+                    if(scoreP3>=7.5){
 
-                        if(scoreP1==7.5){
+                        if(scoreP3==7.5){
                             tvResult.setText(R.string.win);
                         }else{
                             tvResult.setText(R.string.lose);
@@ -159,9 +158,9 @@ public class G3PServerActivity extends AppCompatActivity {
         indexClient = 0;
         socket.getSocket().emit("isYourTurn", idClients.get(indexClient));
         idClient2 = idClients.get(indexClient);
-        idClient3 = idClients.get(indexClient + 1);
+        idClient1 = idClients.get(indexClient + 1);
         Log.d("idclient2--", idClient2+"");
-        Log.d("idclient3", idClient3+"");
+        Log.d("idclient1--", idClient1+"");
 
         socket.getSocket().on("requestCard", args -> {
 
@@ -180,15 +179,15 @@ public class G3PServerActivity extends AppCompatActivity {
 
                     socket.getSocket().emit("sendCard", jsonObject, (Ack) args1 -> {
                     });
-                        Log.d("IDCLIENT", idClient+"");
+                    Log.d("IDCLIENT", idClient+"");
                     if (idClient.equals(idClient2)) {
                         Log.d("ALFA", "idClient2");
                         myCardsPlayer2.add(Deck.getIstance().getCardById(card.getId()));
                         myCardAdapterP2.notifyItemInserted(myCardsPlayer2.size() - 1);
                     } else {
                         Log.d("ALFA", "idClient3");
-                        dealerCards.add(Deck.getIstance().getCardById(card.getId()));
-                        cardAdapterDealer.notifyItemInserted(dealerCards.size() - 1);
+                        myCardsPlayer1.add(Deck.getIstance().getCardById(card.getId()));
+                        myCardAdapterP1.notifyItemInserted(myCardsPlayer1.size() - 1);
                     }
                 }
             });
@@ -216,10 +215,10 @@ public class G3PServerActivity extends AppCompatActivity {
                         idFCPlayer2 = idFirstCard;
                         Log.d("ALFA", " - client2 idFirstCard: " + idFCPlayer2);
                         scoreP2 = score;
-                    } else if (idClient.equals(idClient3)) {
-                        idFCPlayer3 = idFirstCard;
-                        Log.d("ALFA", " - client3 idFirstCard: " + idFCPlayer3);
-                        scoreDealer = score;
+                    } else if (idClient.equals(idClient1)) {
+                        idFCPlayer1 = idFirstCard;
+                        Log.d("ALFA", " - client3 idFirstCard: " + idFCPlayer1);
+                        scoreP1 = score;
                     }
 
                     if (score > 7.5) {
@@ -229,7 +228,7 @@ public class G3PServerActivity extends AppCompatActivity {
                         if (idClient.equals(idClient2)) {
                             imageViewPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
                         } else if (idClient.equals(idClient3)) {
-                            imageViewDealer.setImageResource(Deck.getIstance().getCardById(idFCPlayer3).getIdImage());
+                            imageViewPlayer1.setImageResource(Deck.getIstance().getCardById(idFCPlayer1).getIdImage());
                         }
 
                         JSONObject json = new JSONObject();
@@ -253,7 +252,7 @@ public class G3PServerActivity extends AppCompatActivity {
                         btnStai.setVisibility(View.VISIBLE);
 
                         //hanno sballato tutti, vince il dealer
-                        if (scoreP1 > 7.5 && scoreP2 > 7.5 && scoreDealer > 7.5) {
+                        if (scoreP1 > 7.5 && scoreP2 > 7.5 && scoreP3 > 7.5) {
                             closeRound();
                         }
                     }
@@ -272,7 +271,7 @@ public class G3PServerActivity extends AppCompatActivity {
         btnStai.setVisibility(View.INVISIBLE);
 
         imageViewPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
-        imageViewDealer.setImageResource(Deck.getIstance().getCardById(idFCPlayer3).getIdImage());
+        imageViewPlayer1.setImageResource(Deck.getIstance().getCardById(idFCPlayer1).getIdImage());
 
         JSONArray json = new JSONArray();
         try {
@@ -284,16 +283,16 @@ public class G3PServerActivity extends AppCompatActivity {
                     client.put("idFirstCard", idFCPlayer2);
                     client.put("score", scoreP2);
                 } else if (i == 1) {
-                    client.put("idClient", idClient3);
-                    client.put("idFirstCard", idFCPlayer3);
-                    client.put("score", scoreDealer);
+                    client.put("idClient", idClient1);
+                    client.put("idFirstCard", idFCPlayer1);
+                    client.put("score", scoreP1);
                 }
                 json.put(client);
             }
             client = new JSONObject();
             client.put("idClient", socket.getId());
-            client.put("idFirstCard", myIdFC);
-            client.put("score", scoreP1);
+            client.put("idFirstCard", idFCPlayer3);
+            client.put("score", scoreP3);
             json.put(client);
 
         } catch (JSONException jsonException) {
@@ -303,16 +302,16 @@ public class G3PServerActivity extends AppCompatActivity {
         //se tvResult è vuota so che myScore è <7.5
         if (tvResult.getText().equals("")) {
 
-            if ((scoreP2 <= 7.5 && scoreP1 >= scoreP2) && (scoreDealer <= 7.5 && scoreP1 >= scoreDealer)) {
+            if ((scoreP2 <= 7.5 && scoreP1 >= scoreP2) && (scoreP1 <= 7.5 && scoreP3 >= scoreP1)) {
                 // il mio punteggio è il più alto e non ha sballato nessuno
                 tvResult.setText(R.string.win);
-            } else if (scoreP2 > 7.5 && (scoreDealer <= 7.5 && scoreP1 >= scoreDealer)) {
+            } else if (scoreP2 > 7.5 && (scoreP1 <= 7.5 && scoreP3 >= scoreP1)) {
                 // il mio punteggio è il più alto e non ha sballato l'altro player
                 tvResult.setText(R.string.win);
-            } else if ((scoreP2 <= 7.5 && scoreP1 >= scoreP2) && scoreDealer > 7.5) {
+            } else if ((scoreP2 <= 7.5 && scoreP3 >= scoreP2) && scoreP1 > 7.5) {
                 // il mio punteggio è il più alto e non ha sballato il dealer
                 tvResult.setText(R.string.win);
-            } else if (scoreP2 > 7.5 && scoreDealer > 7.5) {
+            } else if (scoreP2 > 7.5 && scoreP1 > 7.5) {
                 // hanno sballato sia l'altro player che il dealer
                 tvResult.setText(R.string.win);
             } else {

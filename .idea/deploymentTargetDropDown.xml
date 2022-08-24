@@ -7,12 +7,12 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\enric\.android\avd\ClientB.avd" />
+            <value value="$USER_HOME$/.android/avd/Nexus_4_API_32_3.avd" />
           </Key>
         </deviceKey>
       </Target>
     </runningDeviceTargetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2022-08-22T14:53:24.020448Z" />
+    <timeTargetWasSelectedWithDropDown value="2022-08-24T09:55:14.878775Z" />
     <targetsSelectedWithDialog>
       <Target>
         <type value="QUICK_BOOT_TARGET" />
