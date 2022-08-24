@@ -11,11 +11,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CardAdapterSmall extends RecyclerView.Adapter<CardAdapterSmall.CardViewHolder> {
+public class CardAdapterSmallO extends RecyclerView.Adapter<CardAdapterSmallO.CardViewHolder> {
 
     ArrayList<Card> dataset;
 
-    public CardAdapterSmall(ArrayList<Card> dataset){
+    public CardAdapterSmallO(ArrayList<Card> dataset){
         this.dataset=dataset;
     }
 
@@ -33,15 +33,15 @@ public class CardAdapterSmall extends RecyclerView.Adapter<CardAdapterSmall.Card
 
     @NonNull
     @Override
-    public CardAdapterSmall.CardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public CardAdapterSmallO.CardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflate(xml,parent,false)
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_small,parent,false);
-        CardAdapterSmall.CardViewHolder cardViewHolder = new CardAdapterSmall.CardViewHolder(v);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_small_o,parent,false);
+        CardAdapterSmallO.CardViewHolder cardViewHolder = new CardAdapterSmallO.CardViewHolder(v);
         return cardViewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CardAdapterSmall.CardViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CardAdapterSmallO.CardViewHolder holder, int position) {
         // in questo metodo specifico il comportamento
         holder.imageView.setImageResource(dataset.get(position).getIdImage());
     }

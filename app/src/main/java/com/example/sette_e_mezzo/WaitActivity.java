@@ -89,8 +89,16 @@ public class WaitActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                JSONObject obj = new JSONObject();
+                try{
+                    obj.put("nplayers",idClients.size()+1);
+                    obj.put("idserver",socket.getId());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                socket.getSocket().emit("startGame",obj, (Ack) args -> {});
 
-                socket.getSocket().emit("startGame",socket.getId(), (Ack) args -> {});
+                JSONArray json = new JSONArray();
 
                 JSONArray json = new JSONArray();
                 for(int i=0;i<idClients.size();i++){
@@ -106,10 +114,16 @@ public class WaitActivity extends AppCompatActivity {
                 }
                 socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
 
-                Intent i = new Intent(WaitActivity.this, G4PServerActivity.class);
-                i.putExtra("idClients",idClients);
-                i.putExtra("idCard",Deck.getIstance().pull().getId());
-                startActivity(i);
+                if(idClients.size()+1 == 2){
+                    Intent i = new Intent(WaitActivity.this, G2PServerActivity.class);
+                    i.putExtra("idClients",idClients);
+                    startActivity(i);
+                }
+                else if(idClients.size()+1 == 3){
+                    Intent i = new Intent(WaitActivity.this, G3PServerActivity.class);
+                    i.putExtra("idClients",idClients);
+                    startActivity(i);
+                }
 
             }
         });

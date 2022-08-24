@@ -83,10 +83,12 @@
         android:layout_width="0dp"
         android:layout_height="100dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline9"
+
         app:layout_constraintEnd_toStartOf="@+id/ivFirstCardOtherPlayer"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
@@ -137,5 +139,4 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="365dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
