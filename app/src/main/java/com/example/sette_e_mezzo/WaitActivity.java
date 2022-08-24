@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -86,50 +87,40 @@ public class WaitActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                JSONObject obj = new JSONObject();
+                try{
+                    obj.put("nplayers",idClients.size()+1);
+                    obj.put("idserver",socket.getId());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                socket.getSocket().emit("startGame",obj, (Ack) args -> {});
 
-                socket.getSocket().emit("startGame",socket.getId(), (Ack) args -> {});
+                JSONArray json = new JSONArray();
 
                 for(int i=0;i<idClients.size();i++){
                     Card card = Deck.getIstance().pull();
-                    JSONObject json = new JSONObject();
+                    JSONObject client = new JSONObject();
                     try {
-                        json.put("idClient",idClients.get(i));
-                        json.put("card",card.toJSON());
+                        client.put("idClient",idClients.get(i));
+                        client.put("card",card.toJSON());
+                        json.put(client);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    //Log.d("debug",json.toString());
-                    socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
                 }
+                socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
 
-
-                /*
-                //Settaggio partita
-                for(i<nPlayers){
-                    socket.getSocket().emit("sendTo", idPlayer, card ,(Ack) args
+                if(idClients.size()+1 == 2){
+                    Intent i = new Intent(WaitActivity.this, G2PServerActivity.class);
+                    i.putExtra("idClients",idClients);
+                    startActivity(i);
                 }
-
-                // iterazione - da fare altrove
-
-                socket.getSocket().emit("isYourTurn", idPlayer, card ,(Ack) args
-                socket.getSocket().on("mossa", response ,(Ack) args
-                if(mossa==carta){
-                    socket.getSocket().emit("sendTo", idPlayer, card ,(Ack) args
-                    socket.getSocket().emit("sendAll", idPlayer, card ,(Ack) args
-                    if(punteggio>=7.5){
-                        socket.getSocket().emit("isYourTurn", nextIdPlayer, card ,(Ack) args
-                    }
-                }else{   //mossa==stai
-                    socket.getSocket().emit("isYourTurn", nextIdPlayer, card ,(Ack) args
-
+                else if(idClients.size()+1 == 3){
+                    Intent i = new Intent(WaitActivity.this, G3PServerActivity.class);
+                    i.putExtra("idClients",idClients);
+                    startActivity(i);
                 }
-                socket.getSocket().emit("sendAll", idPlayer, card ,(Ack) args
-                */
-
-
-                Intent i = new Intent(WaitActivity.this, G2PServerActivity.class);
-                i.putExtra("idClients",idClients.toArray());
-                startActivity(i);
 
             }
         });

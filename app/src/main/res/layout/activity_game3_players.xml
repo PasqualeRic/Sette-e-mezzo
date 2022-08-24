@@ -5,21 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/tappettino"
-    tools:context=".Game3PlayersActivity">
+    tools:context=".G3PClientActivity">
 
     <TextView
-        android:id="@+id/tvP2"
-        android:layout_width="64dp"
-        android:layout_height="54dp"
+        android:id="@+id/tvResultG3"
+        android:layout_width="221dp"
+        android:layout_height="58dp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textSize="34sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.769"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.915"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.484" />
+
+    <TextView
+        android:id="@+id/tvScoreDealer"
+        android:layout_width="89dp"
+        android:layout_height="73dp"
+        android:layout_marginBottom="512dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.742"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewDealer"
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMyPlayer"
-        android:layout_width="283dp"
-        android:layout_height="81dp"
+        android:id="@+id/recyclerViewPlayer1"
+        android:layout_width="299dp"
+        android:layout_height="78dp"
         android:background="@drawable/tappettino"
         android:backgroundTintMode="src_in"
         android:orientation="horizontal"
@@ -37,6 +55,7 @@
         android:id="@+id/btnCarta3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:text="@string/card"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,6 +68,7 @@
         android:id="@+id/btnStai3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         android:text="@string/stay"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,32 +78,31 @@
         app:layout_constraintVertical_bias="0.976" />
 
     <TextView
-        android:id="@+id/tvScoreMyPlayer"
+        android:id="@+id/tvScorePlayer1"
         android:layout_width="65dp"
         android:layout_height="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/rvMyPlayer"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewPlayer1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.346"
+        app:layout_constraintHorizontal_bias="0.589"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.98" />
+        app:layout_constraintVertical_bias="0.935" />
 
     <ImageView
-        android:id="@+id/ivFirstCardMyPlayer"
-        android:layout_width="69dp"
-        android:layout_height="91dp"
+        android:id="@+id/imageViewPlayer1"
+        android:layout_width="65dp"
+        android:layout_height="81dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/rvMyPlayer"
-        app:layout_constraintHorizontal_bias="0.695"
+        app:layout_constraintEnd_toStartOf="@+id/recyclerViewPlayer1"
+        app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.876"
-        app:srcCompat="@drawable/b1" />
+        app:layout_constraintVertical_bias="0.885" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvPlayer2"
-        android:layout_width="90dp"
-        android:layout_height="229dp"
+        android:id="@+id/recyclerViewPlayer2"
+        android:layout_width="107dp"
+        android:layout_height="262dp"
         android:background="@drawable/tappettino"
         android:backgroundTintMode="src_in"
         android:orientation="horizontal"
@@ -91,59 +110,64 @@
         android:paddingLeft="4dp"
         android:paddingEnd="4dp"
         android:paddingRight="4dp"
+        android:rotation="0"
+        android:rotationX="0"
+        android:rotationY="0"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintHorizontal_bias="0.035"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.576">
 
     </androidx.recyclerview.widget.RecyclerView>
 
     <ImageView
-        android:id="@+id/ivFirstCardPlayer2"
-        android:layout_width="82dp"
-        android:layout_height="79dp"
+        android:id="@+id/imageViewPlayer2"
+        android:layout_width="124dp"
+        android:layout_height="80dp"
         android:rotation="90"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.048"
+        app:layout_constraintHorizontal_bias="0.043"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.251"
-        app:srcCompat="@drawable/b1" />
+        app:layout_constraintVertical_bias="0.23"
+        app:srcCompat="@drawable/backcard" />
 
     <TextView
         android:id="@+id/tvScorePlayer2"
-        android:layout_width="64dp"
-        android:layout_height="54dp"
+        android:layout_width="74dp"
+        android:layout_height="68dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.058"
-        app:layout_constraintStart_toEndOf="@+id/rvPlayer2"
+        app:layout_constraintHorizontal_bias="0.193"
+        app:layout_constraintStart_toEndOf="@+id/recyclerViewPlayer2"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348" />
+        app:layout_constraintVertical_bias="0.365" />
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="67dp"
-        android:layout_height="112dp"
+        android:id="@+id/imageViewDealer"
+        android:layout_width="56dp"
+        android:layout_height="76dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.953"
+        app:layout_constraintHorizontal_bias="0.901"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.666"
-        app:srcCompat="@drawable/b1" />
+        app:layout_constraintVertical_bias="0.057"
+        app:srcCompat="@drawable/backcard" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="238dp"
-        android:layout_height="101dp"
+        android:id="@+id/recyclerViewDealer"
+        android:layout_width="284dp"
+        android:layout_height="84dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline5"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
-        app:layout_constraintHorizontal_bias="0.911"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewDealer"
+        app:layout_constraintHorizontal_bias="0.654"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintVertical_bias="0.065" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline5"
