@@ -246,6 +246,15 @@ public class G3PClientActivity extends AppCompatActivity {
                                 imageViewDealer.setImageResource(Deck.getIstance().getCardById(client.getString("idFirstCard")).getIdImage());
                                 scoreDealer = client.getDouble("score");
                                 tvScoreDealer.setText("" + scoreDealer);
+                                finish();
+                                /*
+                                    show toast->button
+                                        if yes:
+                                            send emit continueGame bool true
+                                        else no:
+                                            send emit continueGame bool false
+
+                                 */
                             }
                         }
 
@@ -307,4 +316,5 @@ public class G3PClientActivity extends AppCompatActivity {
             });
         });
     }
+
 }

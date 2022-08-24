@@ -111,30 +111,6 @@ public class WaitActivity extends AppCompatActivity {
                 }
                 socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
 
-
-                /*
-                //Settaggio partita
-                for(i<nPlayers){
-                    socket.getSocket().emit("sendTo", idPlayer, card ,(Ack) args
-                }
-
-                // iterazione - da fare altrove
-
-                socket.getSocket().emit("isYourTurn", idPlayer, card ,(Ack) args
-                socket.getSocket().on("mossa", response ,(Ack) args
-                if(mossa==carta){
-                    socket.getSocket().emit("sendTo", idPlayer, card ,(Ack) args
-                    socket.getSocket().emit("sendAll", idPlayer, card ,(Ack) args
-                    if(punteggio>=7.5){
-                        socket.getSocket().emit("isYourTurn", nextIdPlayer, card ,(Ack) args
-                    }
-                }else{   //mossa==stai
-                    socket.getSocket().emit("isYourTurn", nextIdPlayer, card ,(Ack) args
-
-                }
-                socket.getSocket().emit("sendAll", idPlayer, card ,(Ack) args
-                */
-
                 if(idClients.size()+1 == 2){
                     Intent i = new Intent(WaitActivity.this, G2PServerActivity.class);
                     i.putExtra("idClients",idClients);

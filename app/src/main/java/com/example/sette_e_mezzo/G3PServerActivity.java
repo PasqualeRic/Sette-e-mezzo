@@ -74,7 +74,7 @@ public class G3PServerActivity extends AppCompatActivity {
         imageViewPlayer1 = findViewById(R.id.imageViewDealer);
         recyclerViewPlayer1 = findViewById(R.id.recyclerViewDealer);
         tvScorePlayer1 = findViewById(R.id.tvScoreDealer);
-        layoutManagerP1 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false);
+        layoutManagerP1 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL, true);
         recyclerViewPlayer1.setLayoutManager(layoutManagerP1);
         myCardsPlayer1 = new ArrayList<>();
         myCardAdapterP1 = new CardAdapterSmall(myCardsPlayer1);
@@ -260,6 +260,25 @@ public class G3PServerActivity extends AppCompatActivity {
             });
 
         });
+
+        /*
+            int countClient = 0
+            int countResponse = 0
+            on.continueGame args ->{
+                recive true or false
+                countResponse += 1
+                if args == true:
+                    countClient += 1
+
+                if countResponse == 3 and countClient > 0
+                    emit.broadcast partita -> countClient + 1,socket.getId() //mando nuovo numero giocatore e client id per restartare la partita
+                    if countClient + 1 == 2:
+                        start intent G2P
+                    else countClient + 1 == 3:
+                        start intent G3P
+            }
+         */
+
 
     }
 
