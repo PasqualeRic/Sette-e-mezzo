@@ -99,8 +99,6 @@ public class WaitActivity extends AppCompatActivity {
                 socket.getSocket().emit("startGame",obj, (Ack) args -> {});
 
                 JSONArray json = new JSONArray();
-
-                JSONArray json = new JSONArray();
                 for(int i=0;i<idClients.size();i++){
                     Card card = Deck.getIstance().pull();
                     JSONObject client = new JSONObject();
@@ -114,16 +112,21 @@ public class WaitActivity extends AppCompatActivity {
                 }
                 socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
 
+                Intent i = null;
                 if(idClients.size()+1 == 2){
-                    Intent i = new Intent(WaitActivity.this, G2PServerActivity.class);
-                    i.putExtra("idClients",idClients);
-                    startActivity(i);
+                    i = new Intent(WaitActivity.this, G2PServerActivity.class);
+                } else if(idClients.size()+1 == 3){
+                    i = new Intent(WaitActivity.this, G3PServerActivity.class);
+                } else if(idClients.size()+1 == 4){
+                    i = new Intent(WaitActivity.this, G4PServerActivity.class);
+
                 }
-                else if(idClients.size()+1 == 3){
-                    Intent i = new Intent(WaitActivity.this, G3PServerActivity.class);
-                    i.putExtra("idClients",idClients);
-                    startActivity(i);
-                }
+                i.putExtra("idClients",idClients);
+                i.putExtra("idCard",Deck.getIstance().pull().getId());
+                startActivity(i);
+
+                if(idClients.size()>1)
+                    socket.getSocket().emit("isYourTurn", idClients.get(0));
 
             }
         });
