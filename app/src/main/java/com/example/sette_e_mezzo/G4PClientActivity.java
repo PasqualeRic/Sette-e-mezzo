@@ -271,13 +271,11 @@ public class G4PClientActivity extends AppCompatActivity {
                                 tvScoreP2.setText("" + scoreP2);
                                 idFCPlayer2 = client.getString("idFirstCard");
                             } else if (client.getString(strIdClient).equals(idClient3)) {
-                                Log.d("ALFA","client2");
                                 ivFCPlayer3.setImageResource(Deck.getIstance().getCardById(client.getString("idFirstCard")).getIdImage());
                                 scoreP3 = client.getDouble("score");
                                 tvScoreP3.setText("" + scoreP3);
                                 idFCPlayer3 = client.getString("idFirstCard");
                             } else if (client.getString(strIdClient).equals(idServer)) {
-                                Log.d("ALFA","client2");
                                 ivFirstCardDealer.setImageResource(Deck.getIstance().getCardById(client.getString("idFirstCard")).getIdImage());
                                 scoreDealer = client.getDouble("score");
                                 tvScoreDealer.setText("" + scoreDealer);
