@@ -63,6 +63,8 @@ public class WaitActivity extends AppCompatActivity {
 
         socket.getSocket().on("invioPlayer", args -> {
 
+            Log.d("ALFA-invioPlayer",args[2].toString());
+
             idClients.add(args[2].toString());
             conta = conta + 1;
             runOnUiThread(new Runnable() {
@@ -98,6 +100,7 @@ public class WaitActivity extends AppCompatActivity {
 
                 JSONArray json = new JSONArray();
 
+                JSONArray json = new JSONArray();
                 for(int i=0;i<idClients.size();i++){
                     Card card = Deck.getIstance().pull();
                     JSONObject client = new JSONObject();
@@ -125,9 +128,5 @@ public class WaitActivity extends AppCompatActivity {
             }
         });
 
-        /*socket.getSocket().on("clientTerminate",args -> {
-            Log.d("G2P","activity sbagliata");
-
-        });*/
     }
 }

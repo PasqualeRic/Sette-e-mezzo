@@ -2,6 +2,7 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
 
+
     <targetSelectedWithDropDown>
       <Target>
         <type value="QUICK_BOOT_TARGET" />
@@ -37,16 +38,16 @@
             <value value="C:\Users\enric\.android\avd\Server_2.avd" />
           </Key>
         </deviceKey>
-      </Target>
       <Target>
         <type value="QUICK_BOOT_TARGET" />
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\enric\.android\avd\Client1_3.avd" />
+            <value value="C:\Users\enric\.android\avd\Pixel_2.avd" />
           </Key>
         </deviceKey>
       </Target>
-    </targetsSelectedWithDialog>
+    </targetSelectedWithDropDown>
+    <timeTargetWasSelectedWithDropDown value="2022-08-24T05:49:49.659631200Z" />
   </component>
 </project>

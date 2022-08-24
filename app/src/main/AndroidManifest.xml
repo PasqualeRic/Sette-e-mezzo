@@ -14,13 +14,16 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".G4PServerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".G4PClientActivity"
+            android:exported="false" />
+        <activity
             android:name=".G3PServerActivity"
             android:exported="false" />
         <activity
             android:name=".G3PClientActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Game4PlayersActivity"
             android:exported="false" />
         <activity
             android:name=".G2PServerActivity"

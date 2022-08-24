@@ -28,6 +28,7 @@ public class WaitRoomClient extends AppCompatActivity {
         spinner.setVisibility(View.VISIBLE);
 
         socket.getSocket().on("partita", args -> {
+
             Log.d("args", args[0].toString());
             try {
                 JSONObject j = new JSONObject(args[0].toString());
@@ -46,6 +47,7 @@ public class WaitRoomClient extends AppCompatActivity {
                 i.putExtra("idServer", id);
                 startActivity(i);
             }
+
         });
         /*socket.getSocket().on("reciveYourFirstCard",args -> {
             Log.d("BETA", "reciveYourFirstCard - WaitRoomClient");
