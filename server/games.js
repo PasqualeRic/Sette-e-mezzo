@@ -87,7 +87,7 @@ const ioGames = (socket) => {
                 }else{
                     flag=true;
                 }
-            },1500);
+            },200);
         }catch(err)
         {
             callback(err)
@@ -141,6 +141,23 @@ const ioGames = (socket) => {
         console.log("isYourTurn");
         console.log(data);
         socket.to(data).emit("myTurn");
+
+        try{
+            var flag = false;
+            counter=0;
+            
+            var timer = setInterval(function(){
+                if(flag){
+                    socket.to(data).emit("myTurn");
+                    clearInterval(timer);
+                }else{
+                    flag=true;
+                }
+            },200);
+        }catch(err)
+        {
+            callback(err)
+        }
     }
 
     const overSize = async (data,callback) => {

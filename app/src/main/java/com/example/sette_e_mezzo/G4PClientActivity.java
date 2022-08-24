@@ -148,6 +148,7 @@ public class G4PClientActivity extends AppCompatActivity {
             btnCarta.setVisibility(View.INVISIBLE);
             btnStai.setVisibility(View.INVISIBLE);
 
+            isMyTurn=false;
             socket.getSocket().emit("terminateTurn",json,(Ack) args -> {});
         });
 
@@ -221,6 +222,7 @@ public class G4PClientActivity extends AppCompatActivity {
                         myCardAdapter.notifyItemInserted(myCards.size() - 1);
 
                         if(myScore>=7.5){
+                            isMyTurn=false;
                             btnCarta.setVisibility(View.INVISIBLE);
                             btnStai.setVisibility(View.INVISIBLE);
                             if(myScore>7.5){
@@ -394,7 +396,7 @@ public class G4PClientActivity extends AppCompatActivity {
         if(scoreDealer!=null)
             outState.putDouble("scoreDealer",scoreDealer);
 
-        outState.putString("result",tvResult.getText().toString());
+        outState.putString("tvResult",tvResult.getText().toString());
         outState.putBoolean("isMyTurn",isMyTurn);
 
     }

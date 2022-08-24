@@ -46,11 +46,12 @@ public class WaitRoomClient extends AppCompatActivity {
                 Intent i = new Intent(WaitRoomClient.this, G3PClientActivity.class);
                 i.putExtra("idServer", id);
                 startActivity(i);
+            } else if (num == 4) {
+                Intent i = new Intent(WaitRoomClient.this, G4PClientActivity.class);
+                i.putExtra("idServer", id);
+                startActivity(i);
             }
 
         });
-        /*socket.getSocket().on("reciveYourFirstCard",args -> {
-            Log.d("BETA", "reciveYourFirstCard - WaitRoomClient");
-        });*/
     }
 }

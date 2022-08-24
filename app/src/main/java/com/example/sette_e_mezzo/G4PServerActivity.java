@@ -121,7 +121,7 @@ public class G4PServerActivity extends AppCompatActivity {
         adapterP4 = new CardAdapterSmall(cardsP4);
         rvPlayer4.setAdapter(adapterP4);
 
-        Card myFirstCard = Deck.getIstance().pull();
+        Card myFirstCard = Deck.getIstance().getCardById(getIntent().getStringExtra("idCard"));
         myIdFC = myFirstCard.getId();
         ivMyFirstCard.setImageResource(myFirstCard.getIdImage());
         tvMyScore.setText(myFirstCard.getValue()+"");
@@ -167,9 +167,8 @@ public class G4PServerActivity extends AppCompatActivity {
             });
         });
 
-        // todo: questo blocco va spostato in WaitActivity
         indexClient=0;
-        socket.getSocket().emit("isYourTurn",idClients.get(indexClient));
+        //socket.getSocket().emit("isYourTurn",idClients.get(indexClient));
         idClient2 = idClients.get(indexClient);
         idClient3 = idClients.get(indexClient+1);
         idClient4 = idClients.get(indexClient+2);
@@ -288,12 +287,17 @@ public class G4PServerActivity extends AppCompatActivity {
 
         Log.d("ALFA","closeRound");
 
+        isMyTurn = false;
         btnCarta.setVisibility(View.INVISIBLE);
         btnStai.setVisibility(View.INVISIBLE);
 
         ivFCPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
         ivFCPlayer3.setImageResource(Deck.getIstance().getCardById(idFCPlayer3).getIdImage());
         ivFCPlayer4.setImageResource(Deck.getIstance().getCardById(idFCPlayer4).getIdImage());
+
+        tvScoreP2.setText(""+scoreP2);
+        tvScoreP3.setText(""+scoreP3);
+        tvScoreP4.setText(""+scoreP4);
 
         JSONArray json = new JSONArray();
         try {

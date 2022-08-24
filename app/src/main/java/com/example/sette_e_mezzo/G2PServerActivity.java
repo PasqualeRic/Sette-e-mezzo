@@ -165,6 +165,7 @@ public class G2PServerActivity extends AppCompatActivity {
 
                     if (myScore >= 7.5) {
                         tvScorePlayer.setText("" + scorePlayer);
+                        isMyTurn = false;
                         btnCarta.setVisibility(View.INVISIBLE);
                         btnStai.setVisibility(View.INVISIBLE);
 

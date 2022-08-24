@@ -108,6 +108,7 @@ public class G2PClientActivity extends AppCompatActivity {
             btnCarta.setVisibility(View.INVISIBLE);
             btnStai.setVisibility(View.INVISIBLE);
 
+            isMyTurn=false;
             socket.getSocket().emit("terminateTurn", json, (Ack) args -> {
             });
 
@@ -233,7 +234,7 @@ public class G2PClientActivity extends AppCompatActivity {
         if(scoreDealer!=null)
             outState.putDouble("scoreDealer",scoreDealer);
 
-        outState.putString("result",tvResult.getText().toString());
+        outState.putString("tvResult",tvResult.getText().toString());
 
         outState.putBoolean("isMyTurn",isMyTurn);
 
@@ -254,7 +255,7 @@ public class G2PClientActivity extends AppCompatActivity {
         myCardAdapter = new CardAdapter(myCards);
         myRecyclerView.setAdapter(myCardAdapter);
 
-        tvResult.setText(savedIstanceState.getString("result"));
+        tvResult.setText(savedIstanceState.getString("tvResult"));
 
         isMyTurn = savedIstanceState.getBoolean("isMyTurn");
         if(!isMyTurn){
