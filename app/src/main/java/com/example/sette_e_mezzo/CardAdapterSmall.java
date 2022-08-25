@@ -14,9 +14,11 @@ import java.util.ArrayList;
 public class CardAdapterSmall extends RecyclerView.Adapter<CardAdapterSmall.CardViewHolder> {
 
     ArrayList<Card> dataset;
+    int rotation;
 
-    public CardAdapterSmall(ArrayList<Card> dataset){
+    public CardAdapterSmall(ArrayList<Card> dataset,int rotation){
         this.dataset=dataset;
+        this.rotation=rotation;
     }
 
     // parte java per riferirsi all'xml
@@ -35,7 +37,14 @@ public class CardAdapterSmall extends RecyclerView.Adapter<CardAdapterSmall.Card
     @Override
     public CardAdapterSmall.CardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflate(xml,parent,false)
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_small,parent,false);
+        View v = null;
+        if(rotation==0)
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_small,parent,false);
+        else if(rotation==90)
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_small_left,parent,false);
+        else //rotation==270
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_small_right,parent,false);
+
         CardAdapterSmall.CardViewHolder cardViewHolder = new CardAdapterSmall.CardViewHolder(v);
         return cardViewHolder;
     }

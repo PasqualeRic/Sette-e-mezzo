@@ -35,7 +35,7 @@ public class CardAdapterSmallO extends RecyclerView.Adapter<CardAdapterSmallO.Ca
     @Override
     public CardAdapterSmallO.CardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //inflate(xml,parent,false)
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_small_o,parent,false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_small_left,parent,false);
         CardAdapterSmallO.CardViewHolder cardViewHolder = new CardAdapterSmallO.CardViewHolder(v);
         return cardViewHolder;
     }

@@ -89,27 +89,27 @@ public class G4PClientActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false);
         myRecyclerView = findViewById(R.id.rvMyPlayer4);
         myRecyclerView.setLayoutManager(layoutManager);
-        myCardAdapter = new CardAdapterSmall(myCards);
+        myCardAdapter = new CardAdapterSmall(myCards,0);
         myRecyclerView.setAdapter(myCardAdapter);
 
-        // Player 2 - Destra
+        // Player 2 - Sinistra
         ivFCPlayer2 = findViewById(R.id.ivFCPlayer2);
         cardsP2 = new ArrayList<>();
         tvScoreP2 = findViewById(R.id.tvScorePlayer2);
-        lmPlayer2 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,true);
+        lmPlayer2 = new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
         rvPlayer2 = findViewById(R.id.rvCardsPlayer2);
         rvPlayer2.setLayoutManager(lmPlayer2);
-        adapterP2 = new CardAdapterSmall(cardsP2);
+        adapterP2 = new CardAdapterSmall(cardsP2,90);
         rvPlayer2.setAdapter(adapterP2);
 
-        // Player 3 - Sinistra
+        // Player 3 - Destra
         ivFCPlayer3 = findViewById(R.id.ivFCPlayer3);
         cardsP3 = new ArrayList<>();
         tvScoreP3 = findViewById(R.id.tvScorePlayer3);
-        lmPlayer3 = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false);
+        lmPlayer3 = new LinearLayoutManager(this, RecyclerView.VERTICAL,true);
         rvPlayer3 = findViewById(R.id.rvCardsPlayer3);
         rvPlayer3.setLayoutManager(lmPlayer3);
-        adapterP3 = new CardAdapterSmall(cardsP3);
+        adapterP3 = new CardAdapterSmall(cardsP3,270);
         rvPlayer3.setAdapter(adapterP3);
 
         // Dealer
@@ -119,7 +119,7 @@ public class G4PClientActivity extends AppCompatActivity {
         dealerReyclerView = findViewById(R.id.rvCardsPlayer4);
         dealerReyclerView.setLayoutManager(lmDealer);
         dealerCards = new ArrayList<>();
-        cardAdapterDealer = new CardAdapterSmall(dealerCards);
+        cardAdapterDealer = new CardAdapterSmall(dealerCards,0);
         dealerReyclerView.setAdapter(cardAdapterDealer);
 
         btnCarta.setOnClickListener(v -> {
@@ -413,7 +413,7 @@ public class G4PClientActivity extends AppCompatActivity {
         ivMyFirstCard.setImageResource(Deck.getIstance().getCardById(myIdFirstCard).getIdImage());
         tvMyScore.setText(""+myScore);
 
-        myCardAdapter = new CardAdapterSmall(myCards);
+        myCardAdapter = new CardAdapterSmall(myCards,0);
         myRecyclerView.setAdapter(myCardAdapter);
 
         // Player 2
@@ -425,7 +425,7 @@ public class G4PClientActivity extends AppCompatActivity {
         if(!tvScoreP2.getText().toString().equals(""))
             ivFCPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
 
-        adapterP2 = new CardAdapterSmall(cardsP2);
+        adapterP2 = new CardAdapterSmall(cardsP2,90);
         rvPlayer2.setAdapter(adapterP2);
 
         // Player 3
@@ -437,7 +437,7 @@ public class G4PClientActivity extends AppCompatActivity {
         if(!tvScoreP3.getText().toString().equals(""))
             ivFCPlayer3.setImageResource(Deck.getIstance().getCardById(idFCPlayer3).getIdImage());
 
-        adapterP3 = new CardAdapterSmall(cardsP3);
+        adapterP3 = new CardAdapterSmall(cardsP3,270);
         rvPlayer3.setAdapter(adapterP3);
 
         // Dealer
@@ -448,8 +448,8 @@ public class G4PClientActivity extends AppCompatActivity {
         if(!tvScoreDealer.getText().toString().equals(""))
             ivFirstCardDealer.setImageResource(Deck.getIstance().getCardById(idFCDealer).getIdImage());
 
-        adapterP3 = new CardAdapterSmall(cardsP3);
-        rvPlayer3.setAdapter(adapterP3);
+        cardAdapterDealer = new CardAdapterSmall(dealerCards,0);
+        dealerReyclerView.setAdapter(cardAdapterDealer);
 
         tvResult.setText(savedIstanceState.getString("tvResult"));
         isMyTurn = savedIstanceState.getBoolean("isMyTurn");

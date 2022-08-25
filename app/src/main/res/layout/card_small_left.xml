@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/newCard"
-    android:layout_width="70dp"
-    android:layout_height="55dp">
+    android:layout_width="100dp"
+    android:layout_height="60dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,7 +13,7 @@
 
         <ImageView
             android:id="@+id/ivCardSmall"
-            android:layout_width="70dp"
+            android:layout_width="100dp"
             android:layout_height="60dp"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"

@@ -43,7 +43,7 @@ public class G3PClientActivity extends AppCompatActivity {
     ArrayList<Card> myCardsPlayer2;
     RecyclerView recyclerViewPlayer2;
     RecyclerView.LayoutManager layoutManagerP2;
-    CardAdapterSmallO myCardAdapterP2;
+    CardAdapterSmall myCardAdapterP2;
     Double scoreP2;
     String idClient2, idFCPlayer2;
 
@@ -88,7 +88,7 @@ public class G3PClientActivity extends AppCompatActivity {
         layoutManagerP2 = new LinearLayoutManager(this, RecyclerView.VERTICAL,false);
         recyclerViewPlayer2 = findViewById(R.id.recyclerViewPlayer2);
         recyclerViewPlayer2.setLayoutManager(layoutManagerP2);
-        myCardAdapterP2 = new CardAdapterSmallO(myCardsPlayer2);
+        myCardAdapterP2 = new CardAdapterSmall(myCardsPlayer2,90);
         recyclerViewPlayer2.setAdapter(myCardAdapterP2);
 
         // Dealer
@@ -379,7 +379,7 @@ public class G3PClientActivity extends AppCompatActivity {
         if(!tvScorePlayer2.getText().toString().equals(""))
             imageViewPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
 
-        myCardAdapterP2 = new CardAdapterSmallO(myCardsPlayer2);
+        myCardAdapterP2 = new CardAdapterSmall(myCardsPlayer2,90);
         recyclerViewPlayer2.setAdapter(myCardAdapterP2);
 
         // Dealer
