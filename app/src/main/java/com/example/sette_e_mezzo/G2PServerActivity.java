@@ -88,6 +88,7 @@ public class G2PServerActivity extends AppCompatActivity {
         rvPlayer.setAdapter(cardAdapterPlayer);
 
         socket.getSocket().on("requestCard",args -> {
+            Log.d("BETA","requestCard");
 
             Card card = Deck.getIstance().pull();
             JSONObject jsonObject = new JSONObject();
