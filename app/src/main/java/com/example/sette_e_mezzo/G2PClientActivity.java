@@ -148,24 +148,28 @@ public class G2PClientActivity extends AppCompatActivity {
         });
 
         socket.getSocket().on("reciveCard",args -> {
-
+            Log.d("BETA","idCard: "+idCard);
             try {
-                Log.wtf("prova", "p"+args[1]);
+
                 JSONObject json = new JSONObject(args[0].toString());
                 idClient = json.getString("idClient");
                 idCard = json.getJSONObject("card").getString("id");
                 myScore += json.getJSONObject("card").getDouble("value");
-
-            }catch(Exception e){}
+                Log.d("BETA","idClient: "+idClient);
+                Log.d("BETA","idCard: "+idCard);
+            }catch(Exception e){ Log.d("BETA","errore json");}
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
 
+
                     if(socket.getId().equals(idClient)) {
                         tvMyScore.setText(""+myScore);
                         myCards.add(Deck.getIstance().getCardById(idCard));
+                        Log.d("BETA"," card aggiunta ");
                         myCardAdapter.notifyItemInserted(myCards.size() - 1);
+                        Log.d("BETA"," dopo il notify ");
 
                         if(myScore>=7.5){
                             isMyTurn=false;

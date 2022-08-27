@@ -24,7 +24,7 @@ import io.socket.client.Ack;
 public class G3PServerActivity extends AppCompatActivity {
     SocketClass socket = new SocketClass();
 
-    int countClient = 1;
+    int countClient = 0;
     int countResponse = 1;
     TextView tvResult;
     Integer indexClient;  //indice per tenere traccia del client di turno
@@ -270,37 +270,43 @@ public class G3PServerActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    Deck.getIstance().restoreDeck();
                     String idClient = "";
                     Boolean src = false;
 
                     try {
                         JSONObject json = new JSONObject(args[0].toString());
-                        idRestartClients.add(json.getString("idClient"));
+                        idClient = json.getString("idClient");
                         src = json.getBoolean("bool");
-                    } catch (Exception e) {
-                    }
+                        Log.d("BETA","idClient: "+json.getString("idClient"));
+                    } catch (Exception e) { Log.d("BETA","errore json - resContinuaGame");}
+
                     countResponse += 1;
                     if (src) {
-                        Log.d("qui", "qui");
+                        idRestartClients.add(idClient);
                         countClient += 1;
                     }
                     Log.d("countResponse", countResponse + "");
                     Log.d("countClient", countClient + "");
+
                     if (countResponse == 3 && countClient > 0) {
                         JSONObject obj = new JSONObject();
                         try {
-                            obj.put("nplayers", countClient);
+                            obj.put("nplayers", countClient+1);
                             obj.put("idserver", socket.getId());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                         Log.d("dentroif", countClient + "");
-                        if (countClient == 2) {
+
+                        if (countClient == 1) {
                             Log.d("dentroif", "dentro if");
                             socket.getSocket().emit("startGame", obj, (Ack) arg -> {
                             });
                             JSONArray json = new JSONArray();
+                            Log.d("BETA"," -- idRestartClients --");
                             for(int i=0;i<idRestartClients.size();i++){
+                                Log.d("BETA","idClient: "+idRestartClients.get(i));
                                 Card card = Deck.getIstance().pull();
                                 JSONObject client = new JSONObject();
                                 try {
@@ -312,6 +318,8 @@ public class G3PServerActivity extends AppCompatActivity {
                                 }
                             }
                             socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
+                            socket.getSocket().off("requestCard");
+                            socket.getSocket().off("clientTerminate");
                             Intent i = new Intent(G3PServerActivity.this, G2PServerActivity.class);
                             i.putExtra("idCard", Deck.getIstance().pull().getId());
                             startActivity(i);
@@ -340,8 +348,6 @@ public class G3PServerActivity extends AppCompatActivity {
                         start intent G3P
             }
          */
-
-
     }
 
     private void closeRound() {

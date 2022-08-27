@@ -166,17 +166,13 @@ const ioGames = (socket) => {
         console.log(data);
         socket.broadcast.emit("overSize",data);
     }
+
     const continueGame = async (data,callback) => {
         console.log("continueGame");
         console.log(data);
-        if(data.bool == true){
-            socket.broadcast.emit("resContinueGame", data)
-        }
-        else{
-            socket.broadcast.emit("resContinueGame", false)
-        }
-
+        socket.broadcast.emit("resContinueGame", data)
     }
+
     const deletePlayer = async (data,callback) => {
         console.log("deletePlayer")
         var n = 0
@@ -184,12 +180,13 @@ const ioGames = (socket) => {
             console.log(element.id)
             for(var i = 0; i<element.players.length; i++){
                 if(element.players[i].id == data){
-                    element.players.pop(element.players[i].id);
                     console.log(element)
+                    element.players.pop(element.players[i].id);
                     n = parseInt(element.numberOfPlayers)
                     n = n - 1
                     element.numberOfPlayers = n
                     console.log(element)
+                    console.log("id player eliminato: "+data);
                 }
             }
         })
