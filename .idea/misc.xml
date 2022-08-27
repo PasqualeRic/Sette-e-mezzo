@@ -5,19 +5,23 @@
       <map>
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout-land/activity_g2p.xml" value="0.264" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout-land/activity_game3_players.xml" value="0.176" />
-        <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout-land/activity_game4_players.xml" value="0.1865079365079365" />
+        <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout-land/activity_game4_players.xml" value="0.2" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout-land/activity_main.xml" value="0.1984126984126984" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout-land/game2players.xml" value="0.1" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/activity_g2p.xml" value="0.264" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/activity_g2p_client.xml" value="0.234375" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/activity_game.xml" value="0.23007246376811594" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/activity_game3_players.xml" value="0.2" />
-        <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/activity_game4_players.xml" value="0.2203125" />
+        <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/activity_game4_players.xml" value="0.176" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/activity_main.xml" value="0.23007246376811594" />
+        <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/activity_player.xml" value="0.25" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/activity_wait.xml" value="0.2" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/card.xml" value="0.12" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/card_big.xml" value="0.264" />
-        <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/card_small_o.xml" value="0.2109375" />
+        <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/card_small.xml" value="0.1890625" />
+        <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/card_small_left.xml" value="0.24592391304347827" />
+        <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/card_small_o.xml" value="0.2" />
+        <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/card_small_right.xml" value="0.24895833333333334" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/game2_players.xml" value="0.23007246376811594" />
         <entry key="..\:/Users/enric/Desktop/App Mobile/Sette-e-mezzo/app/src/main/res/layout/game2players.xml" value="0.264" />
         <entry key="app/src/main/res/layout-land/activity_g2p.xml" value="0.26146384479717816" />

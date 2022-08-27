@@ -50,7 +50,7 @@ public class G3PServerActivity extends AppCompatActivity {
     TextView tvScorePlayer2;
     ArrayList<Card> myCardsPlayer2;
     RecyclerView recyclerViewPlayer2;
-    CardAdapterSmallO myCardAdapterP2;
+    CardAdapterSmall myCardAdapterP2;
     Double scoreP2;
 
     //PLAYER3 player bottom - MyPlayer - Dealer
@@ -104,7 +104,7 @@ public class G3PServerActivity extends AppCompatActivity {
         LinearLayoutManager layoutPlayer2 = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         recyclerViewPlayer2.setLayoutManager(layoutPlayer2);
         myCardsPlayer2 = new ArrayList<>();
-        myCardAdapterP2 = new CardAdapterSmallO(myCardsPlayer2);
+        myCardAdapterP2 = new CardAdapterSmall(myCardsPlayer2,90);
         recyclerViewPlayer2.setAdapter(myCardAdapterP2);
 
         //----
@@ -466,7 +466,7 @@ public class G3PServerActivity extends AppCompatActivity {
         if(!tvScorePlayer2.getText().toString().equals(""))
             imageViewPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
 
-        myCardAdapterP2 = new CardAdapterSmallO(myCardsPlayer2);
+        myCardAdapterP2 = new CardAdapterSmall(myCardsPlayer2,90);
         recyclerViewPlayer2.setAdapter(myCardAdapterP2);
 
         // Player 1 - top

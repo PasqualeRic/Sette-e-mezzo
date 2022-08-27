@@ -120,35 +120,28 @@
 
     <ImageView
         android:id="@+id/ivFCPlayer3"
-        android:layout_width="60dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline10"
+        android:layout_width="152dp"
+        android:layout_height="98dp"
+        android:layout_marginTop="180dp"
+        android:rotation="270"
+        app:layout_constraintBottom_toTopOf="@+id/tvScoreMyPlayer4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintVertical_bias="0.927"
         app:srcCompat="@drawable/backcard" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCardsPlayer3"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="36dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline10"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/ivFCPlayer3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/ivFCPlayer3"
+        app:layout_constraintHorizontal_bias="0.849"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
         app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline10"
@@ -159,67 +152,73 @@
 
     <ImageView
         android:id="@+id/ivFCPlayer2"
-        android:layout_width="60dp"
-        android:layout_height="100dp"
+        android:layout_width="152dp"
+        android:layout_height="98dp"
+        android:layout_marginBottom="240dp"
+        android:rotation="90"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.954"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline8"
-        app:layout_constraintVertical_bias="0.489"
+        app:layout_constraintTop_toBottomOf="@+id/rvCardsPlayer4"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/backcard" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCardsPlayer2"
-        android:layout_width="0dp"
-        android:layout_height="70dp"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline7"
-        app:layout_constraintEnd_toStartOf="@+id/ivFCPlayer2"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline8"
-        app:layout_constraintVertical_bias="0.688" />
+        app:layout_constraintTop_toBottomOf="@+id/ivFCPlayer2"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/tvResult4"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/guideline8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline10" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        app:layout_constraintEnd_toStartOf="@+id/rvCardsPlayer3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/rvCardsPlayer2"
+        app:layout_constraintTop_toTopOf="@+id/guideline6"
+        app:layout_constraintVertical_bias="0.468" />
 
     <TextView
         android:id="@+id/tvScorePlayer3"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="220dp"
-        android:layout_marginBottom="26dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="15dp"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/rvCardsPlayer3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.026"
-        app:layout_constraintStart_toEndOf="@+id/ivFCPlayer3"
-        app:layout_constraintTop_toTopOf="@+id/guideline6"
-        app:layout_constraintVertical_bias="0.878" />
+        app:layout_constraintBottom_toTopOf="@+id/ivFCPlayer3"
+        app:layout_constraintEnd_toStartOf="@+id/rvCardsPlayer3"
+        app:layout_constraintHorizontal_bias="0.344"
+        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintTop_toBottomOf="@+id/tvResult4"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/tvScorePlayer2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="257dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="14dp"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/rvCardsPlayer2"
-        app:layout_constraintEnd_toStartOf="@+id/ivFCPlayer2"
-        app:layout_constraintHorizontal_bias="0.531"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline8"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline10"
+        app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.068"
+        app:layout_constraintStart_toEndOf="@+id/rvCardsPlayer2"
+        app:layout_constraintTop_toBottomOf="@+id/ivFCPlayer2"
+        app:layout_constraintVertical_bias="0.214" />
 
     <ImageView
         android:id="@+id/ivFCPlayer4"
@@ -232,6 +231,13 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/backcard" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="205dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
