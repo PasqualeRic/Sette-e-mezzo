@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,9 +23,13 @@ import io.socket.client.Ack;
 
 public class G3PServerActivity extends AppCompatActivity {
     SocketClass socket = new SocketClass();
+
+    int countClient = 1;
+    int countResponse = 1;
     TextView tvResult;
     Integer indexClient;  //indice per tenere traccia del client di turno
     ArrayList<String> idClients;
+    ArrayList<String> idRestartClients;
     Button btnCarta, btnStai;
     Boolean isMyTurn;
 
@@ -61,6 +66,7 @@ public class G3PServerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game3_players);
+        idRestartClients = new ArrayList<>();
 
         idClients = getIntent().getStringArrayListExtra("idClients");
         isMyTurn = false;
@@ -253,6 +259,64 @@ public class G3PServerActivity extends AppCompatActivity {
                         if (scoreP2 > 7.5 && scoreP3 > 7.5) {
                             closeRound();
                         }
+                    }
+                }
+            });
+
+        });
+
+        socket.getSocket().on("resContinueGame", args -> {
+            Log.d("resContinueGame", args[0].toString());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    String idClient = "";
+                    Boolean src = false;
+
+                    try {
+                        JSONObject json = new JSONObject(args[0].toString());
+                        idRestartClients.add(json.getString("idClient"));
+                        src = json.getBoolean("bool");
+                    } catch (Exception e) {
+                    }
+                    countResponse += 1;
+                    if (src) {
+                        Log.d("qui", "qui");
+                        countClient += 1;
+                    }
+                    Log.d("countResponse", countResponse + "");
+                    Log.d("countClient", countClient + "");
+                    if (countResponse == 3 && countClient > 0) {
+                        JSONObject obj = new JSONObject();
+                        try {
+                            obj.put("nplayers", countClient);
+                            obj.put("idserver", socket.getId());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("dentroif", countClient + "");
+                        if (countClient == 2) {
+                            Log.d("dentroif", "dentro if");
+                            socket.getSocket().emit("startGame", obj, (Ack) arg -> {
+                            });
+                            JSONArray json = new JSONArray();
+                            for(int i=0;i<idRestartClients.size();i++){
+                                Card card = Deck.getIstance().pull();
+                                JSONObject client = new JSONObject();
+                                try {
+                                    client.put("idClient",idRestartClients.get(i));
+                                    client.put("card",card.toJSON());
+                                    json.put(client);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
+                            Intent i = new Intent(G3PServerActivity.this, G2PServerActivity.class);
+                            i.putExtra("idCard", Deck.getIstance().pull().getId());
+                            startActivity(i);
+                        }
+
                     }
                 }
             });

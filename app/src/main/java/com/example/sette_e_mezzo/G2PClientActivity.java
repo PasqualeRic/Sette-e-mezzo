@@ -128,6 +128,7 @@ public class G2PClientActivity extends AppCompatActivity {
         dealerReyclerView.setAdapter(cardAdapterDealer);
 
         socket.getSocket().on("reciveYourFirstCard",args -> {
+            Log.d("on", "on");
             try {
                 JSONArray array = new JSONArray(args[0].toString());
                 JSONObject json = new JSONObject(array.get(0).toString());
