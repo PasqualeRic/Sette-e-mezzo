@@ -2,12 +2,16 @@ package com.example.sette_e_mezzo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +29,7 @@ public class G3PClientActivity extends AppCompatActivity {
     String idServer;
     TextView tvResult;
     Boolean isMyTurn;
+    Button si, no;
 
     // PLAYER1 - MyPlayer - bottom
     Button btnCarta, btnStai;
@@ -253,15 +258,44 @@ public class G3PClientActivity extends AppCompatActivity {
                                 imageViewDealer.setImageResource(Deck.getIstance().getCardById(idFCDealer).getIdImage());
                                 scoreDealer = client.getDouble("score");
                                 tvScoreDealer.setText("" + scoreDealer);
-                                //finish();
-                                /*
-                                    show toast->button
-                                        if yes:
-                                            send emit continueGame bool true
-                                        else no:
-                                            send emit continueGame bool false
+                                Dialog d = new Dialog(G3PClientActivity.this);
+                                d.setTitle("restart");
+                                d.setCancelable(false);
+                                d.setContentView(R.layout.dialog);
+                                d.show();
+                                si = d.findViewById(R.id.btnSi);
+                                no = d.findViewById(R.id.btnNo);
 
-                                 */
+
+
+
+                                si.setOnClickListener(v->{
+                                    JSONObject j = new JSONObject();
+                                    try {
+                                        j.put("idClient", socket.getId());
+                                        j.put("bool", true);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    socket.getSocket().emit("continueGame", j ,(Ack) args -> {});
+                                    d.hide();
+                                    d.cancel();
+                                    finish();
+                                });
+                                no.setOnClickListener(v -> {
+                                    JSONObject j = new JSONObject();
+                                    try {
+                                        j.put("idClient", socket.getId());
+                                        j.put("bool", false);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    socket.getSocket().emit("continueGame",j ,(Ack) args -> {});
+                                    socket.getSocket().emit("deletePlayer", socket.getId() ,(Ack) args -> {});
+                                    socket.disconnection();
+                                    Intent intent = new Intent(G3PClientActivity.this, MenuActivity.class);
+                                    startActivity(intent);
+                                });
                             }
                         }
 
@@ -412,6 +446,22 @@ public class G3PClientActivity extends AppCompatActivity {
         socket.getSocket().off("reciveCard");
         socket.getSocket().off("myTurn");
         socket.getSocket().off("reciveYourFirstCard");
+    }
+    @Override
+    protected void onStop(){
+        super.onStop();
+        socket.getSocket().off("overSize");
+        socket.getSocket().off("closeRound");
+        socket.getSocket().off("reciveCard");
+        socket.getSocket().off("myTurn");
+        socket.getSocket().off("reciveYourFirstCard");
+    }
+    void showDialog(){
+        final Dialog dialog = new Dialog(G3PClientActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dialog);
+        dialog.show();
     }
 
 }

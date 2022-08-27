@@ -1,6 +1,7 @@
 const { v4: uuid } = require('uuid');
 const gamesManager = require('./gamesmanager');
 const Game = require('./game')
+var conta = 0;
 const ioGames = (socket) => {
     GamesArray = gamesManager.getGames()
     const createGame = async (callback) => {
@@ -87,7 +88,7 @@ const ioGames = (socket) => {
                 }else{
                     flag=true;
                 }
-            },200);
+            },2000);
         }catch(err)
         {
             callback(err)
@@ -153,7 +154,7 @@ const ioGames = (socket) => {
                 }else{
                     flag=true;
                 }
-            },200);
+            },2000);
         }catch(err)
         {
             callback(err)
@@ -166,6 +167,33 @@ const ioGames = (socket) => {
         socket.broadcast.emit("overSize",data);
     }
 
+    const continueGame = async (data,callback) => {
+        console.log("continueGame");
+        console.log(data);
+        socket.broadcast.emit("resContinueGame", data)
+    }
+
+    const deletePlayer = async (data,callback) => {
+        console.log("deletePlayer")
+        var n = 0
+        GamesArray.forEach(element => {
+            console.log(element.id)
+            for(var i = 0; i<element.players.length; i++){
+                if(element.players[i].id == data){
+                    console.log(element)
+                    element.players.pop(element.players[i].id);
+                    n = parseInt(element.numberOfPlayers)
+                    n = n - 1
+                    element.numberOfPlayers = n
+                    console.log(element)
+                    console.log("id player eliminato: "+data);
+                }
+            }
+        })
+
+    }
+    
+
     socket.on('confGame',confGame);
     socket.on('createGame',createGame);
     socket.on('joinGame',joinGame);
@@ -177,5 +205,7 @@ const ioGames = (socket) => {
     socket.on('closeRound',closeRound);
     socket.on('isYourTurn',isYourTurn);
     socket.on('overSize',overSize);
+    socket.on('continueGame',continueGame);
+    socket.on('deletePlayer',deletePlayer);
 }
 module.exports = ioGames
