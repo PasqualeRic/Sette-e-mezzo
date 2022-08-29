@@ -1,18 +1,10 @@
 package com.example.sette_e_mezzo;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.d("NOTIFICA","ONDESTROY");
-        Intent i = new Intent(MainActivity.this,MyReceiver.class);
+        Intent i = new Intent(MainActivity.this, PlayAgain.class);
         PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, ALARM_REQ_CODE, i,PendingIntent.FLAG_IMMUTABLE);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);

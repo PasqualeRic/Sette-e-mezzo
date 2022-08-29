@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-public class MyReceiver extends BroadcastReceiver {
+public class PlayAgain extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -24,9 +24,9 @@ public class MyReceiver extends BroadcastReceiver {
         PendingIntent pending = PendingIntent.getActivity(context.getApplicationContext(), 0, i,PendingIntent.FLAG_IMMUTABLE);
 
         Notification nBuilder = new NotificationCompat.Builder(context.getApplicationContext(),"CHANNEL_ID")
-                .setSmallIcon(android.R.drawable.star_on)
-                .setContentTitle(" TITOLO ")
-                .setContentText(" TESTO ")
+                .setSmallIcon(android.R.drawable.sym_def_app_icon)
+                .setContentTitle("Sette e mezzo")
+                .setContentText("E' tanto che manchi. Vieni a giocare!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pending)
                 .build();
@@ -34,10 +34,10 @@ public class MyReceiver extends BroadcastReceiver {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context.getApplicationContext());
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("CHANNEL_ID",
-                    "channel_name",
+            NotificationChannel channel = new NotificationChannel("idChannel",
+                    "playAgain",
                     NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setDescription("channel_description");
+           // channel.setDescription("");
             notificationManager.createNotificationChannel(channel);
         }
 

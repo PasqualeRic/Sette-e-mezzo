@@ -14,7 +14,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
         <receiver
-            android:name=".MyReceiver"
+            android:name=".PlayAgain"
             android:enabled="true"
             android:exported="true"></receiver>
 
