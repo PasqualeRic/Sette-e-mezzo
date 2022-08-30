@@ -6,12 +6,13 @@
     android:background="@drawable/verde"
     android:layout_height="match_parent"
     tools:context=".WaitRoomClient">
+
     <TextView
         android:id="@+id/tvWaitPlayers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20dp"
-        android:text="in attesa che il server inizi la partita"
+        android:text="@string/waitingGame"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

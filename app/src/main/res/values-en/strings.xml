@@ -11,4 +11,12 @@
     <string name="stay">Stay</string>
     <string name="win">YOU WIN</string>
     <string name="lose">YOU LOSE</string>
+    <string name="gameName">game name</string>
+    <string name="selectNumber">Select a number of players:</string>
+    <string name="namePlayer">name</string>
+    <string name="waitingGame">waiting for the game to start</string>
+    <string name="waitingPlayers">waiting for players</string>
+    <string name="roomFull">room full</string>
+
+
 </resources>
