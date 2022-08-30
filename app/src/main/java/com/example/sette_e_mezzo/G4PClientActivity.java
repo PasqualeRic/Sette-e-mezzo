@@ -156,6 +156,7 @@ public class G4PClientActivity extends AppCompatActivity {
         });
 
         socket.getSocket().on("reciveYourFirstCard",args -> {
+            Log.d("RESTART","reciveYourFirstCard");
             String idClient, idFirstCard;
             Double value;
             try {
@@ -188,8 +189,9 @@ public class G4PClientActivity extends AppCompatActivity {
             });
         });
 
+
         socket.getSocket().on("myTurn", args -> {
-            Log.d("ALFA","myTurn");
+            Log.d("RESTART","myTurn");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

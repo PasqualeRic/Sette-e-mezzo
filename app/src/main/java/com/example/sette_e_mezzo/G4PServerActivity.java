@@ -312,7 +312,7 @@ public class G4PServerActivity extends AppCompatActivity {
                     Log.d("countResponse", countResponse + "");
                     Log.d("countClient", countClient + "");
 
-                    if (countResponse == 3 && countClient > 0) {
+                    if (countResponse == 4 && countClient > 0) {
                         JSONObject obj = new JSONObject();
                         try {
                             obj.put("nplayers", countClient+1);
@@ -320,67 +320,50 @@ public class G4PServerActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Log.d("dentroif", countClient + "");
+                        Log.d("RESTART", countClient + "");
+                        Log.d("RESTART", "dentro if due client");
+                        socket.getSocket().emit("startGame", obj, (Ack) arg -> {});
+                        JSONArray json = new JSONArray();
+                        Log.d("RESTART"," -- idRestartClients --");
+                        for(int i=0;i<idRestartClients.size();i++){
+                            Log.d("RESTART","idClient: "+idRestartClients.get(i));
+                            Card card = Deck.getIstance().pull();
+                            JSONObject client = new JSONObject();
+                            try {
+                                client.put("idClient",idRestartClients.get(i));
+                                client.put("card",card.toJSON());
+                                json.put(client);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
+                        socket.getSocket().off("requestCard");
+                        socket.getSocket().off("clientTerminate");
 
-                        if (countClient == 1) {
-                            Log.d("dentroif", "dentro if due client");
-                            socket.getSocket().emit("startGame", obj, (Ack) arg -> {});
-                            JSONArray json = new JSONArray();
-                            Log.d("BETA"," -- idRestartClients --");
-                            for(int i=0;i<idRestartClients.size();i++){
-                                Log.d("BETA","idClient: "+idRestartClients.get(i));
-                                Card card = Deck.getIstance().pull();
-                                JSONObject client = new JSONObject();
-                                try {
-                                    client.put("idClient",idRestartClients.get(i));
-                                    client.put("card",card.toJSON());
-                                    json.put(client);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
-                            socket.getSocket().off("requestCard");
-                            socket.getSocket().off("clientTerminate");
-                            Intent i = new Intent(G4PServerActivity.this, G2PServerActivity.class);
-                            i.putExtra("idClients",idRestartClients);
-                            i.putExtra("idCard", Deck.getIstance().pull().getId());
-                            startActivity(i);
+                        Intent i = null;
+                        switch (countClient){
+                            case 1:
+                                i = new Intent(G4PServerActivity.this, G2PServerActivity.class);
+                                break;
+                            case 2:
+                                i = new Intent(G4PServerActivity.this, G3PServerActivity.class);
+                                socket.getSocket().emit("isYourTurn", idRestartClients.get(0));
+                                break;
+                            case 3:
+                                i = new Intent(G4PServerActivity.this, G4PServerActivity.class);
+                                socket.getSocket().emit("isYourTurn", idRestartClients.get(0));
+                                break;
+                            default:
+                                break;
                         }
-                    }else if(countResponse == 4 && countClient > 1){
-                        JSONObject obj = new JSONObject();
-                        try {
-                            obj.put("nplayers", countClient+1);
-                            obj.put("idserver", socket.getId());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("dentroif", countClient + "");
-                        if (countClient == 2) {
-                            Log.d("dentroif", "dentro if tre client");
-                            socket.getSocket().emit("startGame", obj, (Ack) arg -> {});
-                            JSONArray json = new JSONArray();
-                            Log.d("BETA"," -- idRestartClients --");
-                            for(int i=0;i<idRestartClients.size();i++){
-                                Log.d("BETA","idClient: "+idRestartClients.get(i));
-                                Card card = Deck.getIstance().pull();
-                                JSONObject client = new JSONObject();
-                                try {
-                                    client.put("idClient",idRestartClients.get(i));
-                                    client.put("card",card.toJSON());
-                                    json.put(client);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
-                            socket.getSocket().off("requestCard");
-                            socket.getSocket().off("clientTerminate");
-                            Intent i = new Intent(G4PServerActivity.this, G2PServerActivity.class);
-                            i.putExtra("idClients",idRestartClients);
-                            i.putExtra("idCard", Deck.getIstance().pull().getId());
-                            startActivity(i);
-                        }
+
+                        i.putExtra("idClients",idRestartClients);
+                        i.putExtra("idCard", Deck.getIstance().pull().getId());
+                        startActivity(i);
+
+                    }else{
+                        //todo fine partita
                     }
                 }
             });
