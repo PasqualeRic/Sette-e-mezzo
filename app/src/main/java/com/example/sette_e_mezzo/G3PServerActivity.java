@@ -330,24 +330,6 @@ public class G3PServerActivity extends AppCompatActivity {
             });
 
         });
-
-        /*
-            int countClient = 0
-            int countResponse = 0
-            on.continueGame args ->{
-                recive true or false
-                countResponse += 1
-                if args == true:
-                    countClient += 1
-
-                if countResponse == 3 and countClient > 0
-                    emit.broadcast partita -> countClient + 1,socket.getId() //mando nuovo numero giocatore e client id per restartare la partita
-                    if countClient + 1 == 2:
-                        start intent G2P
-                    else countClient + 1 == 3:
-                        start intent G3P
-            }
-         */
     }
 
     private void closeRound() {
