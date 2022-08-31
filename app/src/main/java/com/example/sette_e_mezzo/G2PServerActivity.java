@@ -42,6 +42,7 @@ public class G2PServerActivity extends AppCompatActivity {
     CardAdapter myCardAdapter;
     Double myScore;
     Card firstCard;
+    TextView tvNameDealer;
 
     // PLAYER
     ImageView ivFirstPlayer;
@@ -51,6 +52,7 @@ public class G2PServerActivity extends AppCompatActivity {
     ArrayList<Card> playerCards;
     Double scorePlayer;
     String idFirstCardPlayer;
+    TextView tvNamePlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,8 @@ public class G2PServerActivity extends AppCompatActivity {
         tvMyScore = findViewById(R.id.tvMyScore);
         myScore = firstCard.getValue();
         tvMyScore.setText(""+myScore);
+        tvNameDealer = findViewById(R.id.tvMyName);
+        tvNameDealer.setText(R.string.dealer);
 
         myRecyclerView = findViewById(R.id.rvMyCards);
         layoutManager = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,false);
@@ -86,6 +90,8 @@ public class G2PServerActivity extends AppCompatActivity {
 
         // PLAYER
         ivFirstPlayer = findViewById(R.id.ivFirstCardOtherPlayer);
+        tvNamePlayer = findViewById(R.id.tvNameOtherPlayer);
+        tvNamePlayer.setText(getIntent().getStringArrayListExtra("names").get(0));
         tvScorePlayer = findViewById(R.id.tvScoreOtherPlayer);
         rvPlayer = findViewById(R.id.rvCardsOtherPlayer);
         LinearLayoutManager lmPlayer = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,true);
@@ -131,6 +137,7 @@ public class G2PServerActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     if(scorePlayer>7.5){
+                        tvScorePlayer.setText(""+scorePlayer);
                         tvResult.setText(R.string.win);
                         ivFirstPlayer.setImageResource(Deck.getIstance().getCardById(idFirstCardPlayer).getIdImage());
                         JSONObject json = new JSONObject();
@@ -316,7 +323,7 @@ public class G2PServerActivity extends AppCompatActivity {
         outState.putString("idFirstCardPlayer",idFirstCardPlayer);
         outState.putStringArrayList("playerCards",Utilis.getIdCards(playerCards));
         if(scorePlayer!=null)
-            outState.putDouble("scoreDealer",scorePlayer);
+            outState.putDouble("scorePlayer",scorePlayer);
 
         outState.putString("result",tvResult.getText().toString());
 

@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@drawable/verde"
     android:layout_height="match_parent">
+
     <TextView
         android:id="@+id/tvRoomFull"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Room Full"
+        android:text="@string/roomFull"
         android:textAlignment="center"
         android:textStyle="bold"
         android:visibility="invisible"
@@ -21,36 +23,36 @@
         android:id="@+id/tvWaitPlayers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="in attesa di giocatori..."
+        android:text="@string/waitingPlayers"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.079" />
+        app:layout_constraintVertical_bias="0.102" />
 
     <TextView
-        android:id="@+id/set"
-        android:layout_width="38dp"
+        android:id="@+id/tvNumPlayers"
+        android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:text="  "
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.815"
+        app:layout_constraintEnd_toStartOf="@+id/tvMaxPlayer"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126" />
+        app:layout_constraintVertical_bias="0.127" />
+
     <TextView
-        android:id="@+id/numberPlayers"
-        android:layout_width="38dp"
+        android:id="@+id/tvMaxPlayer"
+        android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:text="  "
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.857"
+        app:layout_constraintHorizontal_bias="0.87"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.126" />
+        app:layout_constraintVertical_bias="0.127" />
 
     <ProgressBar
         android:id="@+id/pbWaitClient"
@@ -62,19 +64,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.141" />
+        app:layout_constraintVertical_bias="0.194" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvClients"
         android:layout_width="0dp"
-        android:layout_height="145dp"
+        android:layout_height="110dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btnStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.797" />
+        app:layout_constraintVertical_bias="0.768" />
 
     <Button
         android:id="@+id/btnStart"
@@ -87,6 +89,6 @@
         app:layout_constraintHorizontal_bias="0.499"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.819" />
+        app:layout_constraintVertical_bias="0.842" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

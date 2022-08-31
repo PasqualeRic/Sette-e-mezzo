@@ -208,7 +208,6 @@ public class G3PServerActivity extends AppCompatActivity {
                         score = json.getDouble("score");
                         idClient = json.getString("idClient");
                         idFirstCard = json.getString("idFirstCard");
-                        Log.d("cacio", score+"");
                     } catch (Exception e) {
                     }
 

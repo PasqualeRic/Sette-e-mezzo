@@ -141,7 +141,6 @@ const ioGames = (socket) => {
     const isYourTurn = async (data,callback) => {
         console.log("isYourTurn");
         console.log(data);
-        //socket.to(data).emit("myTurn");
 
         try{
             var flag = false;
@@ -154,7 +153,7 @@ const ioGames = (socket) => {
                 }else{
                     flag=true;
                 }
-            },2000);
+            },250);
         }catch(err)
         {
             callback(err)

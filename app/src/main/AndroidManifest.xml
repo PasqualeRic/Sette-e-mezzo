@@ -13,6 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:usesCleartextTraffic="true">
+        <receiver
+            android:name=".PlayAgain"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
         <activity
             android:name=".G4PServerActivity"
             android:exported="false" />

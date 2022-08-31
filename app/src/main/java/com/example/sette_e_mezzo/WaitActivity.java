@@ -104,6 +104,7 @@ public class WaitActivity extends AppCompatActivity {
                     JSONObject client = new JSONObject();
                     try {
                         client.put("idClient",idClients.get(i));
+                        client.put("name",usernameClients.get(i));
                         client.put("card",card.toJSON());
                         json.put(client);
                     } catch (JSONException e) {
@@ -119,9 +120,10 @@ public class WaitActivity extends AppCompatActivity {
                     i = new Intent(WaitActivity.this, G3PServerActivity.class);
                 } else if(idClients.size()+1 == 4){
                     i = new Intent(WaitActivity.this, G4PServerActivity.class);
-
                 }
+
                 i.putExtra("idClients",idClients);
+                i.putExtra("names",usernameClients);
                 i.putExtra("idCard",Deck.getIstance().pull().getId());
                 startActivity(i);
 

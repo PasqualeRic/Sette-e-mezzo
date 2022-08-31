@@ -29,9 +29,6 @@ public class PlayerActivity extends AppCompatActivity {
         n = findViewById(R.id.player);
         player = findViewById(R.id.name);
 
-
-
-
         btnJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

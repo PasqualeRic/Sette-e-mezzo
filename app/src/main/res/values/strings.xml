@@ -12,6 +12,12 @@
     <string name="stay">Stai</string>
     <string name="win">HAI VINTO</string>
     <string name="lose">HAI PERSO</string>
+    <string name="gameName">nome partita</string>
+    <string name="selectNumber">Seleziona il numero di giocatori:</string>
+    <string name="namePlayer">nome</string>
+    <string name="waitingGame">in attesa che il server inizi la partita</string>
+    <string name="waitingPlayers">in attesa di giocatori...</string>
+    <string name="roomFull">stanza piena</string>
     //-------
 
     <string-array name="players">
