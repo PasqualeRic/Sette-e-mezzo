@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +29,8 @@ public class G2PClientActivity extends AppCompatActivity {
     String idServer;
     TextView tvResult;
     Boolean isMyTurn;
+
+    Button si, no;
 
     // PLAYER
     ImageView ivMyFirstCard;
@@ -216,6 +220,43 @@ public class G2PClientActivity extends AppCompatActivity {
                             } else {
                                 tvResult.setText(R.string.lose);
                             }
+                            Dialog d = new Dialog(G2PClientActivity.this);
+                            d.setTitle("restart");
+                            d.setCancelable(false);
+                            d.setContentView(R.layout.dialog);
+                            d.show();
+
+                            si = d.findViewById(R.id.btnSi);
+                            no = d.findViewById(R.id.btnNo);
+
+                            si.setOnClickListener(v->{
+                                JSONObject j = new JSONObject();
+                                try {
+                                    j.put("idClient", socket.getId());
+                                    j.put("bool", true);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                socket.getSocket().emit("continueGame", j ,(Ack) args -> {});
+                                d.hide();
+                                d.cancel();
+                                finish();
+                            });
+
+                            no.setOnClickListener(v -> {
+                                JSONObject j = new JSONObject();
+                                try {
+                                    j.put("idClient", socket.getId());
+                                    j.put("bool", false);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                socket.getSocket().emit("continueGame",j ,(Ack) args -> {});
+                                socket.getSocket().emit("deletePlayer", socket.getId() ,(Ack) args -> {});
+                                socket.disconnection();
+                                Intent intent = new Intent(G2PClientActivity.this, MenuActivity.class);
+                                startActivity(intent);
+                            });
                         }
                     } catch (Exception e) {}
                 }
@@ -282,12 +323,22 @@ public class G2PClientActivity extends AppCompatActivity {
             tvScoreDealer.setText(""+scoreDealer);
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        socket.getSocket().off("overSize");
         socket.getSocket().off("closeRound");
         socket.getSocket().off("reciveCard");
+        socket.getSocket().off("myTurn");
+        socket.getSocket().off("reciveYourFirstCard");
+    }
+    @Override
+    protected void onStop(){
+        super.onStop();
+        socket.getSocket().off("overSize");
+        socket.getSocket().off("closeRound");
+        socket.getSocket().off("reciveCard");
+        socket.getSocket().off("myTurn");
         socket.getSocket().off("reciveYourFirstCard");
     }
 }

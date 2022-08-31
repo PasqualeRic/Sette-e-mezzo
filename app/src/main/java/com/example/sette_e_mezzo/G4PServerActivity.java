@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -362,8 +363,9 @@ public class G4PServerActivity extends AppCompatActivity {
                         i.putExtra("idCard", Deck.getIstance().pull().getId());
                         startActivity(i);
 
-                    }else{
-                        //todo fine partita
+                    }else if(countResponse== 4 && countClient == 0){
+                        Intent i = new Intent(G4PServerActivity.this, MenuActivity.class);
+                        startActivity(i);
                     }
                 }
             });
