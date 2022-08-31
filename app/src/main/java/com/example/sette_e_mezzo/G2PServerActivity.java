@@ -296,6 +296,7 @@ public class G2PServerActivity extends AppCompatActivity {
                             socket.getSocket().off("clientTerminate");
                             Intent i = new Intent(G2PServerActivity.this, G2PServerActivity.class);
                             i.putExtra("idCard", Deck.getIstance().pull().getId());
+                            i.putExtra("names",getIntent().getStringArrayListExtra("names"));
                             startActivity(i);
                         }
 
