@@ -240,7 +240,7 @@ public class G2PServerActivity extends AppCompatActivity {
         outState.putString("idFirstCardPlayer",idFirstCardPlayer);
         outState.putStringArrayList("playerCards",Utilis.getIdCards(playerCards));
         if(scorePlayer!=null)
-            outState.putDouble("scoreDealer",scorePlayer);
+            outState.putDouble("scorePlayer",scorePlayer);
 
         outState.putString("result",tvResult.getText().toString());
 

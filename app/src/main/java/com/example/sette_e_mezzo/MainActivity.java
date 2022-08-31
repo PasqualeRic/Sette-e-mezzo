@@ -29,8 +29,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button btnNotify = findViewById(R.id.btnNotify);
-
     }
 
     @Override
@@ -41,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
         PendingIntent pending = PendingIntent.getBroadcast(MainActivity.this, ALARM_REQ_CODE, i,PendingIntent.FLAG_IMMUTABLE);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        //48 ore = 1000 * 60 * 60 * 24 * 2
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,1000*3,pending);
         Log.d("NOTIFICA","Alarm settato");
     }
