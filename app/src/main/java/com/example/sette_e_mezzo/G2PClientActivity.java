@@ -33,10 +33,12 @@ public class G2PClientActivity extends AppCompatActivity {
     Button btnCarta, btnStai;
     ArrayList<Card> myCards;
     TextView tvMyScore;
+    TextView tvNameMyPlayer;
     RecyclerView myRecyclerView;
     RecyclerView.LayoutManager layoutManager;
     CardAdapter myCardAdapter;
     Double myScore;
+
 
     //DELAER
     ImageView ivFirstCardDealer;
@@ -46,6 +48,7 @@ public class G2PClientActivity extends AppCompatActivity {
     ArrayList<Card> dealerCards;
     String idFirstCardDealer;
     Double scoreDealer;
+    TextView tvNameDealer;
 
     //variabili di servizio
     String idClient, idFirstCard, idCard;
@@ -64,6 +67,7 @@ public class G2PClientActivity extends AppCompatActivity {
         ivMyFirstCard = findViewById(R.id.ivMyFirstCard);
         btnCarta = findViewById(R.id.btnCarta);
         btnStai = findViewById(R.id.btnStai);
+        tvNameMyPlayer = findViewById(R.id.tvMyName);
 
         tvMyScore = findViewById(R.id.tvMyScore);
 
@@ -118,6 +122,8 @@ public class G2PClientActivity extends AppCompatActivity {
         //  DEALER
         ivFirstCardDealer = findViewById(R.id.ivFirstCardOtherPlayer);
         tvScoreDealer = findViewById(R.id.tvScoreOtherPlayer);
+        tvNameDealer = findViewById(R.id.tvNameOtherPlayer);
+        tvNameDealer.setText(R.string.dealer);
 
         dealerReyclerView = findViewById(R.id.rvCardsOtherPlayer);
         LinearLayoutManager lmDealer = new LinearLayoutManager(this, RecyclerView.HORIZONTAL,true);
@@ -129,18 +135,19 @@ public class G2PClientActivity extends AppCompatActivity {
 
         socket.getSocket().on("reciveYourFirstCard",args -> {
             Log.d("on", "on");
-            try {
-                JSONArray array = new JSONArray(args[0].toString());
-                JSONObject json = new JSONObject(array.get(0).toString());
-                //idClient = json.getString("idClient");
-                idFirstCard = json.getJSONObject("card").getString("id");
-                myScore = json.getJSONObject("card").getDouble("value");
-
-            }catch(Exception e){}
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    try {
+                        JSONArray array = new JSONArray(args[0].toString());
+                        JSONObject json = new JSONObject(array.get(0).toString());
+                        //idClient = json.getString("idClient");
+                        idFirstCard = json.getJSONObject("card").getString("id");
+                        myScore = json.getJSONObject("card").getDouble("value");
+                        tvNameMyPlayer.setText(json.getString("name"));
+
+                    }catch(Exception e){}
                     tvMyScore.setText(""+myScore);
                     ivMyFirstCard.setImageResource(Deck.getIstance().getCardById(idFirstCard).getIdImage());
                 }
