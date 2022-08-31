@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +25,11 @@ import io.socket.client.Ack;
 public class G4PServerActivity extends AppCompatActivity {
 
     SocketClass socket = new SocketClass();
+
+    int countClient = 0;
+    int countResponse = 1;
+    ArrayList<String> idRestartClients;
+
     TextView tvResult;
     Button btnCarta, btnStai;
     ArrayList<String> idClients;
@@ -73,6 +80,8 @@ public class G4PServerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game4_players);
+
+        idRestartClients = new ArrayList<>();
 
         isMyTurn=false;
         idClients = getIntent().getStringArrayListExtra("idClients");
@@ -275,6 +284,88 @@ public class G4PServerActivity extends AppCompatActivity {
                         if(scoreP2>7.5 && scoreP3>7.5 && scoreP4>7.5){
                             closeRound();
                         }
+                    }
+                }
+            });
+
+        });
+        socket.getSocket().on("resContinueGame", args -> {
+            Log.d("resContinueGame", args[0].toString());
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Deck.getIstance().restoreDeck();
+                    String idClient = "";
+                    Boolean src = false;
+
+                    try {
+                        JSONObject json = new JSONObject(args[0].toString());
+                        idClient = json.getString("idClient");
+                        src = json.getBoolean("bool");
+                        Log.d("BETA","idClient: "+json.getString("idClient"));
+                    } catch (Exception e) { Log.d("BETA","errore json - resContinuaGame");}
+
+                    countResponse += 1;
+                    if (src) {
+                        idRestartClients.add(idClient);
+                        countClient += 1;
+                    }
+                    Log.d("countResponse", countResponse + "");
+                    Log.d("countClient", countClient + "");
+
+                    if (countResponse == 4 && countClient > 0) {
+                        JSONObject obj = new JSONObject();
+                        try {
+                            obj.put("nplayers", countClient+1);
+                            obj.put("idserver", socket.getId());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("RESTART", countClient + "");
+                        Log.d("RESTART", "dentro if due client");
+                        socket.getSocket().emit("startGame", obj, (Ack) arg -> {});
+                        JSONArray json = new JSONArray();
+                        Log.d("RESTART"," -- idRestartClients --");
+                        for(int i=0;i<idRestartClients.size();i++){
+                            Log.d("RESTART","idClient: "+idRestartClients.get(i));
+                            Card card = Deck.getIstance().pull();
+                            JSONObject client = new JSONObject();
+                            try {
+                                client.put("idClient",idRestartClients.get(i));
+                                client.put("card",card.toJSON());
+                                json.put(client);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
+                        socket.getSocket().off("requestCard");
+                        socket.getSocket().off("clientTerminate");
+
+                        Intent i = null;
+                        switch (countClient){
+                            case 1:
+                                i = new Intent(G4PServerActivity.this, G2PServerActivity.class);
+                                break;
+                            case 2:
+                                i = new Intent(G4PServerActivity.this, G3PServerActivity.class);
+                                socket.getSocket().emit("isYourTurn", idRestartClients.get(0));
+                                break;
+                            case 3:
+                                i = new Intent(G4PServerActivity.this, G4PServerActivity.class);
+                                socket.getSocket().emit("isYourTurn", idRestartClients.get(0));
+                                break;
+                            default:
+                                break;
+                        }
+
+                        i.putExtra("idClients",idRestartClients);
+                        i.putExtra("idCard", Deck.getIstance().pull().getId());
+                        startActivity(i);
+
+                    }else if(countResponse== 4 && countClient == 0){
+                        Intent i = new Intent(G4PServerActivity.this, MenuActivity.class);
+                        startActivity(i);
                     }
                 }
             });

@@ -105,8 +105,7 @@ public class G3PClientActivity extends AppCompatActivity {
         dealerCards = new ArrayList<>();
         cardAdapterDealer = new CardAdapter(dealerCards);
         dealerReyclerView.setAdapter(cardAdapterDealer);
-
-
+        Log.d("non entra", "non entra dai");
        btnCarta.setOnClickListener(v -> {
            Log.d("givemecard", "givemecard");
             JSONObject json = new JSONObject();
@@ -456,12 +455,4 @@ public class G3PClientActivity extends AppCompatActivity {
         socket.getSocket().off("myTurn");
         socket.getSocket().off("reciveYourFirstCard");
     }
-    void showDialog(){
-        final Dialog dialog = new Dialog(G3PClientActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.dialog);
-        dialog.show();
-    }
-
 }

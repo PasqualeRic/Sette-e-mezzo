@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -287,7 +288,6 @@ public class G3PServerActivity extends AppCompatActivity {
                     }
                     Log.d("countResponse", countResponse + "");
                     Log.d("countClient", countClient + "");
-
                     if (countResponse == 3 && countClient > 0) {
                         JSONObject obj = new JSONObject();
                         try {
@@ -324,29 +324,14 @@ public class G3PServerActivity extends AppCompatActivity {
                             startActivity(i);
                         }
 
+                    }else if(countResponse== 3 && countClient == 0){
+                        Intent i = new Intent(G3PServerActivity.this, MenuActivity.class);
+                        startActivity(i);
                     }
                 }
             });
 
         });
-
-        /*
-            int countClient = 0
-            int countResponse = 0
-            on.continueGame args ->{
-                recive true or false
-                countResponse += 1
-                if args == true:
-                    countClient += 1
-
-                if countResponse == 3 and countClient > 0
-                    emit.broadcast partita -> countClient + 1,socket.getId() //mando nuovo numero giocatore e client id per restartare la partita
-                    if countClient + 1 == 2:
-                        start intent G2P
-                    else countClient + 1 == 3:
-                        start intent G3P
-            }
-         */
     }
 
     private void closeRound() {

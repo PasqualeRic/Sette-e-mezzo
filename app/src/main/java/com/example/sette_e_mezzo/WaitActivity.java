@@ -127,6 +127,8 @@ public class WaitActivity extends AppCompatActivity {
                 i.putExtra("idCard",Deck.getIstance().pull().getId());
                 startActivity(i);
 
+                Log.d("RESTART","icClients.size: "+idClients.size());
+
                 if(idClients.size()>1)
                     socket.getSocket().emit("isYourTurn", idClients.get(0));
 
