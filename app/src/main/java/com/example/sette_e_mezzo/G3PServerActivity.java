@@ -31,6 +31,7 @@ public class G3PServerActivity extends AppCompatActivity {
     Integer indexClient;  //indice per tenere traccia del client di turno
     ArrayList<String> idClients;
     ArrayList<String> idRestartClients;
+    ArrayList<String> names;
     Button btnCarta, btnStai;
     Boolean isMyTurn;
 
@@ -44,6 +45,7 @@ public class G3PServerActivity extends AppCompatActivity {
     CardAdapter myCardAdapterP1;
     Double scoreP1;
     Card firstCard;
+    TextView tvNamePlayer1;
 
     // PLAYER2 player left
     String idClient2, idFCPlayer2;
@@ -53,6 +55,7 @@ public class G3PServerActivity extends AppCompatActivity {
     RecyclerView recyclerViewPlayer2;
     CardAdapterSmall myCardAdapterP2;
     Double scoreP2;
+    TextView tvNamePlayer2;
 
     //PLAYER3 player bottom - MyPlayer - Dealer
     String idFCPlayer3;
@@ -62,6 +65,7 @@ public class G3PServerActivity extends AppCompatActivity {
     CardAdapter myCardAdapterP3;
     ArrayList<Card> myCardsPlayer3;
     Double scoreP3;
+    TextView tvNamePlayer3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,7 @@ public class G3PServerActivity extends AppCompatActivity {
         idRestartClients = new ArrayList<>();
 
         idClients = getIntent().getStringArrayListExtra("idClients");
+        names = getIntent().getStringArrayListExtra("names");
         isMyTurn = false;
 
         tvResult = findViewById(R.id.tvResultG3);
@@ -86,8 +91,10 @@ public class G3PServerActivity extends AppCompatActivity {
         myCardsPlayer1 = new ArrayList<>();
         myCardAdapterP1 = new CardAdapter(myCardsPlayer1);
         recyclerViewPlayer1.setAdapter(myCardAdapterP1);
+        tvNamePlayer1 = findViewById(R.id.tvNamePlayerTop);
 
         //bottom
+        tvNamePlayer3 = findViewById(R.id.tvNameMyPlayer);
         imageViewPlayer3 = findViewById(R.id.imageViewPlayer1);
         tvScorePlayer3 = findViewById(R.id.tvScorePlayer1);
         recyclerViewPlayer3 = findViewById(R.id.recyclerViewPlayer1);
@@ -99,6 +106,8 @@ public class G3PServerActivity extends AppCompatActivity {
         recyclerViewPlayer3.setAdapter(myCardAdapterP3);
 
         //left
+        tvNamePlayer2 = findViewById(R.id.tvNamePlayer2);
+        tvNamePlayer2.setText(R.string.dealer);
         imageViewPlayer2 = findViewById(R.id.imageViewPlayer2);
         tvScorePlayer2 = findViewById(R.id.tvScorePlayer2);
         recyclerViewPlayer2 = findViewById(R.id.recyclerViewPlayer2);
@@ -160,9 +169,11 @@ public class G3PServerActivity extends AppCompatActivity {
         indexClient = 0;
         //socket.getSocket().emit("isYourTurn", idClients.get(indexClient));
         idClient2 = idClients.get(indexClient);
+        tvNamePlayer2.setText(names.get(indexClient));
         idClient1 = idClients.get(indexClient + 1);
-        Log.d("idclient2--", idClient2+"");
-        Log.d("idclient1--", idClient1+"");
+        tvNamePlayer2.setText(names.get(indexClient+1));
+        Log.d("idClient2: ", idClient2+" -> "+tvNamePlayer2.getText());
+        Log.d("idclient1--", idClient1+" -> "+tvNamePlayer1.getText());
 
         socket.getSocket().on("requestCard", args -> {
 
