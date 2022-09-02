@@ -95,6 +95,7 @@ public class G3PServerActivity extends AppCompatActivity {
 
         //bottom
         tvNamePlayer3 = findViewById(R.id.tvNameMyPlayer);
+        tvNamePlayer3.setText(R.string.dealer);
         imageViewPlayer3 = findViewById(R.id.imageViewPlayer1);
         tvScorePlayer3 = findViewById(R.id.tvScorePlayer1);
         recyclerViewPlayer3 = findViewById(R.id.recyclerViewPlayer1);
@@ -107,7 +108,6 @@ public class G3PServerActivity extends AppCompatActivity {
 
         //left
         tvNamePlayer2 = findViewById(R.id.tvNamePlayer2);
-        tvNamePlayer2.setText(R.string.dealer);
         imageViewPlayer2 = findViewById(R.id.imageViewPlayer2);
         tvScorePlayer2 = findViewById(R.id.tvScorePlayer2);
         recyclerViewPlayer2 = findViewById(R.id.recyclerViewPlayer2);
@@ -171,7 +171,7 @@ public class G3PServerActivity extends AppCompatActivity {
         idClient2 = idClients.get(indexClient);
         tvNamePlayer2.setText(names.get(indexClient));
         idClient1 = idClients.get(indexClient + 1);
-        tvNamePlayer2.setText(names.get(indexClient+1));
+        tvNamePlayer1.setText(names.get(indexClient+1));
         Log.d("idClient2: ", idClient2+" -> "+tvNamePlayer2.getText());
         Log.d("idclient1--", idClient1+" -> "+tvNamePlayer1.getText());
 
@@ -422,6 +422,7 @@ public class G3PServerActivity extends AppCompatActivity {
         outState.putString("idFCPlayer2",idFCPlayer2);
         outState.putStringArrayList("myCardsPlayer2",Utilis.getIdCards(myCardsPlayer2));
         outState.putString("tvScorePlayer2",tvScorePlayer2.getText().toString());
+        outState.putString("namePlayer2",tvNamePlayer2.getText().toString());
         if(scoreP2!=null)
             outState.putDouble("scoreP2",scoreP2);
 
@@ -429,6 +430,7 @@ public class G3PServerActivity extends AppCompatActivity {
         outState.putString("idFCPlayer1",idFCPlayer1);
         outState.putStringArrayList("myCardsPlayer1",Utilis.getIdCards(myCardsPlayer1));
         outState.putString("tvScorePlayer1",tvScorePlayer1.getText().toString());
+        outState.putString("namePlayer1",tvNamePlayer1.getText().toString());
         if(scoreP1!=null)
             outState.putDouble("scoreP1",scoreP1);
 
@@ -458,6 +460,7 @@ public class G3PServerActivity extends AppCompatActivity {
         myCardsPlayer2 = Utilis.getCardsById(savedIstanceState.getStringArrayList("myCardsPlayer2"));
         scoreP2 = savedIstanceState.getDouble("scoreP2");
         tvScorePlayer2.setText(savedIstanceState.getString("tvScorePlayer2"));
+        tvNamePlayer2.setText(savedIstanceState.getString("namePlayer2"));
         if(!tvScorePlayer2.getText().toString().equals(""))
             imageViewPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
 
@@ -469,6 +472,7 @@ public class G3PServerActivity extends AppCompatActivity {
         myCardsPlayer1 = Utilis.getCardsById(savedIstanceState.getStringArrayList("myCardsPlayer1"));
         scoreP1 = savedIstanceState.getDouble("scoreP1");
         tvScorePlayer1.setText(savedIstanceState.getString("tvScorePlayer1"));
+        tvNamePlayer1.setText(savedIstanceState.getString("namePlayer1"));
 
         if(!tvScorePlayer1.getText().toString().equals(""))
             imageViewPlayer1.setImageResource(Deck.getIstance().getCardById(idFCPlayer1).getIdImage());

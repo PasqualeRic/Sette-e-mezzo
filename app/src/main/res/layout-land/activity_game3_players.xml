@@ -27,14 +27,14 @@
         android:id="@+id/tvScoreDealer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="228dp"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.751"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewPlayer1"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewDealer"
+        app:layout_constraintHorizontal_bias="0.389"
+        app:layout_constraintStart_toEndOf="@+id/tvNamePlayerTop"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewDealer"
-        app:layout_constraintVertical_bias="0.513" />
+        app:layout_constraintVertical_bias="0.111" />
 
     <ImageView
         android:id="@+id/imageViewDealer"
@@ -101,10 +101,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/recyclerViewPlayer1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.391"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.969" />
+        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintStart_toEndOf="@+id/tvNameMyPlayer"
+        app:layout_constraintTop_toBottomOf="@+id/tvResultG3"
+        app:layout_constraintVertical_bias="0.421" />
 
     <ImageView
         android:id="@+id/imageViewPlayer1"
@@ -154,14 +154,14 @@
         android:id="@+id/tvScorePlayer2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="516dp"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewPlayer1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
-        app:layout_constraintStart_toEndOf="@+id/recyclerViewPlayer2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.403" />
+        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintStart_toEndOf="@+id/tvNamePlayer2"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewDealer"
+        app:layout_constraintVertical_bias="0.507" />
 
     <TextView
         android:id="@+id/tvResultG3"
@@ -170,10 +170,49 @@
         android:textSize="34sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.547"
+        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.459" />
+
+    <TextView
+        android:id="@+id/tvNameMyPlayer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewPlayer1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.174"
+        app:layout_constraintStart_toEndOf="@+id/imageViewPlayer1"
+        app:layout_constraintTop_toBottomOf="@+id/tvResultG3"
+        app:layout_constraintVertical_bias="0.421" />
+
+    <TextView
+        android:id="@+id/tvNamePlayer2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/imageViewPlayer1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.029"
+        app:layout_constraintStart_toEndOf="@+id/recyclerViewPlayer2"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewDealer"
+        app:layout_constraintVertical_bias="0.507" />
+
+    <TextView
+        android:id="@+id/tvNamePlayerTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewPlayer1"
+        app:layout_constraintEnd_toStartOf="@+id/imageViewDealer"
+        app:layout_constraintHorizontal_bias="0.82"
+        app:layout_constraintStart_toEndOf="@+id/recyclerViewPlayer2"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewDealer"
+        app:layout_constraintVertical_bias="0.111" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

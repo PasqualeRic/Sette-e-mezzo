@@ -145,38 +145,47 @@ public class G3PClientActivity extends AppCompatActivity {
         });
 
         socket.getSocket().on("reciveYourFirstCard",args -> {
-            Log.d("BETA", "reciveYourFirstCard - G3P");
-
-            String idClient, idFirstCard, name;
-            Double value;
-            Log.d("BETA", "args[0]:"+args[0].toString());
-
-            try {
-                JSONArray array = new JSONArray(args[0].toString());
-                Log.d("array", array+"");
-                for(int i=0;i< array.length();i++){
-                    Log.d("ALFA-reciveYourFirstCard",i+") -> "+array.get(i).toString());
-                    JSONObject json = new JSONObject(array.get(i).toString());
-                    idClient = json.getString("idClient");
-                    name = json.getString("name");
-                    idFirstCard = json.getJSONObject("card").getString("id");
-                    value = json.getJSONObject("card").getDouble("value");
-                    if(idClient.equals(socket.getId())){
-                        myId = idClient;
-                        myIdFirstCard = idFirstCard;
-                        myScore = value;
-                        tvNameMyPlayer.setText(name);
-                    }else if(idClient2 == null) {
-                        idClient2 = idClient;
-                        tvNameDealer.setText(name);
-                    }
-                }
-
-            }catch(Exception e){ Log.d("BETA", "errore");}
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d("BETA", "reciveYourFirstCard - G3P");
+
+                    String idClient, idFirstCard, name;
+                    Double value;
+                    Log.d("BETA", "args[0]:"+args[0].toString());
+
+                    try {
+                        JSONArray array = new JSONArray(args[0].toString());
+                        Log.d("NAME", array+"");
+                        Log.d("NAME", array.length()+"");
+                        for(int i=0;i< array.length();i++){
+                            Log.d("ALFA-reciveYourFirstCard",i+") -> "+array.get(i).toString());
+                            JSONObject json = new JSONObject(array.get(i).toString());
+                            idClient = json.getString("idClient");
+                            name = json.getString("name");
+                            idFirstCard = json.getJSONObject("card").getString("id");
+                            value = json.getJSONObject("card").getDouble("value");
+                            Log.d("NAME","name: "+name);
+                            Log.d("NAME","idClient.equals(socket.getId() -> "+idClient+" == "+socket.getId());
+                            if(idClient.equals(socket.getId())){
+                                myId = idClient;
+                                myIdFirstCard = idFirstCard;
+                                myScore = value;
+                                Log.d("NAME","pre tvNameMyPlayer.setText(name)");
+                                tvNameMyPlayer.setText(name);
+                                Log.d("NAME","myName: "+name);
+                            }else{
+                                idClient2 = idClient;
+                                Log.d("NAME","pre tvNamePlayer2.setText(name)");
+                                tvNamePlayer2.setText(name);
+                                Log.d("NAME","name altro player: "+name);
+                            }
+                        }
+
+                    }catch(Exception e){ Log.d("BETA", "errore, "+e.toString());}
+
+
                     tvScorePlayer1.setText(""+myScore);
                     imageViewPlayer1.setImageResource(Deck.getIstance().getCardById(myIdFirstCard).getIdImage());
                 }

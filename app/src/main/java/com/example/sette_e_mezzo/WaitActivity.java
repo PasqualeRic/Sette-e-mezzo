@@ -99,6 +99,8 @@ public class WaitActivity extends AppCompatActivity {
                 socket.getSocket().emit("startGame",obj, (Ack) args -> {});
 
                 JSONArray json = new JSONArray();
+
+                Log.d("NAME","idClients.size: "+idClients.size());
                 for(int i=0;i<idClients.size();i++){
                     Card card = Deck.getIstance().pull();
                     JSONObject client = new JSONObject();
@@ -110,6 +112,7 @@ public class WaitActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    Log.d("NAME","client("+i+"): "+client.toString());
                 }
                 socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
 
