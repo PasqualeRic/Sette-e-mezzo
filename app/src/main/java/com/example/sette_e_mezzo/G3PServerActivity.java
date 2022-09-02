@@ -281,20 +281,23 @@ public class G3PServerActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    ArrayList<String> names = new ArrayList<>();
                     Deck.getIstance().restoreDeck();
-                    String idClient = "";
+                    String idClient = "", name="";
                     Boolean src = false;
 
                     try {
                         JSONObject json = new JSONObject(args[0].toString());
                         idClient = json.getString("idClient");
                         src = json.getBoolean("bool");
+                        name = json.getString("name");
                         Log.d("BETA","idClient: "+json.getString("idClient"));
                     } catch (Exception e) { Log.d("BETA","errore json - resContinuaGame");}
 
                     countResponse += 1;
                     if (src) {
                         idRestartClients.add(idClient);
+                        names.add(name);
                         countClient += 1;
                     }
                     Log.d("countResponse", countResponse + "");
@@ -321,6 +324,7 @@ public class G3PServerActivity extends AppCompatActivity {
                                 JSONObject client = new JSONObject();
                                 try {
                                     client.put("idClient",idRestartClients.get(i));
+                                    client.put("name",names.get(i));
                                     client.put("card",card.toJSON());
                                     json.put(client);
                                 } catch (JSONException e) {

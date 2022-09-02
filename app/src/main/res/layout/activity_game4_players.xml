@@ -70,13 +70,12 @@
         android:id="@+id/tvScoreMyPlayer4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="219dp"
-        android:layout_marginEnd="112dp"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rvMyPlayer4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivMyFC"
+        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintStart_toEndOf="@+id/tvNameBottom"
         app:layout_constraintTop_toTopOf="@+id/guideline7"
         app:layout_constraintVertical_bias="0.466" />
 
@@ -108,15 +107,14 @@
         android:id="@+id/tvScorePlayer4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/rvCardsPlayer4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.102"
+        app:layout_constraintEnd_toStartOf="@+id/ivFCPlayer4"
+        app:layout_constraintHorizontal_bias="0.88"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.804" />
+        app:layout_constraintVertical_bias="0.851" />
 
     <ImageView
         android:id="@+id/ivFCPlayer3"
@@ -194,31 +192,26 @@
         android:id="@+id/tvScorePlayer3"
         android:layout_width="wrap_content"
         android:layout_height="22dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginBottom="15dp"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/ivFCPlayer3"
         app:layout_constraintEnd_toStartOf="@+id/rvCardsPlayer3"
-        app:layout_constraintHorizontal_bias="0.344"
-        app:layout_constraintStart_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.91"
+        app:layout_constraintStart_toEndOf="@+id/rvCardsPlayer2"
         app:layout_constraintTop_toBottomOf="@+id/tvResult4"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.705" />
 
     <TextView
         android:id="@+id/tvScorePlayer2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="14dp"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/guideline10"
-        app:layout_constraintEnd_toStartOf="@+id/guideline8"
-        app:layout_constraintHorizontal_bias="0.068"
-        app:layout_constraintStart_toEndOf="@+id/rvCardsPlayer2"
-        app:layout_constraintTop_toBottomOf="@+id/ivFCPlayer2"
-        app:layout_constraintVertical_bias="0.214" />
+        app:layout_constraintEnd_toStartOf="@+id/rvCardsPlayer3"
+        app:layout_constraintHorizontal_bias="0.163"
+        app:layout_constraintStart_toEndOf="@+id/tvNameLeft"
+        app:layout_constraintTop_toBottomOf="@+id/ivFCPlayer2" />
 
     <ImageView
         android:id="@+id/ivFCPlayer4"
@@ -238,6 +231,58 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_begin="205dp" />
+
+    <TextView
+        android:id="@+id/tvNameBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/rvMyPlayer4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.132"
+        app:layout_constraintStart_toEndOf="@+id/ivMyFC"
+        app:layout_constraintTop_toBottomOf="@+id/ivFCPlayer3"
+        app:layout_constraintVertical_bias="0.466" />
+
+    <TextView
+        android:id="@+id/tvNameLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvResult4"
+        app:layout_constraintEnd_toStartOf="@+id/rvCardsPlayer3"
+        app:layout_constraintHorizontal_bias="0.044"
+        app:layout_constraintStart_toEndOf="@+id/rvCardsPlayer2"
+        app:layout_constraintTop_toBottomOf="@+id/ivFCPlayer2"
+        app:layout_constraintVertical_bias="0.451" />
+
+    <TextView
+        android:id="@+id/tvNameRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/ivFCPlayer3"
+        app:layout_constraintEnd_toStartOf="@+id/tvScorePlayer3"
+        app:layout_constraintHorizontal_bias="0.828"
+        app:layout_constraintStart_toEndOf="@+id/rvCardsPlayer2"
+        app:layout_constraintTop_toBottomOf="@+id/tvResult4"
+        app:layout_constraintVertical_bias="0.705" />
+
+    <TextView
+        android:id="@+id/tvNameTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/rvCardsPlayer4"
+        app:layout_constraintEnd_toStartOf="@+id/tvScorePlayer4"
+        app:layout_constraintHorizontal_bias="0.928"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.851" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

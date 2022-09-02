@@ -284,14 +284,12 @@ public class G3PClientActivity extends AppCompatActivity {
                                 si = d.findViewById(R.id.btnSi);
                                 no = d.findViewById(R.id.btnNo);
 
-
-
-
                                 si.setOnClickListener(v->{
                                     JSONObject j = new JSONObject();
                                     try {
                                         j.put("idClient", socket.getId());
                                         j.put("bool", true);
+                                        j.put("name", tvNameMyPlayer.getText().toString());
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -305,6 +303,7 @@ public class G3PClientActivity extends AppCompatActivity {
                                     try {
                                         j.put("idClient", socket.getId());
                                         j.put("bool", false);
+                                        j.put("name", tvNameMyPlayer.getText().toString());
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
