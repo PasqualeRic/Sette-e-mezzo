@@ -138,7 +138,7 @@ public class G2PClientActivity extends AppCompatActivity {
         dealerReyclerView.setAdapter(cardAdapterDealer);
 
         socket.getSocket().on("reciveYourFirstCard",args -> {
-            Log.d("on", "on");
+            Log.d("MONTORI", "reciveYourFirstCard");
 
             runOnUiThread(new Runnable() {
                 @Override
@@ -151,7 +151,7 @@ public class G2PClientActivity extends AppCompatActivity {
                         myScore = json.getJSONObject("card").getDouble("value");
                         tvNameMyPlayer.setText(json.getString("name"));
 
-                    }catch(Exception e){}
+                    }catch(Exception e){Log.d("MONTORI","merda");}
                     tvMyScore.setText(""+myScore);
                     ivMyFirstCard.setImageResource(Deck.getIstance().getCardById(idFirstCard).getIdImage());
                 }
@@ -211,6 +211,7 @@ public class G2PClientActivity extends AppCompatActivity {
         });
 
         socket.getSocket().on("closeRound",args -> {
+            Log.d("MONTORI","closeRound");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -227,44 +228,47 @@ public class G2PClientActivity extends AppCompatActivity {
                             } else {
                                 tvResult.setText(R.string.lose);
                             }
-                            Dialog d = new Dialog(G2PClientActivity.this);
-                            d.setTitle("restart");
-                            d.setCancelable(false);
-                            d.setContentView(R.layout.dialog);
-                            d.show();
-
-                            si = d.findViewById(R.id.btnSi);
-                            no = d.findViewById(R.id.btnNo);
-
-                            si.setOnClickListener(v->{
-                                JSONObject j = new JSONObject();
-                                try {
-                                    j.put("idClient", socket.getId());
-                                    j.put("bool", true);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                socket.getSocket().emit("continueGame", j ,(Ack) args -> {});
-                                d.hide();
-                                d.cancel();
-                                finish();
-                            });
-
-                            no.setOnClickListener(v -> {
-                                JSONObject j = new JSONObject();
-                                try {
-                                    j.put("idClient", socket.getId());
-                                    j.put("bool", false);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                socket.getSocket().emit("continueGame",j ,(Ack) args -> {});
-                                socket.getSocket().emit("deletePlayer", socket.getId() ,(Ack) args -> {});
-                                socket.disconnection();
-                                Intent intent = new Intent(G2PClientActivity.this, MenuActivity.class);
-                                startActivity(intent);
-                            });
                         }
+                        Dialog d = new Dialog(G2PClientActivity.this);
+                        d.setTitle("restart");
+                        d.setCancelable(false);
+                        d.setContentView(R.layout.dialog);
+                        d.show();
+
+                        si = d.findViewById(R.id.btnSi);
+                        no = d.findViewById(R.id.btnNo);
+
+                        si.setOnClickListener(v->{
+                            JSONObject j = new JSONObject();
+                            try {
+                                j.put("idClient", socket.getId());
+                                j.put("bool", true);
+                                j.put("name",tvNameMyPlayer.getText().toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            socket.getSocket().emit("continueGame", j ,(Ack) args -> {});
+                            d.hide();
+                            d.cancel();
+                            finish();
+                        });
+
+                        no.setOnClickListener(v -> {
+                            JSONObject j = new JSONObject();
+                            try {
+                                j.put("idClient", socket.getId());
+                                j.put("bool", false);
+                                j.put("name",tvNameMyPlayer.getText().toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            socket.getSocket().emit("continueGame",j ,(Ack) args -> {});
+                            socket.getSocket().emit("deletePlayer", socket.getId() ,(Ack) args -> {});
+                            socket.disconnection();
+                            Intent intent = new Intent(G2PClientActivity.this, MenuActivity.class);
+                            startActivity(intent);
+                        });
+
                     } catch (Exception e) {}
                 }
             });

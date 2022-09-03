@@ -165,34 +165,10 @@ public class G4PClientActivity extends AppCompatActivity {
         });
 
         socket.getSocket().on("reciveYourFirstCard",args -> {
-            Log.d("RESTART","reciveYourFirstCard");
-            String idClient, idFirstCard;
-            Double value;
-
-            try {
-                JSONArray array = new JSONArray(args[0].toString());
-                for(int i=0;i< array.length();i++){
-                    Log.d("ALFA-reciveYourFirstCard",i+") -> "+array.get(i).toString());
-                    JSONObject json = new JSONObject(array.get(i).toString());
-                    idClient = json.getString(strIdClient);
-                    idFirstCard = json.getJSONObject("card").getString("id");
-                    value = json.getJSONObject("card").getDouble("value");
-
-                    if(idClient.equals(socket.getId())){
-                        myIdFirstCard = idFirstCard;
-                        myScore = value;
-
-                    }else if(idClient2 == null)
-                        idClient2 = idClient;
-                    else
-                        idClient3 = idClient;
-
-                }
-            }catch(Exception e){}
+            Log.d("MONTORI","reciveYourFirstCard");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Log.d("RESTART","reciveYourFirstCard");
                     String idClient, idFirstCard,name;
                     Double value;
                     try {
@@ -220,7 +196,6 @@ public class G4PClientActivity extends AppCompatActivity {
                         }
                     }catch(Exception e){}
 
-
                     tvMyScore.setText(""+myScore);
                     ivMyFirstCard.setImageResource(Deck.getIstance().getCardById(myIdFirstCard).getIdImage());
                 }
@@ -229,7 +204,7 @@ public class G4PClientActivity extends AppCompatActivity {
 
 
         socket.getSocket().on("myTurn", args -> {
-            Log.d("RESTART","myTurn");
+            Log.d("MONTORI","myTurn");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -339,6 +314,7 @@ public class G4PClientActivity extends AppCompatActivity {
                                     try {
                                         j.put("idClient", socket.getId());
                                         j.put("bool", true);
+                                        j.put("name",tvMyName.getText());
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -353,6 +329,7 @@ public class G4PClientActivity extends AppCompatActivity {
                                     try {
                                         j.put("idClient", socket.getId());
                                         j.put("bool", false);
+                                        j.put("name",tvMyName.getText());
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

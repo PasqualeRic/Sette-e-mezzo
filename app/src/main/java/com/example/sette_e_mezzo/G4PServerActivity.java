@@ -28,7 +28,7 @@ public class G4PServerActivity extends AppCompatActivity {
 
     int countClient = 0;
     int countResponse = 1;
-    ArrayList<String> idRestartClients;
+    ArrayList<String> idRestartClients, restartNames;
 
     TextView tvResult;
     Button btnCarta, btnStai;
@@ -86,11 +86,14 @@ public class G4PServerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game4_players);
 
         idRestartClients = new ArrayList<>();
+        restartNames = new ArrayList<>();
 
         isMyTurn=false;
         idClients = getIntent().getStringArrayListExtra("idClients");
         names = getIntent().getStringArrayListExtra("names");
 
+        Log.d("MONTORI","names: "+idClients.toString());
+        Log.d("MONTORI","names: "+names.toString());
 
         tvResult = findViewById(R.id.tvResult4);
         btnCarta = findViewById(R.id.btnCarta4);
@@ -288,6 +291,7 @@ public class G4PServerActivity extends AppCompatActivity {
                     indexClient++;
                     if(indexClient<3){
                         socket.getSocket().emit("isYourTurn",idClients.get(indexClient));
+                        Log.d("MONTORI","send isYourTurn a "+idClients.get(indexClient));
                     }else{
                         isMyTurn=true;
                         btnCarta.setVisibility(View.VISIBLE);
@@ -300,27 +304,29 @@ public class G4PServerActivity extends AppCompatActivity {
                     }
                 }
             });
-
         });
+
         socket.getSocket().on("resContinueGame", args -> {
             Log.d("resContinueGame", args[0].toString());
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     Deck.getIstance().restoreDeck();
-                    String idClient = "";
+                    String idClient = "", name="";
                     Boolean src = false;
 
                     try {
                         JSONObject json = new JSONObject(args[0].toString());
                         idClient = json.getString("idClient");
                         src = json.getBoolean("bool");
+                        name = json.getString("name");
                         Log.d("BETA","idClient: "+json.getString("idClient"));
                     } catch (Exception e) { Log.d("BETA","errore json - resContinuaGame");}
 
                     countResponse += 1;
                     if (src) {
                         idRestartClients.add(idClient);
+                        restartNames.add(name);
                         countClient += 1;
                     }
                     Log.d("countResponse", countResponse + "");
@@ -334,11 +340,10 @@ public class G4PServerActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Log.d("RESTART", countClient + "");
-                        Log.d("RESTART", "dentro if due client");
+
                         socket.getSocket().emit("startGame", obj, (Ack) arg -> {});
                         JSONArray json = new JSONArray();
-                        Log.d("RESTART"," -- idRestartClients --");
+
                         for(int i=0;i<idRestartClients.size();i++){
                             Log.d("RESTART","idClient: "+idRestartClients.get(i));
                             Card card = Deck.getIstance().pull();
@@ -346,11 +351,13 @@ public class G4PServerActivity extends AppCompatActivity {
                             try {
                                 client.put("idClient",idRestartClients.get(i));
                                 client.put("card",card.toJSON());
+                                client.put("name",restartNames.get(i));
                                 json.put(client);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
+
                         socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
                         socket.getSocket().off("requestCard");
                         socket.getSocket().off("clientTerminate");
@@ -373,6 +380,7 @@ public class G4PServerActivity extends AppCompatActivity {
                         }
 
                         i.putExtra("idClients",idRestartClients);
+                        i.putExtra("names",restartNames);
                         i.putExtra("idCard", Deck.getIstance().pull().getId());
                         startActivity(i);
 
@@ -382,9 +390,7 @@ public class G4PServerActivity extends AppCompatActivity {
                     }
                 }
             });
-
         });
-
     }
 
     private void closeRound(){

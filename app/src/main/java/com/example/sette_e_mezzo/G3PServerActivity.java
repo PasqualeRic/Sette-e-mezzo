@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -30,8 +31,9 @@ public class G3PServerActivity extends AppCompatActivity {
     TextView tvResult;
     Integer indexClient;  //indice per tenere traccia del client di turno
     ArrayList<String> idClients;
-    ArrayList<String> idRestartClients;
     ArrayList<String> names;
+    ArrayList<String> idRestartClients;
+    ArrayList<String> restartNames;
     Button btnCarta, btnStai;
     Boolean isMyTurn;
 
@@ -72,6 +74,7 @@ public class G3PServerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game3_players);
         idRestartClients = new ArrayList<>();
+        restartNames = new ArrayList<>();
 
         idClients = getIntent().getStringArrayListExtra("idClients");
         names = getIntent().getStringArrayListExtra("names");
@@ -260,6 +263,7 @@ public class G3PServerActivity extends AppCompatActivity {
 
                     indexClient++;
                     if (indexClient < 2) {
+                        Log.d("MONTORI","merda -> "+idClients.get(indexClient));
                         socket.getSocket().emit("isYourTurn", idClients.get(indexClient));
                     } else {
                         isMyTurn = true;
@@ -281,7 +285,7 @@ public class G3PServerActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ArrayList<String> names = new ArrayList<>();
+
                     Deck.getIstance().restoreDeck();
                     String idClient = "", name="";
                     Boolean src = false;
@@ -297,7 +301,7 @@ public class G3PServerActivity extends AppCompatActivity {
                     countResponse += 1;
                     if (src) {
                         idRestartClients.add(idClient);
-                        names.add(name);
+                        restartNames.add(name);
                         countClient += 1;
                     }
                     Log.d("countResponse", countResponse + "");
@@ -312,6 +316,7 @@ public class G3PServerActivity extends AppCompatActivity {
                         }
                         Log.d("dentroif", countClient + "");
 
+
                         if (countClient == 1) {
                             Log.d("dentroif", "dentro if");
                             socket.getSocket().emit("startGame", obj, (Ack) arg -> {
@@ -324,7 +329,7 @@ public class G3PServerActivity extends AppCompatActivity {
                                 JSONObject client = new JSONObject();
                                 try {
                                     client.put("idClient",idRestartClients.get(i));
-                                    client.put("name",names.get(i));
+                                    client.put("name",restartNames.get(i));
                                     client.put("card",card.toJSON());
                                     json.put(client);
                                 } catch (JSONException e) {
@@ -336,11 +341,16 @@ public class G3PServerActivity extends AppCompatActivity {
                             socket.getSocket().off("clientTerminate");
                             Intent i = new Intent(G3PServerActivity.this, G2PServerActivity.class);
                             i.putExtra("idCard", Deck.getIstance().pull().getId());
+                            i.putExtra("names", restartNames);
                             startActivity(i);
                         }else if(countClient == 2){
                             Log.d("dentroif", "dentro if");
-                            socket.getSocket().emit("startGame", obj, (Ack) arg -> {
-                            });
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            socket.getSocket().emit("startGame", obj, (Ack) arg -> {});
                             JSONArray json = new JSONArray();
                             Log.d("BETA"," -- idRestartClients --");
                             for(int i=0;i<idRestartClients.size();i++){
@@ -350,6 +360,7 @@ public class G3PServerActivity extends AppCompatActivity {
                                 try {
                                     client.put("idClient",idRestartClients.get(i));
                                     client.put("card",card.toJSON());
+                                    client.put("name",restartNames.get(i));
                                     json.put(client);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -361,7 +372,9 @@ public class G3PServerActivity extends AppCompatActivity {
                             Intent i = new Intent(G3PServerActivity.this, G3PServerActivity.class);
                             i.putExtra("idCard", Deck.getIstance().pull().getId());
                             i.putExtra("idClients",idRestartClients);
+                            i.putExtra("names", restartNames);
                             startActivity(i);
+                            socket.getSocket().emit("isYourTurn",idRestartClients.get(0),(Ack) args1 -> {});
                         }
 
                     }else if(countResponse== 3 && countClient == 0){

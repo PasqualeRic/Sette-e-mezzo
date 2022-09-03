@@ -153,12 +153,12 @@ public class G3PClientActivity extends AppCompatActivity {
 
                     String idClient, idFirstCard, name;
                     Double value;
-                    Log.d("BETA", "args[0]:"+args[0].toString());
+                    //Log.d("BETA", "args[0]:"+args[0].toString());
 
                     try {
                         JSONArray array = new JSONArray(args[0].toString());
-                        Log.d("NAME", array+"");
-                        Log.d("NAME", array.length()+"");
+                        //Log.d("NAME", array+"");
+                        //Log.d("NAME", array.length()+"");
                         for(int i=0;i< array.length();i++){
                             Log.d("ALFA-reciveYourFirstCard",i+") -> "+array.get(i).toString());
                             JSONObject json = new JSONObject(array.get(i).toString());
@@ -166,20 +166,16 @@ public class G3PClientActivity extends AppCompatActivity {
                             name = json.getString("name");
                             idFirstCard = json.getJSONObject("card").getString("id");
                             value = json.getJSONObject("card").getDouble("value");
-                            Log.d("NAME","name: "+name);
-                            Log.d("NAME","idClient.equals(socket.getId() -> "+idClient+" == "+socket.getId());
+                            //Log.d("NAME","name: "+name);
+                           // Log.d("NAME","idClient.equals(socket.getId() -> "+idClient+" == "+socket.getId());
                             if(idClient.equals(socket.getId())){
                                 myId = idClient;
                                 myIdFirstCard = idFirstCard;
                                 myScore = value;
-                                Log.d("NAME","pre tvNameMyPlayer.setText(name)");
                                 tvNameMyPlayer.setText(name);
-                                Log.d("NAME","myName: "+name);
                             }else{
                                 idClient2 = idClient;
-                                Log.d("NAME","pre tvNamePlayer2.setText(name)");
                                 tvNamePlayer2.setText(name);
-                                Log.d("NAME","name altro player: "+name);
                             }
                         }
 
@@ -192,7 +188,7 @@ public class G3PClientActivity extends AppCompatActivity {
             });
         });
         socket.getSocket().on("myTurn", args -> {
-            Log.d("ALFA","myTurn");
+            Log.d("MONTORI","myTurn");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

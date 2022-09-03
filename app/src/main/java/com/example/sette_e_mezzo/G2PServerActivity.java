@@ -30,7 +30,7 @@ public class G2PServerActivity extends AppCompatActivity {
 
     int countClient = 0;
     int countResponse = 1;
-    ArrayList<String> idRestartClients;
+    ArrayList<String> idRestartClients, restartNames;
 
     // DELAER
     ImageView ivMyFirstCard;
@@ -61,6 +61,8 @@ public class G2PServerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_g2p);
 
         idRestartClients = new ArrayList<>();
+        restartNames = new ArrayList<>();
+
 
         isMyTurn=false;
 
@@ -245,19 +247,21 @@ public class G2PServerActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     Deck.getIstance().restoreDeck();
-                    String idClient = "";
+                    String idClient = "", name="";
                     Boolean src = false;
 
                     try {
                         JSONObject json = new JSONObject(args[0].toString());
                         idClient = json.getString("idClient");
                         src = json.getBoolean("bool");
+                        name = json.getString("name");
                         Log.d("BETA","idClient: "+json.getString("idClient"));
                     } catch (Exception e) { Log.d("BETA","errore json - resContinuaGame");}
 
                     countResponse += 1;
                     if (src) {
                         idRestartClients.add(idClient);
+                        restartNames.add(name);
                         countClient += 1;
                     }
                     Log.d("countResponse", countResponse + "");
@@ -285,12 +289,19 @@ public class G2PServerActivity extends AppCompatActivity {
                                 try {
                                     client.put("idClient",idRestartClients.get(i));
                                     client.put("card",card.toJSON());
+                                    client.put("name",restartNames.get(i));
                                     json.put(client);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                             socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
+                            Log.d("MONTORI","sendFirstCard: "+json.toString());
                             socket.getSocket().off("requestCard");
                             socket.getSocket().off("clientTerminate");
                             Intent i = new Intent(G2PServerActivity.this, G2PServerActivity.class);

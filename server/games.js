@@ -88,7 +88,7 @@ const ioGames = (socket) => {
                 }else{
                     flag=true;
                 }
-            },2000);
+            },500);
         }catch(err)
         {
             callback(err)
@@ -153,7 +153,7 @@ const ioGames = (socket) => {
                 }else{
                     flag=true;
                 }
-            },2000);
+            },500);
         }catch(err)
         {
             callback(err)
