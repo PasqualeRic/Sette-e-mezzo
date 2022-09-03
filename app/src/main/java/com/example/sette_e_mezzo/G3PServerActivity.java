@@ -337,6 +337,31 @@ public class G3PServerActivity extends AppCompatActivity {
                             Intent i = new Intent(G3PServerActivity.this, G2PServerActivity.class);
                             i.putExtra("idCard", Deck.getIstance().pull().getId());
                             startActivity(i);
+                        }else if(countClient == 2){
+                            Log.d("dentroif", "dentro if");
+                            socket.getSocket().emit("startGame", obj, (Ack) arg -> {
+                            });
+                            JSONArray json = new JSONArray();
+                            Log.d("BETA"," -- idRestartClients --");
+                            for(int i=0;i<idRestartClients.size();i++){
+                                Log.d("BETA","idClient: "+idRestartClients.get(i));
+                                Card card = Deck.getIstance().pull();
+                                JSONObject client = new JSONObject();
+                                try {
+                                    client.put("idClient",idRestartClients.get(i));
+                                    client.put("card",card.toJSON());
+                                    json.put(client);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                            socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
+                            socket.getSocket().off("requestCard");
+                            socket.getSocket().off("clientTerminate");
+                            Intent i = new Intent(G3PServerActivity.this, G3PServerActivity.class);
+                            i.putExtra("idCard", Deck.getIstance().pull().getId());
+                            i.putExtra("idClients",idRestartClients);
+                            startActivity(i);
                         }
 
                     }else if(countResponse== 3 && countClient == 0){
