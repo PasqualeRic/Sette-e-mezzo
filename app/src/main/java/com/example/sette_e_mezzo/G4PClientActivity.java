@@ -159,6 +159,7 @@ public class G4PClientActivity extends AppCompatActivity {
             Log.d("RESTART","reciveYourFirstCard");
             String idClient, idFirstCard;
             Double value;
+
             try {
                 JSONArray array = new JSONArray(args[0].toString());
                 for(int i=0;i< array.length();i++){
@@ -179,7 +180,6 @@ public class G4PClientActivity extends AppCompatActivity {
 
                 }
             }catch(Exception e){}
-
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
