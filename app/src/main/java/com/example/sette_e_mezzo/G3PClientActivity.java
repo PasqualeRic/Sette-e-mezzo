@@ -41,6 +41,7 @@ public class G3PClientActivity extends AppCompatActivity {
     CardAdapter myCardAdapterP1;
     String myIdFirstCard, myId;
     Double myScore;
+    TextView tvNameMyPlayer;
 
     // PLAYER2 - left
     ImageView imageViewPlayer2;
@@ -51,6 +52,7 @@ public class G3PClientActivity extends AppCompatActivity {
     CardAdapterSmall myCardAdapterP2;
     Double scoreP2;
     String idClient2, idFCPlayer2;
+    TextView tvNamePlayer2;
 
     // DELAER - top
     ImageView imageViewDealer;
@@ -61,6 +63,7 @@ public class G3PClientActivity extends AppCompatActivity {
     ArrayList<Card> dealerCards;
     Double scoreDealer;
     String idFCDealer;
+    TextView tvNameDealer;
 
 
     @Override
@@ -85,6 +88,7 @@ public class G3PClientActivity extends AppCompatActivity {
         recyclerViewPlayer1.setLayoutManager(layoutManagerP1);
         myCardAdapterP1 = new CardAdapter(myCardsPlayer1);
         recyclerViewPlayer1.setAdapter(myCardAdapterP1);
+        tvNameMyPlayer = findViewById(R.id.tvNameMyPlayer);
 
         // Player 2 - Sinistra
         imageViewPlayer2 = findViewById(R.id.imageViewPlayer2);
@@ -95,6 +99,7 @@ public class G3PClientActivity extends AppCompatActivity {
         recyclerViewPlayer2.setLayoutManager(layoutManagerP2);
         myCardAdapterP2 = new CardAdapterSmall(myCardsPlayer2,90);
         recyclerViewPlayer2.setAdapter(myCardAdapterP2);
+        tvNamePlayer2 = findViewById(R.id.tvNamePlayer2);
 
         // Dealer
         imageViewDealer = findViewById(R.id.imageViewDealer);
@@ -105,7 +110,9 @@ public class G3PClientActivity extends AppCompatActivity {
         dealerCards = new ArrayList<>();
         cardAdapterDealer = new CardAdapter(dealerCards);
         dealerReyclerView.setAdapter(cardAdapterDealer);
-        Log.d("non entra", "non entra dai");
+        tvNameDealer = findViewById(R.id.tvNamePlayerTop);
+        tvNameDealer.setText(R.string.dealer);
+
        btnCarta.setOnClickListener(v -> {
            Log.d("givemecard", "givemecard");
             JSONObject json = new JSONObject();
@@ -138,35 +145,47 @@ public class G3PClientActivity extends AppCompatActivity {
         });
 
         socket.getSocket().on("reciveYourFirstCard",args -> {
-            Log.d("BETA", "reciveYourFirstCard - G3P");
-
-            String idClient, idFirstCard;
-            Double value;
-            Log.d("BETA", "args[0]:"+args[0].toString());
-
-            try {
-                JSONArray array = new JSONArray(args[0].toString());
-                Log.d("array", array+"");
-                for(int i=0;i< array.length();i++){
-                    Log.d("ALFA-reciveYourFirstCard",i+") -> "+array.get(i).toString());
-                    JSONObject json = new JSONObject(array.get(i).toString());
-                    idClient = json.getString("idClient");
-                    idFirstCard = json.getJSONObject("card").getString("id");
-                    value = json.getJSONObject("card").getDouble("value");
-                    if(idClient.equals(socket.getId())){
-                        myId = idClient;
-                        myIdFirstCard = idFirstCard;
-                        myScore = value;
-
-                    }else if(idClient2 == null)
-                        idClient2 = idClient;
-                }
-
-            }catch(Exception e){ Log.d("BETA", "errore");}
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d("BETA", "reciveYourFirstCard - G3P");
+
+                    String idClient, idFirstCard, name;
+                    Double value;
+                    Log.d("BETA", "args[0]:"+args[0].toString());
+
+                    try {
+                        JSONArray array = new JSONArray(args[0].toString());
+                        Log.d("NAME", array+"");
+                        Log.d("NAME", array.length()+"");
+                        for(int i=0;i< array.length();i++){
+                            Log.d("ALFA-reciveYourFirstCard",i+") -> "+array.get(i).toString());
+                            JSONObject json = new JSONObject(array.get(i).toString());
+                            idClient = json.getString("idClient");
+                            name = json.getString("name");
+                            idFirstCard = json.getJSONObject("card").getString("id");
+                            value = json.getJSONObject("card").getDouble("value");
+                            Log.d("NAME","name: "+name);
+                            Log.d("NAME","idClient.equals(socket.getId() -> "+idClient+" == "+socket.getId());
+                            if(idClient.equals(socket.getId())){
+                                myId = idClient;
+                                myIdFirstCard = idFirstCard;
+                                myScore = value;
+                                Log.d("NAME","pre tvNameMyPlayer.setText(name)");
+                                tvNameMyPlayer.setText(name);
+                                Log.d("NAME","myName: "+name);
+                            }else{
+                                idClient2 = idClient;
+                                Log.d("NAME","pre tvNamePlayer2.setText(name)");
+                                tvNamePlayer2.setText(name);
+                                Log.d("NAME","name altro player: "+name);
+                            }
+                        }
+
+                    }catch(Exception e){ Log.d("BETA", "errore, "+e.toString());}
+
+
                     tvScorePlayer1.setText(""+myScore);
                     imageViewPlayer1.setImageResource(Deck.getIstance().getCardById(myIdFirstCard).getIdImage());
                 }
@@ -265,14 +284,12 @@ public class G3PClientActivity extends AppCompatActivity {
                                 si = d.findViewById(R.id.btnSi);
                                 no = d.findViewById(R.id.btnNo);
 
-
-
-
                                 si.setOnClickListener(v->{
                                     JSONObject j = new JSONObject();
                                     try {
                                         j.put("idClient", socket.getId());
                                         j.put("bool", true);
+                                        j.put("name", tvNameMyPlayer.getText().toString());
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -286,6 +303,7 @@ public class G3PClientActivity extends AppCompatActivity {
                                     try {
                                         j.put("idClient", socket.getId());
                                         j.put("bool", false);
+                                        j.put("name", tvNameMyPlayer.getText().toString());
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -366,12 +384,14 @@ public class G3PClientActivity extends AppCompatActivity {
         outState.putString("myIdFirstCard",myIdFirstCard);
         outState.putStringArrayList("myCardsPlayer1",Utilis.getIdCards(myCardsPlayer1));
         outState.putDouble("myScore",myScore);
+        outState.putString("myName",tvNameMyPlayer.getText().toString());
 
         // Player 2 - left
         outState.putString("idFCPlayer2",idFCPlayer2);
         outState.putStringArrayList("myCardsPlayer2",Utilis.getIdCards(myCardsPlayer2));
         outState.putString("tvScorePlayer2",tvScorePlayer2.getText().toString());
         outState.putString("idClient2",idClient2);
+        outState.putString("nameOtherClient",tvNamePlayer2.getText().toString());
         if(scoreP2!=null)
             outState.putDouble("scoreP2",scoreP2);
 
@@ -395,6 +415,7 @@ public class G3PClientActivity extends AppCompatActivity {
         myIdFirstCard = savedIstanceState.getString("myIdFirstCard");
         myCardsPlayer1 = Utilis.getCardsById(savedIstanceState.getStringArrayList("myCardsPlayer1"));
         myScore = savedIstanceState.getDouble("myScore");
+        tvNameMyPlayer.setText(savedIstanceState.getString("myName"));
 
         imageViewPlayer1.setImageResource(Deck.getIstance().getCardById(myIdFirstCard).getIdImage());
         tvScorePlayer1.setText(""+myScore);
@@ -408,7 +429,8 @@ public class G3PClientActivity extends AppCompatActivity {
         scoreP2 = savedIstanceState.getDouble("scoreP2");
         tvScorePlayer2.setText(savedIstanceState.getString("tvScorePlayer2"));
         idClient2 = savedIstanceState.getString("idClient2");
-        Log.d("ROTATION","idFCPlayer2: "+idFCPlayer2);
+        tvNamePlayer2.setText(savedIstanceState.getString("nameOtherClient"));
+
         if(!tvScorePlayer2.getText().toString().equals(""))
             imageViewPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
 

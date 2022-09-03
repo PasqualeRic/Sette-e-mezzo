@@ -32,7 +32,7 @@ public class G4PServerActivity extends AppCompatActivity {
 
     TextView tvResult;
     Button btnCarta, btnStai;
-    ArrayList<String> idClients;
+    ArrayList<String> idClients, names;
     Integer indexClient;  //indice per tenere traccia del client di turno
     Boolean isMyTurn;
 
@@ -45,6 +45,7 @@ public class G4PServerActivity extends AppCompatActivity {
     CardAdapterSmall myCardAdapter;
     Double myScore;
     String myIdFC;
+    TextView tvMyName;
 
     // Player 2 - Sinistra
     String idClient2, idFCPlayer2;
@@ -55,6 +56,7 @@ public class G4PServerActivity extends AppCompatActivity {
     RecyclerView.LayoutManager lmPlayer2;
     CardAdapterSmall adapterP2;
     Double scoreP2;
+    TextView tvNameP2;
 
     // Player 3 - Destra
     String idClient3, idFCPlayer3;
@@ -65,6 +67,7 @@ public class G4PServerActivity extends AppCompatActivity {
     RecyclerView.LayoutManager lmPlayer3;
     CardAdapterSmall adapterP3;
     Double scoreP3;
+    TextView tvNameP3;
 
     // Player 4
     String idClient4, idFCPlayer4;
@@ -75,6 +78,7 @@ public class G4PServerActivity extends AppCompatActivity {
     RecyclerView.LayoutManager lmPlayer4;
     CardAdapterSmall adapterP4;
     Double scoreP4;
+    TextView tvNameP4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +89,8 @@ public class G4PServerActivity extends AppCompatActivity {
 
         isMyTurn=false;
         idClients = getIntent().getStringArrayListExtra("idClients");
+        names = getIntent().getStringArrayListExtra("names");
+
 
         tvResult = findViewById(R.id.tvResult4);
         btnCarta = findViewById(R.id.btnCarta4);
@@ -99,6 +105,8 @@ public class G4PServerActivity extends AppCompatActivity {
         myRecyclerView.setLayoutManager(layoutManager);
         myCardAdapter = new CardAdapterSmall(myCards,0);
         myRecyclerView.setAdapter(myCardAdapter);
+        tvMyName = findViewById(R.id.tvNameBottom);
+        tvMyName.setText(R.string.dealer);
 
         // Player 2 - Sinistra
         ivFCPlayer2 = findViewById(R.id.ivFCPlayer2);
@@ -109,6 +117,7 @@ public class G4PServerActivity extends AppCompatActivity {
         rvPlayer2.setLayoutManager(lmPlayer2);
         adapterP2 = new CardAdapterSmall(cardsP2,90);
         rvPlayer2.setAdapter(adapterP2);
+        tvNameP2 = findViewById(R.id.tvNameLeft);
 
         // Player 3 - Destra
         ivFCPlayer3 = findViewById(R.id.ivFCPlayer3);
@@ -119,6 +128,7 @@ public class G4PServerActivity extends AppCompatActivity {
         rvPlayer3.setLayoutManager(lmPlayer3);
         adapterP3 = new CardAdapterSmall(cardsP3,270);
         rvPlayer3.setAdapter(adapterP3);
+        tvNameP3 = findViewById(R.id.tvNameRight);
 
         // Player 4
         ivFCPlayer4 = findViewById(R.id.ivFCPlayer4);
@@ -129,6 +139,7 @@ public class G4PServerActivity extends AppCompatActivity {
         cardsP4 = new ArrayList<>();
         adapterP4 = new CardAdapterSmall(cardsP4,0);
         rvPlayer4.setAdapter(adapterP4);
+        tvNameP4 = findViewById(R.id.tvNameTop);
 
         Card myFirstCard = Deck.getIstance().getCardById(getIntent().getStringExtra("idCard"));
         myIdFC = myFirstCard.getId();
@@ -177,10 +188,12 @@ public class G4PServerActivity extends AppCompatActivity {
         });
 
         indexClient=0;
-        //socket.getSocket().emit("isYourTurn",idClients.get(indexClient));
         idClient2 = idClients.get(indexClient);
+        tvNameP2.setText(names.get(indexClient));
         idClient3 = idClients.get(indexClient+1);
+        tvNameP3.setText(names.get(indexClient+1));
         idClient4 = idClients.get(indexClient+2);
+        tvNameP4.setText(names.get(indexClient+2));
 
         socket.getSocket().on("requestCard",args -> {
 
@@ -465,6 +478,7 @@ public class G4PServerActivity extends AppCompatActivity {
         outState.putString("idFCPlayer2",idFCPlayer2);
         outState.putStringArrayList("cardsP2",Utilis.getIdCards(cardsP2));
         outState.putString("tvScoreP2",tvScoreP2.getText().toString());
+        //outState.putString("tvNameP2",tvNameP2.getText().toString());
         if(scoreP2!=null)
             outState.putDouble("scoreP2",scoreP2);
 
@@ -472,6 +486,7 @@ public class G4PServerActivity extends AppCompatActivity {
         outState.putString("idFCPlayer3",idFCPlayer3);
         outState.putStringArrayList("cardsP3",Utilis.getIdCards(cardsP3));
         outState.putString("tvScoreP3",tvScoreP3.getText().toString());
+        //outState.putString("tvNameP3",tvNameP3.getText().toString());
         if(scoreP3!=null)
             outState.putDouble("scoreP3",scoreP3);
 
@@ -479,11 +494,11 @@ public class G4PServerActivity extends AppCompatActivity {
         outState.putString("idFCPlayer4",idFCPlayer4);
         outState.putStringArrayList("cardsP4",Utilis.getIdCards(cardsP4));
         outState.putString("tvScoreP4",tvScoreP4.getText().toString());
+        //outState.putString("tvNameP4",tvNameP4.getText().toString());
         if(scoreP4!=null)
             outState.putDouble("scoreP4",scoreP4);
 
 
-        outState.putStringArrayList("idClients",idClients);
         outState.putInt("indexClient",indexClient);
         outState.putString("result",tvResult.getText().toString());
         outState.putBoolean("isMyTurn",isMyTurn);

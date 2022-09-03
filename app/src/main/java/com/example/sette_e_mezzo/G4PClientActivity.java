@@ -41,6 +41,7 @@ public class G4PClientActivity extends AppCompatActivity {
     CardAdapterSmall myCardAdapter;
     Double myScore;
     String myIdFirstCard;
+    TextView tvMyName;
 
     // Player 2 - Sinistra
     ImageView ivFCPlayer2;
@@ -51,6 +52,7 @@ public class G4PClientActivity extends AppCompatActivity {
     CardAdapterSmall adapterP2;
     Double scoreP2;
     String idClient2, idFCPlayer2;
+    TextView tvNameP2;
 
     // Player 3 - Destra
     ImageView ivFCPlayer3;
@@ -61,6 +63,7 @@ public class G4PClientActivity extends AppCompatActivity {
     CardAdapterSmall adapterP3;
     Double scoreP3;
     String idClient3, idFCPlayer3;
+    TextView tvNameP3;
 
     // Dealer
     ImageView ivFirstCardDealer;
@@ -71,6 +74,7 @@ public class G4PClientActivity extends AppCompatActivity {
     ArrayList<Card> dealerCards;
     Double scoreDealer;
     String idServer, idFCDealer;
+    TextView tvNameP4;
 
 
     @Override
@@ -94,6 +98,7 @@ public class G4PClientActivity extends AppCompatActivity {
         myRecyclerView.setLayoutManager(layoutManager);
         myCardAdapter = new CardAdapterSmall(myCards,0);
         myRecyclerView.setAdapter(myCardAdapter);
+        tvMyName = findViewById(R.id.tvNameBottom);
 
         // Player 2 - Sinistra
         ivFCPlayer2 = findViewById(R.id.ivFCPlayer2);
@@ -104,6 +109,7 @@ public class G4PClientActivity extends AppCompatActivity {
         rvPlayer2.setLayoutManager(lmPlayer2);
         adapterP2 = new CardAdapterSmall(cardsP2,90);
         rvPlayer2.setAdapter(adapterP2);
+        tvNameP2 = findViewById(R.id.tvNameLeft);
 
         // Player 3 - Destra
         ivFCPlayer3 = findViewById(R.id.ivFCPlayer3);
@@ -114,6 +120,7 @@ public class G4PClientActivity extends AppCompatActivity {
         rvPlayer3.setLayoutManager(lmPlayer3);
         adapterP3 = new CardAdapterSmall(cardsP3,270);
         rvPlayer3.setAdapter(adapterP3);
+        tvNameP3 = findViewById(R.id.tvNameRight);
 
         // Dealer
         ivFirstCardDealer = findViewById(R.id.ivFCPlayer4);
@@ -124,6 +131,8 @@ public class G4PClientActivity extends AppCompatActivity {
         dealerCards = new ArrayList<>();
         cardAdapterDealer = new CardAdapterSmall(dealerCards,0);
         dealerReyclerView.setAdapter(cardAdapterDealer);
+        tvNameP4 = findViewById(R.id.tvNameTop);
+        tvNameP4.setText(R.string.dealer);
 
         btnCarta.setOnClickListener(v -> {
             JSONObject json = new JSONObject();
@@ -183,6 +192,35 @@ public class G4PClientActivity extends AppCompatActivity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    Log.d("RESTART","reciveYourFirstCard");
+                    String idClient, idFirstCard,name;
+                    Double value;
+                    try {
+                        JSONArray array = new JSONArray(args[0].toString());
+                        for(int i=0;i< array.length();i++){
+                            Log.d("ALFA-reciveYourFirstCard",i+") -> "+array.get(i).toString());
+                            JSONObject json = new JSONObject(array.get(i).toString());
+                            name = json.getString("name");
+                            idClient = json.getString(strIdClient);
+                            idFirstCard = json.getJSONObject("card").getString("id");
+                            value = json.getJSONObject("card").getDouble("value");
+
+                            if(idClient.equals(socket.getId())){
+                                myIdFirstCard = idFirstCard;
+                                myScore = value;
+                                tvMyName.setText(name);
+                            }else if(idClient2 == null) {
+                                idClient2 = idClient;
+                                tvNameP2.setText(name);
+                            }else {
+                                idClient3 = idClient;
+                                tvNameP3.setText(name);
+                            }
+
+                        }
+                    }catch(Exception e){}
+
+
                     tvMyScore.setText(""+myScore);
                     ivMyFirstCard.setImageResource(Deck.getIstance().getCardById(myIdFirstCard).getIdImage());
                 }
@@ -414,12 +452,14 @@ public class G4PClientActivity extends AppCompatActivity {
         outState.putString("myIdFirstCard",myIdFirstCard);
         outState.putStringArrayList("myCards",Utilis.getIdCards(myCards));
         outState.putDouble("myScore",myScore);
+        outState.putString("tvMyName",tvMyName.getText().toString());
 
         // Player 2
         outState.putString("idFCPlayer2",idFCPlayer2);
         outState.putStringArrayList("cardsP2",Utilis.getIdCards(cardsP2));
         outState.putString("tvScoreP2",tvScoreP2.getText().toString());
         outState.putString("idClient2",idClient2);
+        outState.putString("tvNameP2",tvNameP2.getText().toString());
         if(scoreP2!=null)
             outState.putDouble("scoreP2",scoreP2);
 
@@ -428,6 +468,7 @@ public class G4PClientActivity extends AppCompatActivity {
         outState.putStringArrayList("cardsP3",Utilis.getIdCards(cardsP3));
         outState.putString("tvScoreP3",tvScoreP3.getText().toString());
         outState.putString("idClient3",idClient3);
+        outState.putString("tvNameP3",tvNameP3.getText().toString());
         if(scoreP3!=null)
             outState.putDouble("scoreP3",scoreP3);
 
@@ -435,6 +476,7 @@ public class G4PClientActivity extends AppCompatActivity {
         outState.putString("idFCDealer",idFCDealer);
         outState.putStringArrayList("dealerCards",Utilis.getIdCards(dealerCards));
         outState.putString("tvScoreDealer",tvScoreDealer.getText().toString());
+        outState.putString("tvNameP4",tvNameP4.getText().toString());
         if(scoreDealer!=null)
             outState.putDouble("scoreDealer",scoreDealer);
 
@@ -451,6 +493,7 @@ public class G4PClientActivity extends AppCompatActivity {
         myIdFirstCard = savedIstanceState.getString("myIdFirstCard");
         myCards = Utilis.getCardsById(savedIstanceState.getStringArrayList("myCards"));
         myScore = savedIstanceState.getDouble("myScore");
+        tvMyName.setText(savedIstanceState.getString("tvMyName"));
 
         ivMyFirstCard.setImageResource(Deck.getIstance().getCardById(myIdFirstCard).getIdImage());
         tvMyScore.setText(""+myScore);
@@ -464,6 +507,7 @@ public class G4PClientActivity extends AppCompatActivity {
         scoreP2 = savedIstanceState.getDouble("scoreP2");
         tvScoreP2.setText(savedIstanceState.getString("tvScoreP2"));
         idClient2 = savedIstanceState.getString("idClient2");
+        tvNameP2.setText(savedIstanceState.getString("tvNameP2"));
         if(!tvScoreP2.getText().toString().equals(""))
             ivFCPlayer2.setImageResource(Deck.getIstance().getCardById(idFCPlayer2).getIdImage());
 
@@ -476,6 +520,7 @@ public class G4PClientActivity extends AppCompatActivity {
         scoreP3 = savedIstanceState.getDouble("scoreP3");
         tvScoreP3.setText(savedIstanceState.getString("tvScoreP3"));
         idClient3 = savedIstanceState.getString("idClient3");
+        tvNameP3.setText(savedIstanceState.getString("tvNameP3"));
         if(!tvScoreP3.getText().toString().equals(""))
             ivFCPlayer3.setImageResource(Deck.getIstance().getCardById(idFCPlayer3).getIdImage());
 
@@ -487,6 +532,7 @@ public class G4PClientActivity extends AppCompatActivity {
         dealerCards= Utilis.getCardsById(savedIstanceState.getStringArrayList("dealerCards"));
         scoreDealer = savedIstanceState.getDouble("scoreDealer");
         tvScoreDealer.setText(savedIstanceState.getString("tvScoreDealer"));
+        tvNameP4.setText(savedIstanceState.getString("tvNameP4"));
         if(!tvScoreDealer.getText().toString().equals(""))
             ivFirstCardDealer.setImageResource(Deck.getIstance().getCardById(idFCDealer).getIdImage());
 

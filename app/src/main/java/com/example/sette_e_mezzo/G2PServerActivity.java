@@ -206,7 +206,6 @@ public class G2PServerActivity extends AppCompatActivity {
             });
         });
 
-
         btnStai.setOnClickListener(v -> {
             Log.d("G2PServer", "stai");
             runOnUiThread(new Runnable() {

@@ -15,7 +15,7 @@
     <string name="selectNumber">Select a number of players:</string>
     <string name="namePlayer">name</string>
     <string name="waitingGame">waiting for the game to start</string>
-    <string name="waitingPlayers">waiting for players</string>
+    <string name="waitingPlayers">waiting for players...</string>
     <string name="roomFull">room full</string>
 
 
