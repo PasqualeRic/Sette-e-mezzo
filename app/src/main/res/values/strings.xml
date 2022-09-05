@@ -18,6 +18,7 @@
     <string name="waitingGame">in attesa che il server inizi la partita</string>
     <string name="waitingPlayers">in attesa di giocatori...</string>
     <string name="roomFull">stanza piena</string>
+    <string name="playAgain">Vuoi giocare ancora?</string>
     //-------
 
     <string-array name="players">

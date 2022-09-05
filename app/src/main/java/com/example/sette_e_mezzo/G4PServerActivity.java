@@ -341,6 +341,11 @@ public class G4PServerActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                         socket.getSocket().emit("startGame", obj, (Ack) arg -> {});
                         JSONArray json = new JSONArray();
 
@@ -385,6 +390,7 @@ public class G4PServerActivity extends AppCompatActivity {
                         startActivity(i);
 
                     }else if(countResponse== 4 && countClient == 0){
+                        socket.getSocket().emit("deleteGame",socket.getId());
                         Intent i = new Intent(G4PServerActivity.this, MenuActivity.class);
                         startActivity(i);
                     }

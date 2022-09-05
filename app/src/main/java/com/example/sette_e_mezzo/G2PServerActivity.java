@@ -243,6 +243,7 @@ public class G2PServerActivity extends AppCompatActivity {
 
         socket.getSocket().on("resContinueGame", args -> {
             Log.d("resContinueGame", args[0].toString());
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -255,7 +256,6 @@ public class G2PServerActivity extends AppCompatActivity {
                         idClient = json.getString("idClient");
                         src = json.getBoolean("bool");
                         name = json.getString("name");
-                        Log.d("BETA","idClient: "+json.getString("idClient"));
                     } catch (Exception e) { Log.d("BETA","errore json - resContinuaGame");}
 
                     countResponse += 1;
@@ -264,8 +264,7 @@ public class G2PServerActivity extends AppCompatActivity {
                         restartNames.add(name);
                         countClient += 1;
                     }
-                    Log.d("countResponse", countResponse + "");
-                    Log.d("countClient", countClient + "");
+
                     if (countResponse == 2 && countClient > 0) {
                         JSONObject obj = new JSONObject();
                         try {
@@ -274,16 +273,18 @@ public class G2PServerActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Log.d("dentroif", countClient + "");
 
                         if (countClient == 1) {
-                            Log.d("dentroif", "dentro if");
-                            socket.getSocket().emit("startGame", obj, (Ack) arg -> {
-                            });
+
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            socket.getSocket().emit("startGame", obj, (Ack) arg -> {});
                             JSONArray json = new JSONArray();
-                            Log.d("BETA"," -- idRestartClients --");
+
                             for(int i=0;i<idRestartClients.size();i++){
-                                Log.d("BETA","idClient: "+idRestartClients.get(i));
                                 Card card = Deck.getIstance().pull();
                                 JSONObject client = new JSONObject();
                                 try {
@@ -295,22 +296,18 @@ public class G2PServerActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
                             }
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
+
                             socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
-                            Log.d("MONTORI","sendFirstCard: "+json.toString());
                             socket.getSocket().off("requestCard");
                             socket.getSocket().off("clientTerminate");
                             Intent i = new Intent(G2PServerActivity.this, G2PServerActivity.class);
                             i.putExtra("idCard", Deck.getIstance().pull().getId());
-                            i.putExtra("names",getIntent().getStringArrayListExtra("names"));
+                            i.putExtra("names",restartNames);
                             startActivity(i);
                         }
 
                     }else if(countResponse== 2 && countClient == 0){
+                        socket.getSocket().emit("deleteGame",socket.getId());
                         Intent i = new Intent(G2PServerActivity.this, MenuActivity.class);
                         startActivity(i);
                     }

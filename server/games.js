@@ -191,6 +191,22 @@ const ioGames = (socket) => {
         })
 
     }
+
+    const deleteGame = async (data, callback) => {
+
+        console.log(" ***** delelte Game ***** ");
+        var game;
+        console.log(data);
+        console.log(GamesArray);
+        GamesArray.forEach(element =>{
+
+            if(element.admin==data){
+                console.log("dentro la if")
+                GamesArray.pop(element);
+            }
+        })
+        console.log(GamesArray);
+    }
     
 
     socket.on('confGame',confGame);
@@ -206,5 +222,6 @@ const ioGames = (socket) => {
     socket.on('overSize',overSize);
     socket.on('continueGame',continueGame);
     socket.on('deletePlayer',deletePlayer);
+    socket.on('deleteGame',deleteGame);
 }
 module.exports = ioGames

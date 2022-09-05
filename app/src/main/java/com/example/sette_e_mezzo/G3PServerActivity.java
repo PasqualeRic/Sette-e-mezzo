@@ -378,6 +378,7 @@ public class G3PServerActivity extends AppCompatActivity {
                         }
 
                     }else if(countResponse== 3 && countClient == 0){
+                        socket.getSocket().emit("deleteGame",socket.getId());
                         Intent i = new Intent(G3PServerActivity.this, MenuActivity.class);
                         startActivity(i);
                     }
