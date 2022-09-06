@@ -275,6 +275,8 @@ public class G4PClientActivity extends AppCompatActivity {
             });
         });
 
+        /*              OLD CLOSE ROUND
+
         socket.getSocket().on("closeRound",args -> {
             runOnUiThread(new Runnable() {
                 @Override
@@ -380,6 +382,159 @@ public class G4PClientActivity extends AppCompatActivity {
                                 tvResult.setText(R.string.lose);
                             }
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        });*/
+
+        socket.getSocket().on("closeRound",args -> {
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    String tmpP1="", tmpP2="", tmpP3="", tmpP4="";
+                    try {
+                        JSONArray json = new JSONArray(args[0].toString());
+                        for (int i = 0; i < json.length(); i++) {
+                            Log.d("ALFA",i+")");
+                            JSONObject client = json.getJSONObject(i);
+                            if (client.getString(strIdClient).equals(idClient2)) {
+                                Log.d("ALFA","client2");
+                                ivFCPlayer2.setImageResource(Deck.getIstance().getCardById(client.getString("idFirstCard")).getIdImage());
+                                scoreP2 = client.getDouble("score");
+                                tvScoreP2.setText("" + scoreP2);
+                                idFCPlayer2 = client.getString("idFirstCard");
+                            } else if (client.getString(strIdClient).equals(idClient3)) {
+                                ivFCPlayer3.setImageResource(Deck.getIstance().getCardById(client.getString("idFirstCard")).getIdImage());
+                                scoreP3 = client.getDouble("score");
+                                tvScoreP3.setText("" + scoreP3);
+                                idFCPlayer3 = client.getString("idFirstCard");
+                            } else if (client.getString(strIdClient).equals(idServer)) {
+                                ivFirstCardDealer.setImageResource(Deck.getIstance().getCardById(client.getString("idFirstCard")).getIdImage());
+                                scoreDealer = client.getDouble("score");
+                                tvScoreDealer.setText("" + scoreDealer);
+                                idFCDealer = client.getString("idFirstCard");
+                            }
+                        }
+
+
+                        //se tvResult è vuota myScore è <=7.5
+                        if(tvResult.getText().equals("")){
+                            if((scoreDealer<=7.5 && myScore<=scoreDealer)){
+                                tvResult.setText(R.string.lose);
+                                tmpP1=tvNameP4.getText()+" "+tvScoreDealer.getText();
+                                tmpP2=tvNameP2.getText()+" "+tvScoreP2.getText();
+                                tmpP3=tvNameP3.getText()+" "+tvScoreP3.getText();
+                                tmpP4=tvMyName.getText()+" "+tvMyScore.getText();
+                            }else if((scoreP2<=7.5 && myScore>=scoreP2) && (scoreP3<=7.5 && myScore>=scoreP3) && (scoreDealer<=7.5 && myScore>scoreDealer)){
+                                // il mio punteggio è il più alto e non ha sballato nessuno
+                                tvResult.setText(R.string.win);
+                                tmpP1=tvMyName.getText()+" "+tvMyScore.getText();
+                                tmpP2=tvNameP2.getText()+" "+tvScoreP2.getText();
+                                tmpP3=tvNameP3.getText()+" "+tvScoreP3.getText();
+                                tmpP4=tvNameP4.getText()+" "+tvScoreDealer.getText();
+                            }else if(scoreP2>7.5 && (scoreP3<=7.5 && myScore>=scoreP3) && (scoreDealer<=7.5 && myScore>scoreDealer)){
+                                // il mio punteggio è il più alto e ha sballato p2
+                                tvResult.setText(R.string.win);
+                                tmpP1=tvMyName.getText()+" "+tvMyScore.getText();
+                                tmpP2=tvNameP4.getText()+" "+tvScoreDealer.getText();
+                                tmpP3=tvNameP3.getText()+" "+tvScoreP3.getText();
+                                tmpP4=tvNameP2.getText()+" "+tvScoreP2.getText();
+                            }else if((scoreP2<=7.5 && myScore>=scoreP2) && scoreP3>7.5 &&(scoreDealer<=7.5 && myScore>scoreDealer)){
+                                // il mio punteggio è il più alto e ha sballato p3
+                                tvResult.setText(R.string.win);
+                                tmpP1=tvMyName.getText()+" "+tvMyScore.getText();
+                                tmpP2=tvNameP4.getText()+" "+tvScoreDealer.getText();
+                                tmpP3=tvNameP2.getText()+" "+tvScoreP2.getText();
+                                tmpP4=tvNameP3.getText()+" "+tvScoreP3.getText();
+                            }else if((scoreP2<=7.5 && myScore>=scoreP2) && (scoreP3<=7.5 && myScore>=scoreP3) && scoreDealer>7.5){
+                                // il mio punteggio è il più alto e ha sballato dealer
+                                tvResult.setText(R.string.win);
+                                tmpP1=tvMyName.getText()+" "+tvMyScore.getText();
+                                tmpP2=tvNameP2.getText()+" "+tvScoreP2.getText();
+                                tmpP3=tvNameP3.getText()+" "+tvScoreP3.getText();
+                                tmpP4=tvNameP4.getText()+" "+tvScoreDealer.getText();
+                            }else if(scoreP2>7.5 && scoreP3>7.5  && (scoreDealer<=7.5 && myScore>scoreDealer)){
+                                // il mio punteggio è il più alto e hanno sballato p2 e p3
+                                tvResult.setText(R.string.win);
+                                tmpP1=tvMyName.getText()+" "+tvMyScore.getText();
+                                tmpP2=tvNameP4.getText()+" "+tvScoreDealer.getText();
+                                tmpP3=tvNameP3.getText()+" "+tvScoreP3.getText();
+                                tmpP4=tvNameP2.getText()+" "+tvScoreP2.getText();
+                            }else if(scoreP2>7.5 && (scoreP3<=7.5 && myScore>=scoreP3) && scoreDealer>7.5){
+                                // il mio punteggio è il più alto e hanno sballato p2 e dealer
+                                tvResult.setText(R.string.win);
+                                tmpP1=tvMyName.getText()+" "+tvMyScore.getText();
+                                tmpP2=tvNameP3.getText()+" "+tvScoreP3.getText();
+                                tmpP3=tvNameP4.getText()+" "+tvScoreDealer.getText();
+                                tmpP4=tvNameP2.getText()+" "+tvScoreP2.getText();
+                            }else if((scoreP2<=7.5 && myScore>=scoreP2) && scoreP3>7.5 && scoreDealer>7.5){
+                                // il mio punteggio è il più alto e hanno sballato p3 e dealer
+                                tvResult.setText(R.string.win);
+                                tmpP1=tvMyName.getText()+" "+tvMyScore.getText();
+                                tmpP4=tvNameP3.getText()+" "+tvScoreP3.getText();
+                                tmpP3=tvNameP4.getText()+" "+tvScoreDealer.getText();
+                                tmpP2=tvNameP2.getText()+" "+tvScoreP2.getText();
+                            }else if(scoreP2>7.5 && scoreP3>7.5 && scoreDealer>7.5){
+                                // il mio punteggio è il più alto e hanno sballato tutti
+                                tvResult.setText(R.string.win);
+                                tmpP1=tvMyName.getText()+" "+tvMyScore.getText();
+                                tmpP4=tvNameP3.getText()+" "+tvScoreP3.getText();
+                                tmpP3=tvNameP4.getText()+" "+tvScoreDealer.getText();
+                                tmpP2=tvNameP2.getText()+" "+tvScoreP2.getText();
+                            }else{
+                                tvResult.setText(R.string.lose);
+                                tmpP2=tvMyName.getText()+" "+tvMyScore.getText();
+                                tmpP4=tvNameP3.getText()+" "+tvScoreP3.getText();
+                                tmpP1=tvNameP4.getText()+" "+tvScoreDealer.getText();
+                                tmpP3=tvNameP2.getText()+" "+tvScoreP2.getText();
+                            }
+                        }else{
+                            tmpP1=tvNameP4.getText()+" "+tvScoreDealer.getText();
+                            tmpP2=tvNameP2.getText()+" "+tvScoreP2.getText();
+                            tmpP3=tvNameP3.getText()+" "+tvScoreP3.getText();
+                            tmpP4=tvMyName.getText()+" "+tvMyScore.getText();
+                        }
+
+                        CustomDialog d = new CustomDialog(G4PClientActivity.this,tvResult.getText().toString(),tmpP1,tmpP2,tmpP3,tmpP4);
+                        d.setTitle("restart");
+                        d.setCancelable(false);
+                        d.setContentView(R.layout.dialog);
+                        d.show();
+
+                        d.getBtnYes().setOnClickListener(v->{
+                            JSONObject j = new JSONObject();
+                            try {
+                                j.put("idClient", socket.getId());
+                                j.put("bool", true);
+                                j.put("name",tvMyName.getText());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            socket.getSocket().emit("continueGame", j ,(Ack) args -> {});
+                            d.hide();
+                            d.cancel();
+                            finish();
+                        });
+
+                        d.getBtnNo().setOnClickListener(v -> {
+                            JSONObject j = new JSONObject();
+                            try {
+                                j.put("idClient", socket.getId());
+                                j.put("bool", false);
+                                j.put("name",tvMyName.getText());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            socket.getSocket().emit("continueGame",j ,(Ack) args -> {});
+                            socket.getSocket().emit("deletePlayer", socket.getId() ,(Ack) args -> {});
+                            socket.disconnection();
+                            Intent intent = new Intent(G4PClientActivity.this, MenuActivity.class);
+                            startActivity(intent);
+                        });
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

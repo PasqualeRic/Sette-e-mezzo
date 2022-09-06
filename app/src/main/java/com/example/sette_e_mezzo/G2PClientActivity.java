@@ -163,7 +163,6 @@ public class G2PClientActivity extends AppCompatActivity {
         socket.getSocket().on("reciveCard",args -> {
             Log.d("BETA","idCard: "+idCard);
             try {
-
                 JSONObject json = new JSONObject(args[0].toString());
                 idClient = json.getString("idClient");
                 idCard = json.getJSONObject("card").getString("id");
@@ -212,6 +211,9 @@ public class G2PClientActivity extends AppCompatActivity {
             });
         });
 
+
+        /*              OLD CLOSEROUND
+
         socket.getSocket().on("closeRound",args -> {
             Log.d("MONTORI","closeRound");
             runOnUiThread(new Runnable() {
@@ -227,7 +229,6 @@ public class G2PClientActivity extends AppCompatActivity {
                         d.setTitle("restart");
                         d.setCancelable(false);
                         d.setContentView(R.layout.dialog);
-                        d.show();
 
                         JSONObject json = new JSONObject(args[0].toString());
                         idFirstCardDealer = json.getString("idFirstCard");
@@ -235,6 +236,7 @@ public class G2PClientActivity extends AppCompatActivity {
 
                         ivFirstCardDealer.setImageResource(Deck.getIstance().getCardById(idFirstCardDealer).getIdImage());
                         tvScoreDealer.setText(""+scoreDealer);
+
 
                         if(tvResult.getText().equals("")) {
                             Log.d("DIALOG","tvResult vuoto");
@@ -250,6 +252,9 @@ public class G2PClientActivity extends AppCompatActivity {
                                 //tvP2.setText(tvNameMyPlayer.getText()+" "+tvMyScore.getText());
                             }
                         }
+
+                        d.show();
+
 
                         si.setOnClickListener(v->{
                             JSONObject j = new JSONObject();
@@ -288,9 +293,85 @@ public class G2PClientActivity extends AppCompatActivity {
                     }
                 }
             });
-        });
+        });*/
 
+        socket.getSocket().on("closeRound",args -> {
+            Log.d("MONTORI","closeRound");
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String tmpP1="", tmpP2="";
+
+                        JSONObject json = new JSONObject(args[0].toString());
+                        idFirstCardDealer = json.getString("idFirstCard");
+                        scoreDealer = json.getDouble("score");
+
+                        ivFirstCardDealer.setImageResource(Deck.getIstance().getCardById(idFirstCardDealer).getIdImage());
+                        tvScoreDealer.setText(""+scoreDealer);
+
+                        if(tvResult.getText().equals("")) {
+                            if (myScore > scoreDealer) {
+                                tvResult.setText(R.string.win);
+                                tmpP1 = tvNameMyPlayer.getText()+" "+tvMyScore.getText();
+                                tmpP2 = tvNameDealer.getText()+" "+tvScoreDealer.getText();
+                            } else {
+                                tvResult.setText(R.string.lose);
+                                tmpP1 = tvNameDealer.getText()+" "+tvScoreDealer.getText();
+                                tmpP2 = tvNameMyPlayer.getText()+" "+tvMyScore.getText();
+                            }
+                        }else{
+                            tmpP1 = tvNameDealer.getText()+" "+tvScoreDealer.getText();
+                            tmpP2 = tvNameMyPlayer.getText()+" "+tvMyScore.getText();
+                            //tmpP2 = getString(R.string.over);
+                        }
+
+                        CustomDialog d = new CustomDialog(G2PClientActivity.this,tvResult.getText().toString(),tmpP1,tmpP2,"","");
+                        d.setTitle("restart");
+                        d.setCancelable(false);
+                        d.setContentView(R.layout.dialog);
+                        d.show();
+
+                        d.getBtnYes().setOnClickListener(v->{
+                            JSONObject j = new JSONObject();
+                            try {
+                                j.put("idClient", socket.getId());
+                                j.put("bool", true);
+                                j.put("name",tvNameMyPlayer.getText().toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            socket.getSocket().emit("continueGame", j ,(Ack) args -> {});
+                            d.hide();
+                            d.cancel();
+                            finish();
+                        });
+
+                        d.getBtnNo().setOnClickListener(v -> {
+                            JSONObject j = new JSONObject();
+                            try {
+                                j.put("idClient", socket.getId());
+                                j.put("bool", false);
+                                j.put("name",tvNameMyPlayer.getText().toString());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            socket.getSocket().emit("continueGame",j ,(Ack) args -> {});
+                            socket.getSocket().emit("deletePlayer", socket.getId() ,(Ack) args -> {});
+                            socket.disconnection();
+                            Intent intent = new Intent(G2PClientActivity.this, MenuActivity.class);
+                            startActivity(intent);
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d("DIALOG","errore: "+e.getMessage());
+                    }
+                }
+            });
+        });
     }
+
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {

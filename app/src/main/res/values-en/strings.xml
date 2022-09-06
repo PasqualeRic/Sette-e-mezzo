@@ -19,6 +19,7 @@
     <string name="roomFull">room full</string>
     <string name="playAgain">Do you want to play again?</string>
     <string name="yes">yes</string>
+    <string name="over">score over 7.5</string>
 
 
 </resources>

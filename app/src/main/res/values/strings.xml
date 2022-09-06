@@ -20,6 +20,7 @@
     <string name="roomFull">stanza piena</string>
     <string name="playAgain">Vuoi giocare ancora?</string>
     <string name="yes">si</string>
+    <string name="over">punteggio oltre 7.5</string>
     //-------
 
     <string-array name="players">
