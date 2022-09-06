@@ -30,7 +30,9 @@ public class G2PClientActivity extends AppCompatActivity {
     TextView tvResult;
     Boolean isMyTurn;
 
+    // Dialog
     Button si, no;
+    TextView tvResultDialog, tvP1, tvP2;
 
     // PLAYER
     ImageView ivMyFirstCard;
@@ -216,27 +218,38 @@ public class G2PClientActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     try {
-                        JSONObject json = new JSONObject(args[0].toString());
-                        idFirstCardDealer = json.getString("idFirstCard");
-                        scoreDealer = json.getDouble("score");
-                        Log.d("BETA","closeRound - scoreDealer:"+scoreDealer);
-                        ivFirstCardDealer.setImageResource(Deck.getIstance().getCardById(idFirstCardDealer).getIdImage());
-                        tvScoreDealer.setText(""+scoreDealer);
-                        if(tvResult.getText().equals("")) {
-                            if (myScore > scoreDealer) {
-                                tvResult.setText(R.string.win);
-                            } else {
-                                tvResult.setText(R.string.lose);
-                            }
-                        }
                         Dialog d = new Dialog(G2PClientActivity.this);
+                        si = d.findViewById(R.id.btnSi);
+                        no = d.findViewById(R.id.btnNo);
+                        tvResultDialog = d.findViewById(R.id.tvResultDialog);
+                        tvP1 = d.findViewById(R.id.tvP1);
+                        tvP2 = d.findViewById(R.id.tvP2);
                         d.setTitle("restart");
                         d.setCancelable(false);
                         d.setContentView(R.layout.dialog);
                         d.show();
 
-                        si = d.findViewById(R.id.btnSi);
-                        no = d.findViewById(R.id.btnNo);
+                        JSONObject json = new JSONObject(args[0].toString());
+                        idFirstCardDealer = json.getString("idFirstCard");
+                        scoreDealer = json.getDouble("score");
+
+                        ivFirstCardDealer.setImageResource(Deck.getIstance().getCardById(idFirstCardDealer).getIdImage());
+                        tvScoreDealer.setText(""+scoreDealer);
+
+                        if(tvResult.getText().equals("")) {
+                            Log.d("DIALOG","tvResult vuoto");
+                            if (myScore > scoreDealer) {
+                                tvResult.setText(R.string.win);
+                                //tvResultDialog.setText(R.string.win);
+                                tvP1.setText(tvNameMyPlayer.getText()+" "+tvMyScore.getText());
+                                //tvP2.setText(tvNameDealer.getText()+" "+tvScoreDealer.getText());
+                            } else {
+                                tvResult.setText(R.string.lose);
+                                //tvResultDialog.setText(R.string.lose);
+                                tvP1.setText(tvNameDealer.getText()+" "+tvScoreDealer.getText());
+                                //tvP2.setText(tvNameMyPlayer.getText()+" "+tvMyScore.getText());
+                            }
+                        }
 
                         si.setOnClickListener(v->{
                             JSONObject j = new JSONObject();
@@ -269,7 +282,10 @@ public class G2PClientActivity extends AppCompatActivity {
                             startActivity(intent);
                         });
 
-                    } catch (Exception e) {}
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.d("DIALOG","errore: "+e.getMessage());
+                    }
                 }
             });
         });

@@ -18,6 +18,7 @@
     <string name="waitingPlayers">waiting for players...</string>
     <string name="roomFull">room full</string>
     <string name="playAgain">Do you want to play again?</string>
+    <string name="yes">yes</string>
 
 
 </resources>

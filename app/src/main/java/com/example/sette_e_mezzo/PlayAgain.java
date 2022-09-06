@@ -37,11 +37,13 @@ public class PlayAgain extends BroadcastReceiver {
             NotificationChannel channel = new NotificationChannel("idChannel",
                     "playAgain",
                     NotificationManager.IMPORTANCE_DEFAULT);
-           // channel.setDescription("");
+            // channel.setDescription("");
             notificationManager.createNotificationChannel(channel);
         }
 
         Log.d("NOTIFICA","ora mando la notifica");
         notificationManager.notify(1, nBuilder);
     }
+
+
 }

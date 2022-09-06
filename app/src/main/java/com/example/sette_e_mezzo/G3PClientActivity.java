@@ -276,6 +276,11 @@ public class G3PClientActivity extends AppCompatActivity {
                                 d.setTitle("restart");
                                 d.setCancelable(false);
                                 d.setContentView(R.layout.dialog);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                                 d.show();
                                 si = d.findViewById(R.id.btnSi);
                                 no = d.findViewById(R.id.btnNo);

@@ -22,7 +22,7 @@
         android:id="@+id/btnSi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Si"
+        android:text="@string/yes"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.191"
@@ -43,7 +43,7 @@
         app:layout_constraintVertical_bias="0.888" />
 
     <TextView
-        android:id="@+id/tvResultPopUp"
+        android:id="@+id/tvResultDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -63,7 +63,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvResultPopUp"
+        app:layout_constraintTop_toBottomOf="@+id/tvResultDialog"
         app:layout_constraintVertical_bias="0.056" />
 
     <TextView

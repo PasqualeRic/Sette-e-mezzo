@@ -19,6 +19,7 @@
     <string name="waitingPlayers">in attesa di giocatori...</string>
     <string name="roomFull">stanza piena</string>
     <string name="playAgain">Vuoi giocare ancora?</string>
+    <string name="yes">si</string>
     //-------
 
     <string-array name="players">
