@@ -20,6 +20,7 @@ public class PlayerActivity extends AppCompatActivity {
     Button btnJoin;
     EditText player;
     Spinner n;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,10 +35,10 @@ public class PlayerActivity extends AppCompatActivity {
             public void onClick(View view) {
                 JSONObject item = new JSONObject();
                 try {
-                    item.put("id", socket.getSocket().id());
-                    item.put("numberOfPlayers", n.getSelectedItem().toString());
-                    item.put("name", player.getText().toString());
-                    socket.getSocket().emit("joinGame",item, (Ack) args ->{
+                    item.put(Utils.id, socket.getSocket().id());
+                    item.put(Utils.nplayers, n.getSelectedItem().toString());
+                    item.put(Utils.name, player.getText().toString());
+                    socket.getSocket().emit(Utils.joinGame,item, (Ack) args ->{
 
                     });
                     Intent i = new Intent(PlayerActivity.this, WaitRoomClient.class);

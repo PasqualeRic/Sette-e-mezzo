@@ -1,7 +1,5 @@
 package com.example.sette_e_mezzo;
 
-import android.util.Log;
-
 import java.net.URISyntaxException;
 
 import io.socket.client.IO;
@@ -14,7 +12,6 @@ public class SocketClass {
             socket = IO.socket("http://10.0.2.2:3000");
             socket.connect();
         }catch (URISyntaxException e) {
-            Log.wtf("prova","prova");
             e.printStackTrace();
         }
     }

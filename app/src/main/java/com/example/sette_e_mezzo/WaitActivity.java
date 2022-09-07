@@ -42,7 +42,7 @@ public class WaitActivity extends AppCompatActivity {
 
         tvWaitPlayers = findViewById(R.id.tvWaitPlayers);
         pbWaitClient = findViewById(R.id.pbWaitClient);
-        nPlayers = Integer.parseInt(getIntent().getStringExtra("N_PLAYERS"));
+        nPlayers = Integer.parseInt(getIntent().getStringExtra(Utils.nplayers));
 
         rvClientes = findViewById(R.id.rvClients);
         usernameClients = new ArrayList<>();
@@ -61,9 +61,7 @@ public class WaitActivity extends AppCompatActivity {
         tvNumPlayers.setText(""+conta);
         tvMaxPlayer.setText("/"+nPlayers);
 
-        socket.getSocket().on("invioPlayer", args -> {
-
-            Log.d("ALFA-invioPlayer",args[2].toString());
+        socket.getSocket().on(Utils.invioPlayer, args -> {
 
             idClients.add(args[2].toString());
             conta = conta + 1;
@@ -79,7 +77,6 @@ public class WaitActivity extends AppCompatActivity {
                         pbWaitClient.setVisibility(View.INVISIBLE);
                         tvWaitPlayers.setVisibility(View.INVISIBLE);
                     }
-
                 }
             });
 
@@ -91,30 +88,28 @@ public class WaitActivity extends AppCompatActivity {
             public void onClick(View view) {
                 JSONObject obj = new JSONObject();
                 try{
-                    obj.put("nplayers",idClients.size()+1);
-                    obj.put("idserver",socket.getId());
+                    obj.put(Utils.nplayers,idClients.size()+1);
+                    obj.put(Utils.idServer,socket.getId());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                socket.getSocket().emit("startGame",obj, (Ack) args -> {});
+                socket.getSocket().emit(Utils.startGame,obj, (Ack) args -> {});
 
                 JSONArray json = new JSONArray();
 
-                Log.d("NAME","idClients.size: "+idClients.size());
                 for(int i=0;i<idClients.size();i++){
                     Card card = Deck.getIstance().pull();
                     JSONObject client = new JSONObject();
                     try {
-                        client.put("idClient",idClients.get(i));
-                        client.put("name",usernameClients.get(i));
-                        client.put("card",card.toJSON());
+                        client.put(Utils.idClient,idClients.get(i));
+                        client.put(Utils.name,usernameClients.get(i));
+                        client.put(Utils.card,card.toJSON());
                         json.put(client);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Log.d("NAME","client("+i+"): "+client.toString());
                 }
-                socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
+                socket.getSocket().emit(Utils.sendFirstCard,json,(Ack) args1 -> {});
 
                 Intent i = null;
                 if(idClients.size()+1 == 2){
@@ -125,15 +120,13 @@ public class WaitActivity extends AppCompatActivity {
                     i = new Intent(WaitActivity.this, G4PServerActivity.class);
                 }
 
-                i.putExtra("idClients",idClients);
-                i.putExtra("names",usernameClients);
-                i.putExtra("idCard",Deck.getIstance().pull().getId());
+                i.putExtra(Utils.idClients,idClients);
+                i.putExtra(Utils.names,usernameClients);
+                i.putExtra(Utils.idCard,Deck.getIstance().pull().getId());
                 startActivity(i);
 
-                Log.d("RESTART","icClients.size: "+idClients.size());
-
                 if(idClients.size()>1)
-                    socket.getSocket().emit("isYourTurn", idClients.get(0));
+                    socket.getSocket().emit(Utils.isYourTurn, idClients.get(0));
 
             }
         });

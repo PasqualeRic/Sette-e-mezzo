@@ -7,9 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -76,14 +73,13 @@ public class G3PServerActivity extends AppCompatActivity {
         idRestartClients = new ArrayList<>();
         restartNames = new ArrayList<>();
 
-        idClients = getIntent().getStringArrayListExtra("idClients");
-        names = getIntent().getStringArrayListExtra("names");
+        idClients = getIntent().getStringArrayListExtra(Utils.idClients);
+        names = getIntent().getStringArrayListExtra(Utils.names);
         isMyTurn = false;
 
         tvResult = findViewById(R.id.tvResultG3);
         btnCarta = findViewById(R.id.btnCarta3);
         btnStai = findViewById(R.id.btnStai3);
-
 
         //top
         imageViewPlayer1 = findViewById(R.id.imageViewDealer);
@@ -121,7 +117,7 @@ public class G3PServerActivity extends AppCompatActivity {
         recyclerViewPlayer2.setAdapter(myCardAdapterP2);
 
         //----
-        firstCard = Deck.getIstance().getCardById(getIntent().getStringExtra("idCard"));
+        firstCard = Deck.getIstance().getCardById(getIntent().getStringExtra(Utils.idCard));
         imageViewPlayer3.setImageResource(firstCard.getIdImage());
         scoreP3 = firstCard.getValue();
         tvScorePlayer3.setText("" + scoreP3);
@@ -139,12 +135,12 @@ public class G3PServerActivity extends AppCompatActivity {
                     tvScorePlayer3.setText(""+scoreP3);
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("idClient",socket.getId());
-                        jsonObject.put("card",card.toJSON());
+                        jsonObject.put(Utils.idClient,socket.getId());
+                        jsonObject.put(Utils.card,card.toJSON());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    socket.getSocket().emit("sendCard",jsonObject,(Ack) args1 -> {});
+                    socket.getSocket().emit(Utils.sendCard,jsonObject,(Ack) args1 -> {});
 
                     if(scoreP3>=7.5){
 
@@ -170,15 +166,13 @@ public class G3PServerActivity extends AppCompatActivity {
         });
 
         indexClient = 0;
-        //socket.getSocket().emit("isYourTurn", idClients.get(indexClient));
+        //socket.getSocket().emit(Utils.isYourTurn, idClients.get(indexClient));
         idClient2 = idClients.get(indexClient);
         tvNamePlayer2.setText(names.get(indexClient));
         idClient1 = idClients.get(indexClient + 1);
         tvNamePlayer1.setText(names.get(indexClient+1));
-        Log.d("idClient2: ", idClient2+" -> "+tvNamePlayer2.getText());
-        Log.d("idclient1--", idClient1+" -> "+tvNamePlayer1.getText());
 
-        socket.getSocket().on("requestCard", args -> {
+        socket.getSocket().on(Utils.requestCard, args -> {
 
             runOnUiThread(new Runnable() {
                 @Override
@@ -187,21 +181,18 @@ public class G3PServerActivity extends AppCompatActivity {
                     Card card = Deck.getIstance().pull();
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("idClient", idClient);
-                        jsonObject.put("card", card.toJSON());
+                        jsonObject.put(Utils.idClient, idClient);
+                        jsonObject.put(Utils.card, card.toJSON());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    socket.getSocket().emit("sendCard", jsonObject, (Ack) args1 -> {
-                    });
-                    Log.d("IDCLIENT", idClient+"");
+                    socket.getSocket().emit(Utils.sendCard, jsonObject, (Ack) args1 -> {});
+
                     if (idClient.equals(idClient2)) {
-                        Log.d("ALFA", "idClient2");
                         myCardsPlayer2.add(Deck.getIstance().getCardById(card.getId()));
                         myCardAdapterP2.notifyItemInserted(myCardsPlayer2.size() - 1);
                     } else {
-                        Log.d("ALFA", "idClient3");
                         myCardsPlayer1.add(Deck.getIstance().getCardById(card.getId()));
                         myCardAdapterP1.notifyItemInserted(myCardsPlayer1.size() - 1);
                     }
@@ -209,8 +200,8 @@ public class G3PServerActivity extends AppCompatActivity {
             });
         });
 
-        socket.getSocket().on("clientTerminate", args -> {
-            Log.d("ALFA", "clientTeminate");
+        socket.getSocket().on(Utils.clientTerminate, args -> {
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -219,25 +210,21 @@ public class G3PServerActivity extends AppCompatActivity {
                     Double score = 0.0;
                     try {
                         JSONObject json = new JSONObject(args[0].toString());
-                        score = json.getDouble("score");
-                        idClient = json.getString("idClient");
-                        idFirstCard = json.getString("idFirstCard");
+                        score = json.getDouble(Utils.score);
+                        idClient = json.getString(Utils.idClient);
+                        idFirstCard = json.getString(Utils.idFirstCard);
                     } catch (Exception e) {
                     }
 
-                    Log.d("ALFA", "idClient: " + idClient);
                     if (idClient.equals(idClient2)) {
                         idFCPlayer2 = idFirstCard;
-                        Log.d("ALFA", " - client2 idFirstCard: " + idFCPlayer2);
                         scoreP2 = score;
                     } else if (idClient.equals(idClient1)) {
                         idFCPlayer1 = idFirstCard;
-                        Log.d("ALFA", " - client1 idFirstCard: " + idFCPlayer1);
                         scoreP1 = score;
                     }
 
                     if (score > 7.5) {
-                        Log.d("sballato", "sballato");
                         //l'utente che ha terminato il suo turno ha superato 7.5
 
                         if (idClient.equals(idClient2)) {
@@ -250,21 +237,19 @@ public class G3PServerActivity extends AppCompatActivity {
 
                         JSONObject json = new JSONObject();
                         try {
-                            json.put("idClient", idClient);
-                            json.put("idFirstCard", idFirstCard);
-                            json.put("score", score);
+                            json.put(Utils.idClient, idClient);
+                            json.put(Utils.idFirstCard, idFirstCard);
+                            json.put(Utils.score, score);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        socket.getSocket().emit("overSize", json, (Ack) args -> {
-                        });
+                        socket.getSocket().emit(Utils.overSize, json, (Ack) args -> {});
                     }
 
                     indexClient++;
                     if (indexClient < 2) {
-                        Log.d("MONTORI","merda -> "+idClients.get(indexClient));
-                        socket.getSocket().emit("isYourTurn", idClients.get(indexClient));
+                        socket.getSocket().emit(Utils.isYourTurn, idClients.get(indexClient));
                     } else {
                         isMyTurn = true;
                         btnCarta.setVisibility(View.VISIBLE);
@@ -280,8 +265,8 @@ public class G3PServerActivity extends AppCompatActivity {
 
         });
 
-        socket.getSocket().on("resContinueGame", args -> {
-            Log.d("resContinueGame", args[0].toString());
+        socket.getSocket().on(Utils.resContinueGame, args -> {
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -292,11 +277,10 @@ public class G3PServerActivity extends AppCompatActivity {
 
                     try {
                         JSONObject json = new JSONObject(args[0].toString());
-                        idClient = json.getString("idClient");
-                        src = json.getBoolean("bool");
-                        name = json.getString("name");
-                        Log.d("BETA","idClient: "+json.getString("idClient"));
-                    } catch (Exception e) { Log.d("BETA","errore json - resContinuaGame");}
+                        idClient = json.getString(Utils.idClient);
+                        src = json.getBoolean(Utils.bool);
+                        name = json.getString(Utils.name);
+                    } catch (Exception e) {}
 
                     countResponse += 1;
                     if (src) {
@@ -304,81 +288,72 @@ public class G3PServerActivity extends AppCompatActivity {
                         restartNames.add(name);
                         countClient += 1;
                     }
-                    Log.d("countResponse", countResponse + "");
-                    Log.d("countClient", countClient + "");
+
                     if (countResponse == 3 && countClient > 0) {
                         JSONObject obj = new JSONObject();
                         try {
-                            obj.put("nplayers", countClient+1);
-                            obj.put("idserver", socket.getId());
+                            obj.put(Utils.nplayers, countClient+1);
+                            obj.put(Utils.idServer, socket.getId());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Log.d("dentroif", countClient + "");
-
 
                         if (countClient == 1) {
-                            Log.d("dentroif", "dentro if");
-                            socket.getSocket().emit("startGame", obj, (Ack) arg -> {
-                            });
+                            socket.getSocket().emit(Utils.startGame, obj, (Ack) arg -> {});
+
                             JSONArray json = new JSONArray();
-                            Log.d("BETA"," -- idRestartClients --");
                             for(int i=0;i<idRestartClients.size();i++){
-                                Log.d("BETA","idClient: "+idRestartClients.get(i));
                                 Card card = Deck.getIstance().pull();
                                 JSONObject client = new JSONObject();
                                 try {
-                                    client.put("idClient",idRestartClients.get(i));
-                                    client.put("name",restartNames.get(i));
-                                    client.put("card",card.toJSON());
+                                    client.put(Utils.idClient,idRestartClients.get(i));
+                                    client.put(Utils.name,restartNames.get(i));
+                                    client.put(Utils.card,card.toJSON());
                                     json.put(client);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
-                            socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
-                            socket.getSocket().off("requestCard");
-                            socket.getSocket().off("clientTerminate");
+                            socket.getSocket().emit(Utils.sendFirstCard,json,(Ack) args1 -> {});
+                            socket.getSocket().off(Utils.requestCard);
+                            socket.getSocket().off(Utils.clientTerminate);
                             Intent i = new Intent(G3PServerActivity.this, G2PServerActivity.class);
-                            i.putExtra("idCard", Deck.getIstance().pull().getId());
-                            i.putExtra("names", restartNames);
+                            i.putExtra(Utils.idCard, Deck.getIstance().pull().getId());
+                            i.putExtra(Utils.names, restartNames);
                             startActivity(i);
                         }else if(countClient == 2){
-                            Log.d("dentroif", "dentro if");
                             try {
                                 Thread.sleep(1000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            socket.getSocket().emit("startGame", obj, (Ack) arg -> {});
+                            socket.getSocket().emit(Utils.startGame, obj, (Ack) arg -> {});
                             JSONArray json = new JSONArray();
-                            Log.d("BETA"," -- idRestartClients --");
                             for(int i=0;i<idRestartClients.size();i++){
-                                Log.d("BETA","idClient: "+idRestartClients.get(i));
                                 Card card = Deck.getIstance().pull();
                                 JSONObject client = new JSONObject();
                                 try {
-                                    client.put("idClient",idRestartClients.get(i));
-                                    client.put("card",card.toJSON());
-                                    client.put("name",restartNames.get(i));
+                                    client.put(Utils.idClient,idRestartClients.get(i));
+                                    client.put(Utils.card,card.toJSON());
+                                    client.put(Utils.name,restartNames.get(i));
                                     json.put(client);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
                             }
-                            socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
-                            socket.getSocket().off("requestCard");
-                            socket.getSocket().off("clientTerminate");
+                            socket.getSocket().emit(Utils.sendFirstCard,json,(Ack) args1 -> {});
+                            socket.getSocket().off(Utils.requestCard);
+                            socket.getSocket().off(Utils.clientTerminate);
                             Intent i = new Intent(G3PServerActivity.this, G3PServerActivity.class);
-                            i.putExtra("idCard", Deck.getIstance().pull().getId());
-                            i.putExtra("idClients",idRestartClients);
-                            i.putExtra("names", restartNames);
+                            i.putExtra(Utils.idCard, Deck.getIstance().pull().getId());
+                            i.putExtra(Utils.idClients,idRestartClients);
+                            i.putExtra(Utils.names, restartNames);
                             startActivity(i);
-                            socket.getSocket().emit("isYourTurn",idRestartClients.get(0),(Ack) args1 -> {});
+                            socket.getSocket().emit(Utils.isYourTurn,idRestartClients.get(0),(Ack) args1 -> {});
                         }
 
                     }else if(countResponse== 3 && countClient == 0){
-                        socket.getSocket().emit("deleteGame",socket.getId());
+                        socket.getSocket().emit(Utils.deleteGame,socket.getId());
                         Intent i = new Intent(G3PServerActivity.this, MenuActivity.class);
                         startActivity(i);
                     }
@@ -389,8 +364,6 @@ public class G3PServerActivity extends AppCompatActivity {
     }
 
     private void closeRound() {
-
-        Log.d("ALFA", "closeRound");
 
         isMyTurn = false;
         btnCarta.setVisibility(View.INVISIBLE);
@@ -408,20 +381,20 @@ public class G3PServerActivity extends AppCompatActivity {
             for (int i = 0; i < idClients.size(); i++) {
                 client = new JSONObject();
                 if (i == 0) {
-                    client.put("idClient", idClient2);
-                    client.put("idFirstCard", idFCPlayer2);
-                    client.put("score", scoreP2);
+                    client.put(Utils.idClient, idClient2);
+                    client.put(Utils.idFirstCard, idFCPlayer2);
+                    client.put(Utils.score, scoreP2);
                 } else if (i == 1) {
-                    client.put("idClient", idClient1);
-                    client.put("idFirstCard", idFCPlayer1);
-                    client.put("score", scoreP1);
+                    client.put(Utils.idClient, idClient1);
+                    client.put(Utils.idFirstCard, idFCPlayer1);
+                    client.put(Utils.score, scoreP1);
                 }
                 json.put(client);
             }
             client = new JSONObject();
-            client.put("idClient", socket.getId());
-            client.put("idFirstCard", idFCPlayer3);
-            client.put("score", scoreP3);
+            client.put(Utils.idClient, socket.getId());
+            client.put(Utils.idFirstCard, idFCPlayer3);
+            client.put(Utils.score, scoreP3);
             json.put(client);
 
         } catch (JSONException jsonException) {
@@ -448,7 +421,7 @@ public class G3PServerActivity extends AppCompatActivity {
             }
         }
 
-        socket.getSocket().emit("closeRound", json, (Ack) args -> {});
+        socket.getSocket().emit(Utils.closeRound, json, (Ack) args -> {});
     }
 
 
@@ -458,12 +431,12 @@ public class G3PServerActivity extends AppCompatActivity {
 
         // MyPlayer - bottom
         outState.putString("idFCPlayer3",idFCPlayer3);
-        outState.putStringArrayList("myCardsPlayer3",Utilis.getIdCards(myCardsPlayer3));
+        outState.putStringArrayList("myCardsPlayer3", Utils.getIdCards(myCardsPlayer3));
         outState.putDouble("scoreP3",scoreP3);
 
         // Player 2 - left
         outState.putString("idFCPlayer2",idFCPlayer2);
-        outState.putStringArrayList("myCardsPlayer2",Utilis.getIdCards(myCardsPlayer2));
+        outState.putStringArrayList("myCardsPlayer2", Utils.getIdCards(myCardsPlayer2));
         outState.putString("tvScorePlayer2",tvScorePlayer2.getText().toString());
         outState.putString("namePlayer2",tvNamePlayer2.getText().toString());
         if(scoreP2!=null)
@@ -471,13 +444,13 @@ public class G3PServerActivity extends AppCompatActivity {
 
         // Player 1 - top
         outState.putString("idFCPlayer1",idFCPlayer1);
-        outState.putStringArrayList("myCardsPlayer1",Utilis.getIdCards(myCardsPlayer1));
+        outState.putStringArrayList("myCardsPlayer1", Utils.getIdCards(myCardsPlayer1));
         outState.putString("tvScorePlayer1",tvScorePlayer1.getText().toString());
         outState.putString("namePlayer1",tvNamePlayer1.getText().toString());
         if(scoreP1!=null)
             outState.putDouble("scoreP1",scoreP1);
 
-        outState.putStringArrayList("idClients",idClients);
+        outState.putStringArrayList(Utils.idClients,idClients);
         outState.putInt("indexClient",indexClient);
         outState.putString("tvResult",tvResult.getText().toString());
         outState.putBoolean("isMyTurn",isMyTurn);
@@ -489,7 +462,7 @@ public class G3PServerActivity extends AppCompatActivity {
 
         // MyPlayer - bottom
         idFCPlayer3 = savedIstanceState.getString("idFCPlayer3");
-        myCardsPlayer3 = Utilis.getCardsById(savedIstanceState.getStringArrayList("myCardsPlayer3"));
+        myCardsPlayer3 = Utils.getCardsById(savedIstanceState.getStringArrayList("myCardsPlayer3"));
         scoreP3 = savedIstanceState.getDouble("scoreP3");
 
         imageViewPlayer3.setImageResource(Deck.getIstance().getCardById(idFCPlayer3).getIdImage());
@@ -500,7 +473,7 @@ public class G3PServerActivity extends AppCompatActivity {
 
         // Player 2 - left
         idFCPlayer2 = savedIstanceState.getString("idFCPlayer2");
-        myCardsPlayer2 = Utilis.getCardsById(savedIstanceState.getStringArrayList("myCardsPlayer2"));
+        myCardsPlayer2 = Utils.getCardsById(savedIstanceState.getStringArrayList("myCardsPlayer2"));
         scoreP2 = savedIstanceState.getDouble("scoreP2");
         tvScorePlayer2.setText(savedIstanceState.getString("tvScorePlayer2"));
         tvNamePlayer2.setText(savedIstanceState.getString("namePlayer2"));
@@ -512,7 +485,7 @@ public class G3PServerActivity extends AppCompatActivity {
 
         // Player 1 - top
         idFCPlayer1 = savedIstanceState.getString("idFCPlayer1");
-        myCardsPlayer1 = Utilis.getCardsById(savedIstanceState.getStringArrayList("myCardsPlayer1"));
+        myCardsPlayer1 = Utils.getCardsById(savedIstanceState.getStringArrayList("myCardsPlayer1"));
         scoreP1 = savedIstanceState.getDouble("scoreP1");
         tvScorePlayer1.setText(savedIstanceState.getString("tvScorePlayer1"));
         tvNamePlayer1.setText(savedIstanceState.getString("namePlayer1"));
@@ -523,7 +496,7 @@ public class G3PServerActivity extends AppCompatActivity {
         myCardAdapterP1 = new CardAdapter(myCardsPlayer1);
         recyclerViewPlayer1.setAdapter(myCardAdapterP1);
 
-        idClients = savedIstanceState.getStringArrayList("idClients");
+        idClients = savedIstanceState.getStringArrayList(Utils.idClients);
         indexClient = savedIstanceState.getInt("indexClient");
         tvResult.setText(savedIstanceState.getString("tvResult"));
 
@@ -537,8 +510,8 @@ public class G3PServerActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        socket.getSocket().off("requestCard");
-        socket.getSocket().off("clientTerminate");
+        socket.getSocket().off(Utils.requestCard);
+        socket.getSocket().off(Utils.clientTerminate);
     }
 
 }

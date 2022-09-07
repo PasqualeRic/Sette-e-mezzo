@@ -1,12 +1,9 @@
 package com.example.sette_e_mezzo;
 
-import android.widget.ImageView;
-
 import org.json.JSONObject;
 
 public class Card{
 
-    private String backCard = "";
     private String id;
     private int idImage;
     private double value;
@@ -31,12 +28,11 @@ public class Card{
     public JSONObject toJSON(){
         JSONObject json = new JSONObject();
         try {
-            json.put("id", id);
-            json.put("value", value);
+            json.put(Utils.id, id);
+            json.put(Utils.value, value);
             json.put("idImage", idImage);
         }catch(Exception e){}
 
         return json;
     }
-    //public String toString(){ return "id: "+id+", valore: "+value; }
 }

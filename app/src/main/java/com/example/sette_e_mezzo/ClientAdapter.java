@@ -19,7 +19,6 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.CardViewHo
             this.dataset=dataset;
             }
 
-    // parte java per riferirsi all'xml
     public static class CardViewHolder extends RecyclerView.ViewHolder{
 
         TextView username;
@@ -40,7 +39,6 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.CardViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ClientAdapter.CardViewHolder holder, int position) {
-        // in questo metodo specifico il comportamento
         holder.username.setText(dataset.get(position));
     }
 

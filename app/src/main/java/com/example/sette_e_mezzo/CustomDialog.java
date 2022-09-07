@@ -7,7 +7,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-
+/*
+        Dialog per chiedere ai client se vogliono continuare a giocare
+ */
 public class CustomDialog extends Dialog {
 
     TextView tvResultDialog, tvP1, tvP2, tvP3, tvP4;

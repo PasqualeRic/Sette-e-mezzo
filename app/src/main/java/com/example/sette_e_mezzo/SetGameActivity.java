@@ -29,7 +29,7 @@ public class SetGameActivity extends AppCompatActivity {
 
         if(socket.getSocket().connected())
         {
-            socket.getSocket().emit("createGame", null, args -> {
+            socket.getSocket().emit(Utils.createGame, null, args -> {
                 this.id = (String) args[0];
             });
         }
@@ -43,20 +43,19 @@ public class SetGameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 JSONObject item = new JSONObject();
                 try {
-                    item.put("id", id);
-                    item.put("name", name.getText().toString());
-                    item.put("numberOfPlayers",nPlayers.getSelectedItem().toString());
+                    item.put(Utils.id, id);
+                    item.put(Utils.name, name.getText().toString());
+                    item.put(Utils.nplayers,nPlayers.getSelectedItem().toString());
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 if (socket.getSocket().connected()) {
-                    socket.getSocket().emit("confGame", item, (Ack) args -> {
+                    socket.getSocket().emit(Utils.confGame, item, (Ack) args -> {
                         JSONObject response = (JSONObject) args[0];
                     });
                 }
                 Intent wait = new Intent(SetGameActivity.this,WaitActivity.class);
-                Log.d("paraemtri",nPlayers.getSelectedItem().toString());
-                wait.putExtra("N_PLAYERS", nPlayers.getSelectedItem().toString());
+                wait.putExtra(Utils.nplayers, nPlayers.getSelectedItem().toString());
                 startActivity(wait);
 
             }

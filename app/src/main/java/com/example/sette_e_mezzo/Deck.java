@@ -1,7 +1,5 @@
 package com.example.sette_e_mezzo;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -46,7 +44,7 @@ public class Deck extends ArrayList<Card> {
         add(new Card("d7",R.drawable.d7,7));
         add(new Card("d8",R.drawable.d8,0.5));
         add(new Card("d9",R.drawable.d9,0.5));
-        add(new Card("d10",R.drawable.d10,0));
+        add(new Card("d10",R.drawable.d10,0.5));
         add(new Card("s1",R.drawable.s1,1));
         add(new Card("s2",R.drawable.s2,2));
         add(new Card("s3",R.drawable.s3,3));
@@ -89,7 +87,6 @@ public class Deck extends ArrayList<Card> {
             if(card.getId().equals(id))
                 return card;
         }
-        Log.d("addCard","null");
         return null;
     }
 
