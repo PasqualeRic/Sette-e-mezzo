@@ -19,7 +19,7 @@ public class PlayAgain extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Log.d("NOTIFICA","BR - onReceiver");
+        Log.d("NOTIFICA","onReceiver");
         Intent i = new Intent(context.getApplicationContext(),MainActivity.class);
         PendingIntent pending = PendingIntent.getActivity(context.getApplicationContext(), 0, i,PendingIntent.FLAG_IMMUTABLE);
 
@@ -37,11 +37,13 @@ public class PlayAgain extends BroadcastReceiver {
             NotificationChannel channel = new NotificationChannel("idChannel",
                     "playAgain",
                     NotificationManager.IMPORTANCE_DEFAULT);
-           // channel.setDescription("");
+            // channel.setDescription("");
             notificationManager.createNotificationChannel(channel);
         }
 
         Log.d("NOTIFICA","ora mando la notifica");
         notificationManager.notify(1, nBuilder);
     }
+
+
 }

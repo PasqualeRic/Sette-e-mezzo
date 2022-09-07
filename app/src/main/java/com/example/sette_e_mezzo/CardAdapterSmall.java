@@ -21,12 +21,10 @@ public class CardAdapterSmall extends RecyclerView.Adapter<CardAdapterSmall.Card
         this.rotation=rotation;
     }
 
-    // parte java per riferirsi all'xml
     public static class CardViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageView;
 
-        // View v sarà la nostra Card
         public CardViewHolder(View v){
             super(v);
             imageView = v.findViewById(R.id.ivCardSmall);
@@ -36,7 +34,7 @@ public class CardAdapterSmall extends RecyclerView.Adapter<CardAdapterSmall.Card
     @NonNull
     @Override
     public CardAdapterSmall.CardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //inflate(xml,parent,false)
+        // a seconda del grado di inclinazione inseriamo il layout adatto con quell'inclinazione
         View v = null;
         if(rotation==0)
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_small,parent,false);
@@ -51,7 +49,6 @@ public class CardAdapterSmall extends RecyclerView.Adapter<CardAdapterSmall.Card
 
     @Override
     public void onBindViewHolder(@NonNull CardAdapterSmall.CardViewHolder holder, int position) {
-        // in questo metodo specifico il comportamento
         holder.imageView.setImageResource(dataset.get(position).getIdImage());
     }
 

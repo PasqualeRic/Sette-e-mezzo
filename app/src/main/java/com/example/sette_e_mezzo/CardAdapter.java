@@ -18,12 +18,10 @@ public class CardAdapter  extends RecyclerView.Adapter<CardAdapter.CardViewHolde
         this.dataset=dataset;
     }
 
-    // parte java per riferirsi all'xml
     public static class CardViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageView;
 
-        // View v sarà la nostra Card
         public CardViewHolder(View v){
             super(v);
             imageView = v.findViewById(R.id.ivCard);
@@ -33,7 +31,6 @@ public class CardAdapter  extends RecyclerView.Adapter<CardAdapter.CardViewHolde
     @NonNull
     @Override
     public CardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //inflate(xml,parent,false)
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_big,parent,false);
         CardViewHolder cardViewHolder = new CardViewHolder(v);
         return cardViewHolder;
@@ -41,7 +38,6 @@ public class CardAdapter  extends RecyclerView.Adapter<CardAdapter.CardViewHolde
 
     @Override
     public void onBindViewHolder(@NonNull CardViewHolder holder, int position) {
-        // in questo metodo specifico il comportamento
         holder.imageView.setImageResource(dataset.get(position).getIdImage());
     }
 

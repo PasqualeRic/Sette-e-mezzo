@@ -19,36 +19,36 @@ public class WaitRoomClient extends AppCompatActivity {
     SocketClass socket = new SocketClass();
     Integer num;
     String id;
-    private ProgressBar spinner;
+    ProgressBar spinner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wait_room_client);
-        spinner = (ProgressBar) findViewById(R.id.progressBar2);
+        spinner = findViewById(R.id.progressBar2);
         spinner.setVisibility(View.VISIBLE);
 
-        socket.getSocket().on("partita", args -> {
+        socket.getSocket().on(Utils.partita, args -> {
 
-            Log.d("args", args[0].toString());
             try {
                 JSONObject j = new JSONObject(args[0].toString());
-                num = j.getInt("nplayers");
-                id = j.getString("idserver");
+                num = j.getInt(Utils.nplayers);
+                id = j.getString(Utils.idServer);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.d("numero", num + "");
+
             if (num == 2) {
                 Intent i = new Intent(WaitRoomClient.this, G2PClientActivity.class);
-                i.putExtra("idServer", id);
+                i.putExtra(Utils.idServer, id);
                 startActivity(i);
             } else if (num == 3) {
                 Intent i = new Intent(WaitRoomClient.this, G3PClientActivity.class);
-                i.putExtra("idServer", id);
+                i.putExtra(Utils.idServer, id);
                 startActivity(i);
             } else if (num == 4) {
                 Intent i = new Intent(WaitRoomClient.this, G4PClientActivity.class);
-                i.putExtra("idServer", id);
+                i.putExtra(Utils.idServer, id);
                 startActivity(i);
             }
 

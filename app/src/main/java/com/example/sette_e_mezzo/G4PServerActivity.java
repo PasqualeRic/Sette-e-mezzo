@@ -7,8 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -89,11 +87,8 @@ public class G4PServerActivity extends AppCompatActivity {
         restartNames = new ArrayList<>();
 
         isMyTurn=false;
-        idClients = getIntent().getStringArrayListExtra("idClients");
-        names = getIntent().getStringArrayListExtra("names");
-
-        Log.d("MONTORI","names: "+idClients.toString());
-        Log.d("MONTORI","names: "+names.toString());
+        idClients = getIntent().getStringArrayListExtra(Utils.idClients);
+        names = getIntent().getStringArrayListExtra(Utils.names);
 
         tvResult = findViewById(R.id.tvResult4);
         btnCarta = findViewById(R.id.btnCarta4);
@@ -144,7 +139,7 @@ public class G4PServerActivity extends AppCompatActivity {
         rvPlayer4.setAdapter(adapterP4);
         tvNameP4 = findViewById(R.id.tvNameTop);
 
-        Card myFirstCard = Deck.getIstance().getCardById(getIntent().getStringExtra("idCard"));
+        Card myFirstCard = Deck.getIstance().getCardById(getIntent().getStringExtra(Utils.idCard));
         myIdFC = myFirstCard.getId();
         ivMyFirstCard.setImageResource(myFirstCard.getIdImage());
         tvMyScore.setText(myFirstCard.getValue()+"");
@@ -161,12 +156,12 @@ public class G4PServerActivity extends AppCompatActivity {
                     tvMyScore.setText(""+myScore);
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("idClient",socket.getId());
-                        jsonObject.put("card",card.toJSON());
+                        jsonObject.put(Utils.idClient,socket.getId());
+                        jsonObject.put(Utils.card,card.toJSON());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    socket.getSocket().emit("sendCard",jsonObject,(Ack) args1 -> {});
+                    socket.getSocket().emit(Utils.sendCard,jsonObject,(Ack) args1 -> {});
 
                     if(myScore>=7.5){
 
@@ -198,7 +193,7 @@ public class G4PServerActivity extends AppCompatActivity {
         idClient4 = idClients.get(indexClient+2);
         tvNameP4.setText(names.get(indexClient+2));
 
-        socket.getSocket().on("requestCard",args -> {
+        socket.getSocket().on(Utils.requestCard,args -> {
 
             runOnUiThread(new Runnable() {
                 @Override
@@ -207,24 +202,21 @@ public class G4PServerActivity extends AppCompatActivity {
                     Card card = Deck.getIstance().pull();
                     JSONObject jsonObject = new JSONObject();
                     try {
-                        jsonObject.put("idClient",idClient);
-                        jsonObject.put("card",card.toJSON());
+                        jsonObject.put(Utils.idClient,idClient);
+                        jsonObject.put(Utils.card,card.toJSON());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
-                    socket.getSocket().emit("sendCard",jsonObject,(Ack) args1 -> {});
+                    socket.getSocket().emit(Utils.sendCard,jsonObject,(Ack) args1 -> {});
 
                     if(idClient.equals(idClient2)){
-                        Log.d("ALFA","idClient2");
                         cardsP2.add(Deck.getIstance().getCardById(card.getId()));
                         adapterP2.notifyItemInserted(cardsP2.size() - 1);
                     }else if(idClient.equals(idClient3)){
-                        Log.d("ALFA","idClient3");
                         cardsP3.add(Deck.getIstance().getCardById(card.getId()));
                         adapterP3.notifyItemInserted(cardsP3.size() - 1);
                     }else{
-                        Log.d("ALFA","idClient4");
                         cardsP4.add(Deck.getIstance().getCardById(card.getId()));
                         adapterP4.notifyItemInserted(cardsP4.size() - 1);
                     }
@@ -232,8 +224,8 @@ public class G4PServerActivity extends AppCompatActivity {
             });
         });
 
-        socket.getSocket().on("clientTerminate",args -> {
-            Log.d("ALFA","clientTeminate");
+        socket.getSocket().on(Utils.clientTerminate,args -> {
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -242,23 +234,19 @@ public class G4PServerActivity extends AppCompatActivity {
                     Double score=0.0;
                     try {
                         JSONObject json = new JSONObject(args[0].toString());
-                        score = json.getDouble("score");
-                        idClient = json.getString("idClient");
-                        idFirstCard = json.getString("idFirstCard");
+                        score = json.getDouble(Utils.score);
+                        idClient = json.getString(Utils.idClient);
+                        idFirstCard = json.getString(Utils.idFirstCard);
                     }catch(Exception e){}
 
-                    Log.d("ALFA","idClient: "+idClient);
                     if(idClient.equals(idClient2)) {
                         idFCPlayer2 = idFirstCard;
-                        Log.d("ALFA"," - client2 idFirstCard: "+idFCPlayer2);
                         scoreP2 = score;
                     }else if(idClient.equals(idClient3)) {
                         idFCPlayer3 = idFirstCard;
-                        Log.d("ALFA"," - client3 idFirstCard: "+idFCPlayer3);
                         scoreP3 = score;
                     }else {
                         idFCPlayer4 = idFirstCard;
-                        Log.d("ALFA"," - client4 idFirstCard: "+idFCPlayer4);
                         scoreP4 = score;
                     }
 
@@ -278,20 +266,19 @@ public class G4PServerActivity extends AppCompatActivity {
 
                         JSONObject json = new JSONObject();
                         try {
-                            json.put("idClient",idClient);
-                            json.put("idFirstCard",idFirstCard);
-                            json.put("score",score);
+                            json.put(Utils.idClient,idClient);
+                            json.put(Utils.idFirstCard,idFirstCard);
+                            json.put(Utils.score,score);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        socket.getSocket().emit("overSize",json,(Ack) args->{});
+                        socket.getSocket().emit(Utils.overSize,json,(Ack) args->{});
                     }
 
                     indexClient++;
                     if(indexClient<3){
-                        socket.getSocket().emit("isYourTurn",idClients.get(indexClient));
-                        Log.d("MONTORI","send isYourTurn a "+idClients.get(indexClient));
+                        socket.getSocket().emit(Utils.isYourTurn,idClients.get(indexClient));
                     }else{
                         isMyTurn=true;
                         btnCarta.setVisibility(View.VISIBLE);
@@ -306,8 +293,8 @@ public class G4PServerActivity extends AppCompatActivity {
             });
         });
 
-        socket.getSocket().on("resContinueGame", args -> {
-            Log.d("resContinueGame", args[0].toString());
+        socket.getSocket().on(Utils.resContinueGame, args -> {
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -317,11 +304,10 @@ public class G4PServerActivity extends AppCompatActivity {
 
                     try {
                         JSONObject json = new JSONObject(args[0].toString());
-                        idClient = json.getString("idClient");
-                        src = json.getBoolean("bool");
-                        name = json.getString("name");
-                        Log.d("BETA","idClient: "+json.getString("idClient"));
-                    } catch (Exception e) { Log.d("BETA","errore json - resContinuaGame");}
+                        idClient = json.getString(Utils.idClient);
+                        src = json.getBoolean(Utils.bool);
+                        name = json.getString(Utils.name);
+                    } catch (Exception e) {}
 
                     countResponse += 1;
                     if (src) {
@@ -329,38 +315,40 @@ public class G4PServerActivity extends AppCompatActivity {
                         restartNames.add(name);
                         countClient += 1;
                     }
-                    Log.d("countResponse", countResponse + "");
-                    Log.d("countClient", countClient + "");
 
                     if (countResponse == 4 && countClient > 0) {
                         JSONObject obj = new JSONObject();
                         try {
-                            obj.put("nplayers", countClient+1);
-                            obj.put("idserver", socket.getId());
+                            obj.put(Utils.nplayers, countClient+1);
+                            obj.put(Utils.idServer, socket.getId());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        socket.getSocket().emit("startGame", obj, (Ack) arg -> {});
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        socket.getSocket().emit(Utils.startGame, obj, (Ack) arg -> {});
                         JSONArray json = new JSONArray();
 
                         for(int i=0;i<idRestartClients.size();i++){
-                            Log.d("RESTART","idClient: "+idRestartClients.get(i));
                             Card card = Deck.getIstance().pull();
                             JSONObject client = new JSONObject();
                             try {
-                                client.put("idClient",idRestartClients.get(i));
-                                client.put("card",card.toJSON());
-                                client.put("name",restartNames.get(i));
+                                client.put(Utils.idClient,idRestartClients.get(i));
+                                client.put(Utils.card,card.toJSON());
+                                client.put(Utils.name,restartNames.get(i));
                                 json.put(client);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
 
-                        socket.getSocket().emit("sendFirstCard",json,(Ack) args1 -> {});
-                        socket.getSocket().off("requestCard");
-                        socket.getSocket().off("clientTerminate");
+                        socket.getSocket().emit(Utils.sendFirstCard,json,(Ack) args1 -> {});
+                        socket.getSocket().off(Utils.requestCard);
+                        socket.getSocket().off(Utils.clientTerminate);
 
                         Intent i = null;
                         switch (countClient){
@@ -369,22 +357,23 @@ public class G4PServerActivity extends AppCompatActivity {
                                 break;
                             case 2:
                                 i = new Intent(G4PServerActivity.this, G3PServerActivity.class);
-                                socket.getSocket().emit("isYourTurn", idRestartClients.get(0));
+                                socket.getSocket().emit(Utils.isYourTurn, idRestartClients.get(0));
                                 break;
                             case 3:
                                 i = new Intent(G4PServerActivity.this, G4PServerActivity.class);
-                                socket.getSocket().emit("isYourTurn", idRestartClients.get(0));
+                                socket.getSocket().emit(Utils.isYourTurn, idRestartClients.get(0));
                                 break;
                             default:
                                 break;
                         }
 
-                        i.putExtra("idClients",idRestartClients);
-                        i.putExtra("names",restartNames);
-                        i.putExtra("idCard", Deck.getIstance().pull().getId());
+                        i.putExtra(Utils.idClients,idRestartClients);
+                        i.putExtra(Utils.names,restartNames);
+                        i.putExtra(Utils.idCard, Deck.getIstance().pull().getId());
                         startActivity(i);
 
                     }else if(countResponse== 4 && countClient == 0){
+                        socket.getSocket().emit(Utils.deleteGame,socket.getId());
                         Intent i = new Intent(G4PServerActivity.this, MenuActivity.class);
                         startActivity(i);
                     }
@@ -394,8 +383,6 @@ public class G4PServerActivity extends AppCompatActivity {
     }
 
     private void closeRound(){
-
-        Log.d("ALFA","closeRound");
 
         isMyTurn = false;
         btnCarta.setVisibility(View.INVISIBLE);
@@ -415,24 +402,24 @@ public class G4PServerActivity extends AppCompatActivity {
             for(int i=0;i<idClients.size();i++){
                 client = new JSONObject();
                     if(i==0){
-                        client.put("idClient",idClient2);
-                        client.put("idFirstCard",idFCPlayer2);
-                        client.put("score",scoreP2);
+                        client.put(Utils.idClient,idClient2);
+                        client.put(Utils.idFirstCard,idFCPlayer2);
+                        client.put(Utils.score,scoreP2);
                     }else if(i==1){
-                        client.put("idClient",idClient3);
-                        client.put("idFirstCard",idFCPlayer3);
-                        client.put("score",scoreP3);
+                        client.put(Utils.idClient,idClient3);
+                        client.put(Utils.idFirstCard,idFCPlayer3);
+                        client.put(Utils.score,scoreP3);
                     }else{
-                        client.put("idClient",idClient4);
-                        client.put("idFirstCard",idFCPlayer4);
-                        client.put("score",scoreP4);
+                        client.put(Utils.idClient,idClient4);
+                        client.put(Utils.idFirstCard,idFCPlayer4);
+                        client.put(Utils.score,scoreP4);
                     }
                     json.put(client);
             }
             client = new JSONObject();
-            client.put("idClient",socket.getId());
-            client.put("idFirstCard",myIdFC);
-            client.put("score",myScore);
+            client.put(Utils.idClient,socket.getId());
+            client.put(Utils.idFirstCard,myIdFC);
+            client.put(Utils.score,myScore);
             json.put(client);
 
         } catch (JSONException jsonException) {
@@ -469,7 +456,7 @@ public class G4PServerActivity extends AppCompatActivity {
             }
         }
 
-        socket.getSocket().emit("closeRound",json,(Ack) args->{});
+        socket.getSocket().emit(Utils.closeRound,json,(Ack) args->{});
     }
 
     @Override
@@ -477,12 +464,12 @@ public class G4PServerActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         // MyPlayer
         outState.putString("myIdFC",myIdFC);
-        outState.putStringArrayList("myCards",Utilis.getIdCards(myCards));
+        outState.putStringArrayList("myCards", Utils.getIdCards(myCards));
         outState.putDouble("myScore",myScore);
 
         // Player 2
         outState.putString("idFCPlayer2",idFCPlayer2);
-        outState.putStringArrayList("cardsP2",Utilis.getIdCards(cardsP2));
+        outState.putStringArrayList("cardsP2", Utils.getIdCards(cardsP2));
         outState.putString("tvScoreP2",tvScoreP2.getText().toString());
         //outState.putString("tvNameP2",tvNameP2.getText().toString());
         if(scoreP2!=null)
@@ -490,7 +477,7 @@ public class G4PServerActivity extends AppCompatActivity {
 
         // Player 3
         outState.putString("idFCPlayer3",idFCPlayer3);
-        outState.putStringArrayList("cardsP3",Utilis.getIdCards(cardsP3));
+        outState.putStringArrayList("cardsP3", Utils.getIdCards(cardsP3));
         outState.putString("tvScoreP3",tvScoreP3.getText().toString());
         //outState.putString("tvNameP3",tvNameP3.getText().toString());
         if(scoreP3!=null)
@@ -498,7 +485,7 @@ public class G4PServerActivity extends AppCompatActivity {
 
         // Player 4
         outState.putString("idFCPlayer4",idFCPlayer4);
-        outState.putStringArrayList("cardsP4",Utilis.getIdCards(cardsP4));
+        outState.putStringArrayList("cardsP4", Utils.getIdCards(cardsP4));
         outState.putString("tvScoreP4",tvScoreP4.getText().toString());
         //outState.putString("tvNameP4",tvNameP4.getText().toString());
         if(scoreP4!=null)
@@ -516,7 +503,7 @@ public class G4PServerActivity extends AppCompatActivity {
 
         // MyPlayer
         myIdFC = savedIstanceState.getString("myIdFC");
-        myCards = Utilis.getCardsById(savedIstanceState.getStringArrayList("myCards"));
+        myCards = Utils.getCardsById(savedIstanceState.getStringArrayList("myCards"));
         myScore = savedIstanceState.getDouble("myScore");
 
         ivMyFirstCard.setImageResource(Deck.getIstance().getCardById(myIdFC).getIdImage());
@@ -527,7 +514,7 @@ public class G4PServerActivity extends AppCompatActivity {
 
         // Player 2
         idFCPlayer2 = savedIstanceState.getString("idFCPlayer2");
-        cardsP2 = Utilis.getCardsById(savedIstanceState.getStringArrayList("cardsP2"));
+        cardsP2 = Utils.getCardsById(savedIstanceState.getStringArrayList("cardsP2"));
         scoreP2 = savedIstanceState.getDouble("scoreP2");
         tvScoreP2.setText(savedIstanceState.getString("tvScoreP2"));
         if(!tvScoreP2.getText().toString().equals(""))
@@ -538,7 +525,7 @@ public class G4PServerActivity extends AppCompatActivity {
 
         // Player 3
         idFCPlayer3 = savedIstanceState.getString("idFCPlayer3");
-        cardsP3 = Utilis.getCardsById(savedIstanceState.getStringArrayList("cardsP3"));
+        cardsP3 = Utils.getCardsById(savedIstanceState.getStringArrayList("cardsP3"));
         scoreP3 = savedIstanceState.getDouble("scoreP3");
         tvScoreP3.setText(savedIstanceState.getString("tvScoreP3"));
 
@@ -550,7 +537,7 @@ public class G4PServerActivity extends AppCompatActivity {
 
         // Player 4
         idFCPlayer4 = savedIstanceState.getString("idFCPlayer4");
-        cardsP4 = Utilis.getCardsById(savedIstanceState.getStringArrayList("cardsP4"));
+        cardsP4 = Utils.getCardsById(savedIstanceState.getStringArrayList("cardsP4"));
         scoreP4 = savedIstanceState.getDouble("scoreP4");
         tvScoreP4.setText(savedIstanceState.getString("tvScoreP4"));
 
@@ -561,7 +548,7 @@ public class G4PServerActivity extends AppCompatActivity {
         rvPlayer4.setAdapter(adapterP4);
 
 
-        idClients = savedIstanceState.getStringArrayList("idClients");
+        idClients = savedIstanceState.getStringArrayList(Utils.idClients);
         indexClient = savedIstanceState.getInt("indexClient");
         tvResult.setText(savedIstanceState.getString("result"));
 
@@ -576,7 +563,7 @@ public class G4PServerActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        socket.getSocket().off("requestCard");
-        socket.getSocket().off("clientTerminate");
+        socket.getSocket().off(Utils.requestCard);
+        socket.getSocket().off(Utils.clientTerminate);
     }
 }
