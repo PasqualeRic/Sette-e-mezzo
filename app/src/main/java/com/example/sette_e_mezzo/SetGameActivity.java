@@ -33,7 +33,6 @@ public class SetGameActivity extends AppCompatActivity {
                 this.id = (String) args[0];
             });
         }
-
         name = findViewById(R.id.gameName);
         nPlayers = findViewById(R.id.nPlayers);
 
@@ -50,6 +49,7 @@ public class SetGameActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 if (socket.getSocket().connected()) {
+                    Log.d("idprova", String.valueOf(item));
                     socket.getSocket().emit(Utils.confGame, item, (Ack) args -> {
                         JSONObject response = (JSONObject) args[0];
                     });

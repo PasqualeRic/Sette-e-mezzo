@@ -9,7 +9,7 @@ public class SocketClass {
     private static Socket socket = null;
     public void connection(){
         try {
-            socket = IO.socket("http://10.0.2.2:3000");
+            socket = IO.socket("https://sette-e-mezzo.herokuapp.com");
             socket.connect();
         }catch (URISyntaxException e) {
             e.printStackTrace();
