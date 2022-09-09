@@ -1,7 +1,19 @@
 const { v4: uuid } = require('uuid');
-const gamesManager = require('./gamesmanager');
 const Game = require('./game')
 var conta = 0;
+
+let GamesArray = []
+const gamesManager = {
+
+    getGames: () => {
+        return GamesArray
+    },
+
+    setGames: (games) => {
+        GamesArray = games;
+    }
+}
+
 const ioGames = (socket) => {
     GamesArray = gamesManager.getGames()
     const createGame = async (callback) => {
@@ -10,46 +22,45 @@ const ioGames = (socket) => {
             const game = new Game(socket.id);
             console.log(game)
             GamesArray.push(game)
-            console.log('Game created.')
+            console.log('partita creata')
             socket.join(game.id)
             callback(game.id)
         } catch (err) {
             console.log(err)
-            callback(new Error())
         }
     }
     const joinGame = async (data, callback) =>  {
         console.log('joinGame player: ')
         console.log(data)
         try {
+            console.log("sei dentro il try")
             //console.log(GamesArray);
             GamesArray.forEach(element =>{
-                if(element.numberOfPlayers == data.numberOfPlayers){
+                console.log("a")
+                if(element.nPlayers == data.nplayers && element.status == 'joinable'){
+                    console.log("b")
                     if(element.players.length == 0)
                     {
+                        console.log("c")
                         element.players.push({id: socket.id, name: data.name});
                         console.log(element)
-                        socket.to(element.id).emit("invioPlayer",data.name, data.numberOfPlayers,data.id)
+                        socket.to(element.id).emit("invioPlayer",data.name, data.nplayers,data.id)
                         console.log(socket.id+' joined in '+element.id)
                         console.log(element.players[0].id)
-                        //console.log(data.id)
-                        if(element.players.length == element.numberOfPlayers-1){
-                            element.status = "close"
-                            socket.to(element.id).emit("start", element.numberOfPlayers)
-                        }
                     }
                     else {
+                        console.log("d")
                         console.log(element.players.find(e => e.id == data.id))
                         if(!element.players.find(e => e.id == data.id) && element.status == "joinable"){
+                            console.log("e")
                             element.players.push({id: socket.id, name: data.name});
                             console.log(element)
-                            socket.to(element.id).emit("invioPlayer",data.name, data.numberOfPlayers,data.id)
+                            socket.to(element.id).emit("invioPlayer",data.name, data.nplayers,data.id)
                             console.log(socket.id+' joined in '+element.id)
                             console.log(element.players[0].id)
                             //console.log(data.id)
-                            if(element.players.length == element.numberOfPlayers-1){
+                            if(element.players.length == element.nPlayers-1){
                                 element.status = "close"
-                                socket.to(element.id).emit("start", element.numberOfPlayers)
                             }
                         }
 
@@ -99,16 +110,9 @@ const ioGames = (socket) => {
         console.log('conf game')
         console.log(data);
         const game = GamesArray.find(el => el.id == data.id);
-        GamesArray.forEach(element => {
-            // controllo se esiste già una partita con questo nome
-            if(element.name == data.name)
-            {
-                throw new Error()
-            }
-        });
         game.name = data.name
         game.status = 'joinable'
-        game.numberOfPlayers = data.numberOfPlayers
+        game.nPlayers = data.nplayers
         console.log(game)
         socket.join(game)
         
@@ -181,9 +185,9 @@ const ioGames = (socket) => {
                 if(element.players[i].id == data){
                     console.log(element)
                     element.players.pop(element.players[i].id);
-                    n = parseInt(element.numberOfPlayers)
+                    n = parseInt(element.nPlayers)
                     n = n - 1
-                    element.numberOfPlayers = n
+                    element.nPlayers = n
                     console.log(element)
                     console.log("id player eliminato: "+data);
                 }
@@ -195,17 +199,19 @@ const ioGames = (socket) => {
     const deleteGame = async (data, callback) => {
 
         console.log(" ***** delelte Game ***** ");
-        var game;
         console.log(data);
         console.log(GamesArray);
-        GamesArray.forEach(element =>{
-
-            if(element.admin==data){
-                console.log("dentro la if")
-                GamesArray.pop(element);
-            }
-        })
-        console.log(GamesArray);
+        const game = GamesArray.find(el => el.id == data);
+        GamesArray.pop(game)
+        console.log(GamesArray)
+    }
+    const saveWinner = async (data) => {
+        console.log("saveWinner")
+        console.log(data)
+        const game = GamesArray.find(el => el.id == data.idGame);
+        console.log(game)
+        game.winners.push({name: data.winner})
+        console.log(game)
     }
     
 
@@ -223,5 +229,6 @@ const ioGames = (socket) => {
     socket.on('continueGame',continueGame);
     socket.on('deletePlayer',deletePlayer);
     socket.on('deleteGame',deleteGame);
+    socket.on('saveWinner',saveWinner);
 }
 module.exports = ioGames
