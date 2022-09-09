@@ -47,7 +47,7 @@ public class G4PServerActivity extends AppCompatActivity {
     TextView tvMyName;
 
     // Player 2 - Sinistra
-    String idClient2, idFCPlayer2;
+    String idClient2, idFCPlayer2,nameP2;
     ImageView ivFCPlayer2;
     ArrayList<Card> cardsP2;
     TextView tvScoreP2;
@@ -58,7 +58,7 @@ public class G4PServerActivity extends AppCompatActivity {
     TextView tvNameP2;
 
     // Player 3 - Destra
-    String idClient3, idFCPlayer3;
+    String idClient3, idFCPlayer3,nameP3;
     ImageView ivFCPlayer3;
     ArrayList<Card> cardsP3;
     TextView tvScoreP3;
@@ -69,7 +69,7 @@ public class G4PServerActivity extends AppCompatActivity {
     TextView tvNameP3;
 
     // Player 4
-    String idClient4, idFCPlayer4;
+    String idClient4, idFCPlayer4, nameP4;
     ImageView ivFCPlayer4;
     ArrayList<Card> cardsP4;
     TextView tvScoreP4;
@@ -170,8 +170,10 @@ public class G4PServerActivity extends AppCompatActivity {
 
                         if(myScore==7.5){
                             tvResult.setText(R.string.win);
+                            sendWinner(tvMyName.getText().toString());
                         }else{
                             tvResult.setText(R.string.lose);
+                            sendWinner(getWinner());
                         }
                         closeRound();
                     }
@@ -190,11 +192,14 @@ public class G4PServerActivity extends AppCompatActivity {
 
         indexClient=0;
         idClient2 = idClients.get(indexClient);
-        tvNameP2.setText(names.get(indexClient));
+        nameP2 = names.get(indexClient);
+        tvNameP2.setText(nameP2);
         idClient3 = idClients.get(indexClient+1);
-        tvNameP3.setText(names.get(indexClient+1));
+        nameP3 = names.get(indexClient+1);
+        tvNameP3.setText(nameP3);
         idClient4 = idClients.get(indexClient+2);
-        tvNameP4.setText(names.get(indexClient+2));
+        nameP4 = names.get(indexClient+2);
+        tvNameP4.setText(nameP4);
 
         socket.getSocket().on(Utils.requestCard,args -> {
 
@@ -373,6 +378,7 @@ public class G4PServerActivity extends AppCompatActivity {
                         i.putExtra(Utils.idClients,idRestartClients);
                         i.putExtra(Utils.names,restartNames);
                         i.putExtra(Utils.idCard, Deck.getIstance().pull().getId());
+                        i.putExtra(Utils.idGame,idGame);
                         startActivity(i);
 
                     }else if(countResponse== 4 && countClient == 0){
@@ -383,6 +389,44 @@ public class G4PServerActivity extends AppCompatActivity {
                 }
             });
         });
+    }
+
+    public String getWinner(){
+        //viene invocata quando il sever ha perso.
+
+        if(scoreP2>7.5 && scoreP3>7.5){
+            return nameP4;
+        }else if(scoreP3>7.5 && scoreP4>7.5){
+            return nameP2;
+        }else if(scoreP2>7.5 && scoreP4>7.5){
+            return nameP3;
+        }else if(scoreP2>7.5){
+            if(scoreP3>scoreP4){
+                return nameP3;
+            }else{
+                return nameP4;
+            }
+        }else if(scoreP3>7.5){
+            if(scoreP2>scoreP4){
+                return nameP2;
+            }else{
+                return nameP4;
+            }
+        }else if(scoreP4>7.5){
+            if(scoreP2>scoreP3){
+                return nameP2;
+            }else{
+                return nameP3;
+            }
+        }else if(scoreP2>=scoreP3 && scoreP2>=scoreP4){
+            return nameP2;
+        }else if(scoreP3>=scoreP2 && scoreP3>=scoreP4){
+            return nameP3;
+        }else if(scoreP4>=scoreP3 && scoreP4>=scoreP2){
+            return nameP4;
+        }
+
+        return "";
     }
 
     public void sendWinner(String winner){
@@ -448,27 +492,35 @@ public class G4PServerActivity extends AppCompatActivity {
             if((scoreP2<=7.5 && myScore>=scoreP2) && (scoreP3<=7.5 && myScore>=scoreP3) && (scoreP4<=7.5 && myScore>=scoreP4)){
                 // il mio punteggio è il più alto e non ha sballato nessuno
                 tvResult.setText(R.string.win);
+                sendWinner(tvMyName.getText().toString());
 
             }else if(scoreP2>7.5 && (scoreP3<=7.5 && myScore>=scoreP3) && (scoreP4<=7.5 && myScore>=scoreP4)){
                 // il mio punteggio è il più alto e non ha sballato p2
                 tvResult.setText(R.string.win);
+                sendWinner(tvMyName.getText().toString());
             }else if((scoreP2<=7.5 && myScore>=scoreP2) && scoreP3>7.5 && (scoreP4<=7.5 && myScore>=scoreP4)){
                 // il mio punteggio è il più alto e non ha sballato p3
                 tvResult.setText(R.string.win);
+                sendWinner(tvMyName.getText().toString());
             }else if((scoreP2<=7.5 && myScore>=scoreP2) && (scoreP3<=7.5 && myScore>=scoreP3) && scoreP4>7.5){
                 // il mio punteggio è il più alto e non ha sballato p4
                 tvResult.setText(R.string.win);
+                sendWinner(tvMyName.getText().toString());
             }else if(scoreP2>7.5 && scoreP3>7.5  && (scoreP4<=7.5 && myScore>=scoreP4)){
                 // il mio punteggio è il più alto e non hanno sballato p2 e p3
                 tvResult.setText(R.string.win);
+                sendWinner(tvMyName.getText().toString());
             }else if(scoreP2>7.5 && (scoreP3<=7.5 && myScore>=scoreP3) && scoreP4>7.5){
                 // il mio punteggio è il più alto e non hanno sballato p2 e p4
                 tvResult.setText(R.string.win);
+                sendWinner(tvMyName.getText().toString());
             }else if((scoreP2<=7.5 && myScore>=scoreP2) && scoreP3>7.5 && scoreP4>7.5){
                 // il mio punteggio è il più alto e non hanno sballato p3 e p4
                 tvResult.setText(R.string.win);
+                sendWinner(tvMyName.getText().toString());
             }else{
                 tvResult.setText(R.string.lose);
+                sendWinner(getWinner());
             }
         }
 

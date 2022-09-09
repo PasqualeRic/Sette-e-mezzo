@@ -15,6 +15,8 @@ public class SocketClass {
             e.printStackTrace();
         }
     }
+
+    public boolean isConnected(){ return socket.connected();}
     public void disconnection(){
         socket.disconnect();
     }

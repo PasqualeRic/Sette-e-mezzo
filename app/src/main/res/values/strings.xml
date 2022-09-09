@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Sette_e_Mezzo</string>
+    <string name="app_name">Sette e Mezzo</string>
 
     //Stringhe gioco
     <string name="game">Gioca</string>
@@ -21,6 +21,9 @@
     <string name="playAgain">Vuoi giocare ancora?</string>
     <string name="yes">si</string>
     <string name="over">punteggio oltre 7.5</string>
+    <string name="textNotification">Tieniti in allenamento. Vieni a giocare!</string>
+    <string name="toastServer">Inserisci il nome della partita</string>
+    <string name="toastClient">Inserisci un username</string>
     //-------
 
     <string-array name="players">

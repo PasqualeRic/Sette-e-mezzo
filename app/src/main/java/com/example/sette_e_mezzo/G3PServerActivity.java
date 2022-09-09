@@ -332,6 +332,7 @@ public class G3PServerActivity extends AppCompatActivity {
                             Intent i = new Intent(G3PServerActivity.this, G2PServerActivity.class);
                             i.putExtra(Utils.idCard, Deck.getIstance().pull().getId());
                             i.putExtra(Utils.names, restartNames);
+                            i.putExtra(Utils.idGame,idGame);
                             startActivity(i);
                         }else if(countClient == 2){
                             try {
@@ -360,6 +361,7 @@ public class G3PServerActivity extends AppCompatActivity {
                             i.putExtra(Utils.idCard, Deck.getIstance().pull().getId());
                             i.putExtra(Utils.idClients,idRestartClients);
                             i.putExtra(Utils.names, restartNames);
+                            i.putExtra(Utils.idGame,idGame);
                             startActivity(i);
                             socket.getSocket().emit(Utils.isYourTurn,idRestartClients.get(0),(Ack) args1 -> {});
                         }
