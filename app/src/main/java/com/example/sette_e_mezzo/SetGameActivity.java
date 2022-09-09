@@ -58,7 +58,6 @@ public class SetGameActivity extends AppCompatActivity {
                 wait.putExtra(Utils.nplayers, nPlayers.getSelectedItem().toString());
                 wait.putExtra(Utils.idGame, id);
                 startActivity(wait);
-
             }
         });
 
