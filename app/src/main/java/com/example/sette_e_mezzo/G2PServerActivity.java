@@ -303,6 +303,7 @@ public class G2PServerActivity extends AppCompatActivity {
                             Intent i = new Intent(G2PServerActivity.this, G2PServerActivity.class);
                             i.putExtra(Utils.idCard, Deck.getIstance().pull().getId());
                             i.putExtra(Utils.names,restartNames);
+                            i.putExtra(Utils.idGame,idGame);
                             startActivity(i);
                         }
 

@@ -21,7 +21,11 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        socket.connection();
+
+        if(!socket.isConnected()){
+            socket.connection();
+        }
+
         btnDealer = findViewById(R.id.btnDealer);
         btnPlayer = findViewById(R.id.btnPlayer);
 
