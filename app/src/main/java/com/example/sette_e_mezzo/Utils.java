@@ -7,6 +7,7 @@ public class Utils {
     //      STRINGHE PER EVITARE L'HARDCODING
 
     //      chiavi
+    public static String idGame="idGame";
     public static String idClient="idClient";
     public static String idClients="idClients";
     public static String idServer="idServer";
@@ -22,6 +23,7 @@ public class Utils {
     public static String value="value";
 
     //      metodi js
+    public static String saveWinner="saveWinner";
     public static String invioPlayer="invioPlayer";
     public static String startGame="startGame";
     public static String isYourTurn="isYourTurn";

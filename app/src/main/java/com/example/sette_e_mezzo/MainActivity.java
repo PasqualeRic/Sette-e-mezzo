@@ -12,14 +12,12 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
     static final int ALARM_REQ_CODE = 100;
-    SocketClass socket = new SocketClass();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        socket.connection();
 
         Button btnGame = findViewById(R.id.btnGame);
         btnGame.setOnClickListener(new View.OnClickListener() {

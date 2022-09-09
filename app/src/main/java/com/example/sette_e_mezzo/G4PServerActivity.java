@@ -21,8 +21,9 @@ import java.util.ArrayList;
 import io.socket.client.Ack;
 
 public class G4PServerActivity extends AppCompatActivity {
-
     SocketClass socket = new SocketClass();
+
+    String idGame;
 
     int countClient = 0;
     int countResponse = 1;
@@ -82,6 +83,8 @@ public class G4PServerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game4_players);
+
+        idGame = getIntent().getStringExtra(Utils.idGame);
 
         idRestartClients = new ArrayList<>();
         restartNames = new ArrayList<>();
@@ -379,6 +382,19 @@ public class G4PServerActivity extends AppCompatActivity {
                     }
                 }
             });
+        });
+    }
+
+    public void sendWinner(String winner){
+        JSONObject j = new JSONObject();
+        try {
+            j.put("idGame", idGame);
+            j.put("winner", winner);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        socket.getSocket().emit(Utils.saveWinner, j, (Ack) args -> {
         });
     }
 

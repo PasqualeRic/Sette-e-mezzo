@@ -56,6 +56,7 @@ public class SetGameActivity extends AppCompatActivity {
                 }
                 Intent wait = new Intent(SetGameActivity.this,WaitActivity.class);
                 wait.putExtra(Utils.nplayers, nPlayers.getSelectedItem().toString());
+                wait.putExtra(Utils.idGame, id);
                 startActivity(wait);
 
             }

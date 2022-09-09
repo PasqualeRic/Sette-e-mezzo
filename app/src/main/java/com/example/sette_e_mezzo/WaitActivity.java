@@ -123,6 +123,7 @@ public class WaitActivity extends AppCompatActivity {
                 i.putExtra(Utils.idClients,idClients);
                 i.putExtra(Utils.names,usernameClients);
                 i.putExtra(Utils.idCard,Deck.getIstance().pull().getId());
+                i.putExtra(Utils.idGame, getIntent().getStringExtra(Utils.idGame));
                 startActivity(i);
 
                 if(idClients.size()>1)

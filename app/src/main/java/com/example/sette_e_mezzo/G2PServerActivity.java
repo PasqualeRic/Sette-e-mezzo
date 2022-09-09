@@ -26,6 +26,7 @@ public class G2PServerActivity extends AppCompatActivity {
     SocketClass socket = new SocketClass();
     TextView tvResult;
     Boolean isMyTurn;
+    String idGame;
 
     int countClient = 0;
     int countResponse = 1;
@@ -62,6 +63,7 @@ public class G2PServerActivity extends AppCompatActivity {
         idRestartClients = new ArrayList<>();
         restartNames = new ArrayList<>();
 
+        idGame = getIntent().getStringExtra(Utils.idGame);
 
         isMyTurn=false;
 
@@ -148,6 +150,9 @@ public class G2PServerActivity extends AppCompatActivity {
                         }
                         ivFirstPlayer.setImageResource(Deck.getIstance().getCardById(idFirstCardPlayer).getIdImage());
                         socket.getSocket().emit(Utils.closeRound,json,(Ack) args->{});
+
+                        sendWinner(tvNameDealer.getText().toString());
+
                     }else{
                         isMyTurn=true;
                         btnCarta.setVisibility(View.VISIBLE);
@@ -186,8 +191,10 @@ public class G2PServerActivity extends AppCompatActivity {
 
                         if (myScore == 7.5) {
                             tvResult.setText(R.string.win);
+                            sendWinner(tvNameDealer.getText().toString());
                         } else {
                             tvResult.setText(R.string.lose);
+                            sendWinner(tvNamePlayer.getText().toString());
                         }
                         JSONObject json = new JSONObject();
                         try {
@@ -215,8 +222,10 @@ public class G2PServerActivity extends AppCompatActivity {
 
                     if (myScore >= scorePlayer) {
                         tvResult.setText(R.string.win);
+                        sendWinner(tvNameDealer.getText().toString());
                     } else {
                         tvResult.setText(R.string.lose);
+                        sendWinner(tvNamePlayer.getText().toString());
                     }
 
                     JSONObject json = new JSONObject();
@@ -298,7 +307,7 @@ public class G2PServerActivity extends AppCompatActivity {
                         }
 
                     }else if(countResponse== 2 && countClient == 0){
-                        socket.getSocket().emit(Utils.deleteGame,socket.getId());
+                        socket.getSocket().emit(Utils.deleteGame,idGame);
                         Intent i = new Intent(G2PServerActivity.this, MenuActivity.class);
                         startActivity(i);
                     }
@@ -307,6 +316,18 @@ public class G2PServerActivity extends AppCompatActivity {
 
         });
 
+    }
+    public void sendWinner(String winner){
+            JSONObject j = new JSONObject();
+            try {
+                j.put("idGame", idGame);
+                j.put("winner", winner);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            socket.getSocket().emit(Utils.saveWinner, j, (Ack) args -> {
+            });
     }
 
     @Override

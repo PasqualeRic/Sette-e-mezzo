@@ -15,11 +15,13 @@ import io.socket.client.Ack;
 
 public class MenuActivity extends AppCompatActivity {
     Button btnDealer, btnPlayer;
+    SocketClass socket = new SocketClass();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
+        socket.connection();
         btnDealer = findViewById(R.id.btnDealer);
         btnPlayer = findViewById(R.id.btnPlayer);
 

@@ -23,6 +23,10 @@ import io.socket.client.Ack;
 public class G3PServerActivity extends AppCompatActivity {
     SocketClass socket = new SocketClass();
 
+    String idGame;
+    String nameP1 = "";
+    String nameP2 = "";
+
     int countClient = 0;
     int countResponse = 1;
     TextView tvResult;
@@ -70,6 +74,9 @@ public class G3PServerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game3_players);
+
+        idGame = getIntent().getStringExtra(Utils.idGame);
+
         idRestartClients = new ArrayList<>();
         restartNames = new ArrayList<>();
 
@@ -146,8 +153,10 @@ public class G3PServerActivity extends AppCompatActivity {
 
                         if(scoreP3==7.5){
                             tvResult.setText(R.string.win);
+                            sendWinner(tvNamePlayer3.getText().toString());
                         }else{
                             tvResult.setText(R.string.lose);
+                            sendWinner(getWinner(nameP1,scoreP1,nameP2,scoreP2));
                         }
                         closeRound();
                     }
@@ -168,9 +177,12 @@ public class G3PServerActivity extends AppCompatActivity {
         indexClient = 0;
         //socket.getSocket().emit(Utils.isYourTurn, idClients.get(indexClient));
         idClient2 = idClients.get(indexClient);
-        tvNamePlayer2.setText(names.get(indexClient));
+        nameP2 = names.get(indexClient);
+        tvNamePlayer2.setText(nameP2);
         idClient1 = idClients.get(indexClient + 1);
-        tvNamePlayer1.setText(names.get(indexClient+1));
+        nameP1 = names.get(indexClient+1);
+        tvNamePlayer1.setText(nameP1);
+
 
         socket.getSocket().on(Utils.requestCard, args -> {
 
@@ -363,6 +375,31 @@ public class G3PServerActivity extends AppCompatActivity {
         });
     }
 
+    public String getWinner(String name1, Double score1, String name2, Double score2){
+        //viene invocata quando il sever ha perso.
+        if(score2>7.5){
+            return name1;
+        }else if(score1>7.5){
+            return name2;
+        }else if(score2>score1){
+            return name2;
+        }else{
+            return name1;
+        }
+    }
+
+    public void sendWinner(String winner){
+        JSONObject j = new JSONObject();
+        try {
+            j.put("idGame", idGame);
+            j.put("winner", winner);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        socket.getSocket().emit(Utils.saveWinner, j, (Ack) args -> {
+        });
+    }
     private void closeRound() {
 
         isMyTurn = false;
@@ -407,17 +444,22 @@ public class G3PServerActivity extends AppCompatActivity {
             if ((scoreP2 <= 7.5 && scoreP1 >= scoreP2) && (scoreP1 <= 7.5 && scoreP3 >= scoreP1)) {
                 // il mio punteggio è il più alto e non ha sballato nessuno
                 tvResult.setText(R.string.win);
+                sendWinner(tvNamePlayer3.getText().toString());
             } else if (scoreP2 > 7.5 && (scoreP1 <= 7.5 && scoreP3 >= scoreP1)) {
                 // il mio punteggio è il più alto e non ha sballato l'altro player
                 tvResult.setText(R.string.win);
+                sendWinner(tvNamePlayer3.getText().toString());
             } else if ((scoreP2 <= 7.5 && scoreP3 >= scoreP2) && scoreP1 > 7.5) {
                 // il mio punteggio è il più alto e non ha sballato il dealer
                 tvResult.setText(R.string.win);
+                sendWinner(tvNamePlayer3.getText().toString());
             } else if (scoreP2 > 7.5 && scoreP1 > 7.5) {
                 // hanno sballato sia l'altro player che il dealer
                 tvResult.setText(R.string.win);
+                sendWinner(tvNamePlayer3.getText().toString());
             } else {
                 tvResult.setText(R.string.lose);
+                sendWinner(getWinner(nameP1,scoreP1,nameP2,scoreP2));
             }
         }
 
