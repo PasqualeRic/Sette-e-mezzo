@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,49 +87,55 @@ public class WaitActivity extends AppCompatActivity {
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONObject obj = new JSONObject();
-                try{
-                    obj.put(Utils.nplayers,idClients.size()+1);
-                    obj.put(Utils.idServer,socket.getId());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                socket.getSocket().emit(Utils.startGame,obj, (Ack) args -> {});
-
-                JSONArray json = new JSONArray();
-
-                for(int i=0;i<idClients.size();i++){
-                    Card card = Deck.getIstance().pull();
-                    JSONObject client = new JSONObject();
+                if(conta>1) {
+                    JSONObject obj = new JSONObject();
                     try {
-                        client.put(Utils.idClient,idClients.get(i));
-                        client.put(Utils.name,usernameClients.get(i));
-                        client.put(Utils.card,card.toJSON());
-                        json.put(client);
+                        obj.put(Utils.nplayers, idClients.size() + 1);
+                        obj.put(Utils.idServer, socket.getId());
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    socket.getSocket().emit(Utils.startGame, obj, (Ack) args -> {
+                    });
+
+                    JSONArray json = new JSONArray();
+
+                    for (int i = 0; i < idClients.size(); i++) {
+                        Card card = Deck.getIstance().pull();
+                        JSONObject client = new JSONObject();
+                        try {
+                            client.put(Utils.idClient, idClients.get(i));
+                            client.put(Utils.name, usernameClients.get(i));
+                            client.put(Utils.card, card.toJSON());
+                            json.put(client);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    socket.getSocket().emit(Utils.sendFirstCard, json, (Ack) args1 -> {
+                    });
+
+                    Intent i = null;
+                    if (idClients.size() + 1 == 2) {
+                        i = new Intent(WaitActivity.this, G2PServerActivity.class);
+                    } else if (idClients.size() + 1 == 3) {
+                        i = new Intent(WaitActivity.this, G3PServerActivity.class);
+                    } else if (idClients.size() + 1 == 4) {
+                        i = new Intent(WaitActivity.this, G4PServerActivity.class);
+                    }
+
+                    i.putExtra(Utils.idClients, idClients);
+                    i.putExtra(Utils.names, usernameClients);
+                    i.putExtra(Utils.idCard, Deck.getIstance().pull().getId());
+                    i.putExtra(Utils.idGame, getIntent().getStringExtra(Utils.idGame));
+                    startActivity(i);
+
+                    if (idClients.size() > 1)
+                        socket.getSocket().emit(Utils.isYourTurn, idClients.get(0));
+                }else{
+                    Toast toast = Toast.makeText(getApplicationContext(), getString(R.string.toastStartGame), Toast.LENGTH_SHORT);
+                    toast.show();
                 }
-                socket.getSocket().emit(Utils.sendFirstCard,json,(Ack) args1 -> {});
-
-                Intent i = null;
-                if(idClients.size()+1 == 2){
-                    i = new Intent(WaitActivity.this, G2PServerActivity.class);
-                } else if(idClients.size()+1 == 3){
-                    i = new Intent(WaitActivity.this, G3PServerActivity.class);
-                } else if(idClients.size()+1 == 4){
-                    i = new Intent(WaitActivity.this, G4PServerActivity.class);
-                }
-
-                i.putExtra(Utils.idClients,idClients);
-                i.putExtra(Utils.names,usernameClients);
-                i.putExtra(Utils.idCard,Deck.getIstance().pull().getId());
-                i.putExtra(Utils.idGame, getIntent().getStringExtra(Utils.idGame));
-                startActivity(i);
-
-                if(idClients.size()>1)
-                    socket.getSocket().emit(Utils.isYourTurn, idClients.get(0));
-
             }
         });
 
