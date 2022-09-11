@@ -16,7 +16,7 @@
     <string name="selectNumber">Seleziona il numero di giocatori:</string>
     <string name="namePlayer">nome</string>
     <string name="waitingGame">in attesa che il server inizi la partita</string>
-    <string name="waitingPlayers">in attesa di giocatori...</string>
+    <string name="waitingPlayers">in attesa di giocatori…</string>
     <string name="roomFull">stanza piena</string>
     <string name="playAgain">Vuoi giocare ancora?</string>
     <string name="yes">si</string>
@@ -24,6 +24,7 @@
     <string name="textNotification">Tieniti in allenamento. Vieni a giocare!</string>
     <string name="toastServer">Inserisci il nome della partita</string>
     <string name="toastClient">Inserisci un username</string>
+    <string name="toastStartGame">Aspetta almeno un giocatore</string>
     //-------
 
     <string-array name="players">

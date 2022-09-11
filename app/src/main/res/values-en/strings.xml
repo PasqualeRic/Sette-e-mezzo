@@ -15,7 +15,7 @@
     <string name="selectNumber">Select a number of players:</string>
     <string name="namePlayer">name</string>
     <string name="waitingGame">waiting for the game to start</string>
-    <string name="waitingPlayers">waiting for players...</string>
+    <string name="waitingPlayers">waiting for players…</string>
     <string name="roomFull">room full</string>
     <string name="playAgain">Do you want to play again?</string>
     <string name="yes">yes</string>
@@ -23,6 +23,7 @@
     <string name="textNotification">Keep yourself in training. Come and play!</string>
     <string name="toastServer">Enter the name of the game</string>
     <string name="toastClient">Enter your username</string>
+    <string name="toastStartGame">Wait for at least one player</string>
 
 
 </resources>

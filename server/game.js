@@ -4,16 +4,18 @@ class Game {
     id;
     name;
     status;
-    numberOfPlayers;
+    nPlayers;
     players;
-    admin;
-    constructor(admin,name = '', status = 'waiting', players = [], numberOfPlayers = 0) {
-        this.admin = admin;
+    dealer;
+    winners;
+    constructor(dealer,name = '', status = 'created', players = [], nPlayers = 0, winners = []) {
+        this.dealer = dealer;
         this.id = uuid();
         this.name = name;
         this.status = status;
         this.players = players;
-        this.numberOfPlayers = numberOfPlayers;
+        this.nPlayers = nPlayers;
+        this.winners = winners;
     }
 }
 

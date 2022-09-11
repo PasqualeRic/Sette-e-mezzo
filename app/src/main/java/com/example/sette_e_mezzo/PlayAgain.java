@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -37,6 +38,7 @@ public class PlayAgain extends BroadcastReceiver {
             notificationManager.createNotificationChannel(channel);
         }
 
+        Log.d("NOTIFICA","ora mando la notifica");
         notificationManager.notify(1, nBuilder);
     }
 

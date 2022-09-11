@@ -28,12 +28,10 @@ public class SetGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_game);
 
-        if(socket.getSocket().connected())
-        {
-            socket.getSocket().emit(Utils.createGame, null, args -> {
-                this.id = (String) args[0];
-            });
-        }
+        socket.getSocket().emit(Utils.createGame, null, args -> {
+            this.id = (String) args[0];
+        });
+
         name = findViewById(R.id.gameName);
         nPlayers = findViewById(R.id.nPlayers);
 
@@ -50,11 +48,9 @@ public class SetGameActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    if (socket.getSocket().connected()) {
-                        socket.getSocket().emit(Utils.confGame, item, (Ack) args -> {
-                            JSONObject response = (JSONObject) args[0];
-                        });
-                    }
+
+                    socket.getSocket().emit(Utils.confGame, item, (Ack) args -> {});
+
                     Intent wait = new Intent(SetGameActivity.this, WaitActivity.class);
                     wait.putExtra(Utils.nplayers, nPlayers.getSelectedItem().toString());
                     wait.putExtra(Utils.idGame, id);
